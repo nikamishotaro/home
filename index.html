@@ -4,114 +4,107 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>nikamishotaro computer</title>
-    <link rel="stylesheet" href="https://unpkg.com/7.css">
-    
     <style>
+        /* 全体の設定 */
         body {
-            /* ③ 背景画像の設定：タイル状に並べるか、画面いっぱいに広げる */
-            background-image: url('images/top.JPG');
-            background-size: cover;
-            background-attachment: fixed;
-            background-color: #008080; /* Windows 95風の緑色 */
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            padding: 20px;
+            /* ① フォント指定：小塚ゴシックを優先し、代替として游ゴシックなどを設定 */
+            font-family: "Kozuka Gothic Pr6N", "Kozuka Gothic Pro", "Hiragino Kaku Gothic ProN", "Yu Gothic", sans-serif;
             margin: 0;
-            min-height: 100vh;
-        }
-
-        /* ウィンドウの幅調整 */
-        .window {
-            width: 90%;
-            max-width: 800px;
-            margin: 20px 0;
-        }
-
-        /* 挨拶文のスタイル */
-        .welcome-text {
-            font-size: 2rem;
-            font-weight: bold;
-            padding: 20px;
+            padding: 0;
+            color: #333; /* 文字色（背景が白い場合） */
+            line-height: 1.6;
             text-align: center;
+            min-height: 100vh;
+            
+            /* ⑤ 背景画像の設定 */
+            background-image: url('images/background.jpg'); 
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
         }
 
-        /* ①・② メインコンテンツのグリッド */
-        .grid-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 15px;
-            padding: 10px;
-        }
-
-        .project-card {
-            background: #c0c0c0;
-            padding: 10px;
-            border: 2px solid;
-            border-color: #fff #808080 #808080 #fff; /* 凹凸感を出す伝統的な手法 */
-        }
-
-        .project-card a {
-            display: block;
+        /* ① メインの挨拶文 */
+        .welcome-header {
+            font-size: 2.5rem; /* サイズ調整 */
             font-weight: bold;
-            margin-bottom: 10px;
-            color: #000;
+            margin: 100px 20px 60px;
+            letter-spacing: 0.05em;
         }
 
-        /* 下段リンク */
-        .footer-links {
-            margin-top: 20px;
+        /* リンク共通のスタイル */
+        a {
+            color: inherit;
+            text-decoration: none;
+            transition: opacity 0.3s;
+        }
+        a:hover {
+            opacity: 0.5;
+        }
+
+        /* ②・③ メインリンクのレイアウト */
+        .link-container {
             display: flex;
-            gap: 20px;
+            justify-content: center;
+            gap: 50px;
+            padding: 0 20px;
+            flex-wrap: wrap;
         }
 
-        /* 文字の色調整 */
-        .window-body, h1, p {
-            color: #000; /* ウィンドウ内は黒文字 */
+        .item {
+            width: 250px;
+        }
+
+        .item-name {
+            font-size: 1.5rem;
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        .description {
+            font-size: 0.9rem;
+            color: #666;
+            text-align: left; /* 説明文は左寄せが見やすいです */
+        }
+
+        /* ④ 下段リンク（SHOP, business） */
+        .sub-container {
+            margin-top: 80px;
+            display: flex;
+            justify-content: center;
+            gap: 50px;
+            padding-bottom: 100px;
+        }
+
+        .sub-name {
+            font-size: 1.5rem; /* 上段と同じ大きさに設定 */
         }
     </style>
 </head>
 <body>
 
-    <div class="window">
-        <div class="title-bar">
-            <div class="title-bar-text">nikamishotaro.exe</div>
-            <div class="title-bar-controls">
-                <button aria-label="Minimize"></button>
-                <button aria-label="Maximize"></button>
-                <button aria-label="Close"></button>
-            </div>
-        </div>
-        <div class="window-body">
-            <p class="welcome-text">
-                Hi, My name is Nikami Shotaro. Nice to meet you. I'm <br>
-                fine, thank you. And you?
-            </p>
+    <h1 class="welcome-header">
+        Hi, My name is Nikami Shotaro. Nice to meet you.<br>
+        I'm fine, thank you. And you?
+    </h1>
 
-            <div class="grid-container">
-                <div class="project-card">
-                    <a href="index.html">二上 匠太郎</a>
-                    <p>ここに二上匠太郎に関する説明文が入ります。活動内容やプロフィールなど。</p>
-                </div>
-                <div class="project-card">
-                    <a href="kim-diehl.html">Kim Diehl</a>
-                    <p>Kim Diehlに関するプロジェクトの説明です。アンビエントや電子音楽の制作について。</p>
-                </div>
-                <div class="project-card">
-                    <a href="nostalghia.html">Leikh Ooy, nostalghia</a>
-                    <p>ノイズやフィールドレコーディングの試みを記載します。</p>
-                </div>
-            </div>
+    <div class="link-container">
+        <div class="item">
+            <a href="index.html" class="item-name">二上匠太郎</a>
+            <p class="description">ここに二上匠太郎に関する説明文を記載します。テキストを置き換えてください。</p>
+        </div>
+        <div class="item">
+            <a href="kim-diehl.html" class="item-name">Kim Diehl</a>
+            <p class="description">Kim Diehlに関するプロジェクトの説明文です。アンビエントや電子音楽の活動について。</p>
+        </div>
+        <div class="item">
+            <a href="leikh-ooy.html" class="item-name">Leikh Ooy, nostalghia</a>
+            <p class="description">Leikh Ooy, nostalghiaとしての活動内容です。ノイズ、フィールドレコーディングなど。</p>
+        </div>
+    </div>
 
-            <div class="footer-links">
-                <button><a href="shop.html" style="text-decoration:none; color:black;">SHOP</a></button>
-                <button><a href="business.html" style="text-decoration:none; color:black;">business</a></button>
-            </div>
-        </div>
-        <div class="status-bar">
-            <p class="status-bar-field">Status: Online</p>
-            <p class="status-bar-field">Objects: 5</p>
-        </div>
+    <div class="sub-container">
+        <a href="shop.html" class="sub-name">SHOP</a>
+        <a href="business.html" class="sub-name">business</a>
     </div>
 
 </body>
