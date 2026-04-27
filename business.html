@@ -1,2 +1,79 @@
-<h1>Coming Soon: Kim Diehl Page</h1>
-<a href="index.html">Back to Top</a>
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>business - nikamishotaro computer</title>
+    <style>
+        /* ③ 画面固定とスクロール禁止の設定 */
+        body {
+            font-family: "Kozuka Gothic Pr6N", "Kozuka Gothic Pro", "Hiragino Kaku Gothic ProN", "Yu Gothic", sans-serif;
+            margin: 0;
+            padding: 0;
+            color: #00ff01; /* index.htmlと共通のグリーン */
+            height: 100vh;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            
+            /* ④ 背景画像の設定 */
+            /* imagesフォルダ内の画像名を適宜書き換えてください */
+            background-image: url('images/business-bg.jpg'); 
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            background-color: #000; /* 画像がない場合の予備色（黒） */
+        }
+
+        /* ② Back to Home ボタン（右上固定） */
+        .back-home {
+            position: absolute;
+            top: 30px;
+            right: 40px;
+            padding: 10px 20px;
+            border: 1px solid #00ff01;
+            text-decoration: none;
+            color: inherit;
+            font-weight: bold;
+            transition: opacity 0.3s;
+        }
+        .back-home:hover {
+            opacity: 0.5;
+        }
+
+        /* ① メインコンテンツ */
+        .message {
+            font-size: 3.5rem;
+            font-weight: bold;
+            margin-bottom: 20px;
+            letter-spacing: 0.05em;
+        }
+
+        .contact-info {
+            font-size: 1.2rem;
+            line-height: 2;
+        }
+
+        .contact-info a {
+            color: inherit;
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+
+    <a href="index.html" class="back-home">Back to Home</a>
+
+    <div class="content-wrapper">
+        <p class="message">give me a job.</p>
+        <div class="contact-info">
+            <p>Email: <a href="mailto:your-email@example.com">your-email@example.com</a></p>
+            <p>Instagram: <a href="https://instagram.com/your_id" target="_blank">Direct Message</a></p>
+        </div>
+    </div>
+
+</body>
+</html>
