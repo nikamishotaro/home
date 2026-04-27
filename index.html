@@ -51,30 +51,23 @@
            配置の操作用スタイル
         -------------------------------------------------- */
 
-        /* 上段・下段を包む全体の枠組み */
         .layout-wrapper {
-            /* 調整：全体の横幅。ここを大きくすると3つの列が広がります */
             width: 1050px; 
             margin: 0 auto;
         }
 
-        /* ①② 上段リンクの設定 */
         .link-container {
             display: flex;
-            /* 調整：3つのボタンの間の隙間 */
             justify-content: space-between; 
             padding: 0;
         }
 
         .item {
-            /* 調整：ボタン1つあたりの幅。文字を一行で収めるために広げました */
             width: 320px; 
-            /* ② ボタンと説明文の先頭を左端で揃える設定 */
             text-align: left; 
         }
 
         .item-name {
-            /* ① 改行させず一行に収める指定 */
             white-space: nowrap; 
             font-size: 1.5rem;
             display: block;
@@ -88,20 +81,64 @@
             margin: 0;
         }
 
-        /* ③④ 下段（SHOP/BUSINESS）の設定 */
         .sub-container {
-            /* 調整：上段との距離 */
             margin-top: 80px; 
             display: flex;
-            /* 調整：上段の「隙間」に配置されるよう、両端を空けて配置 */
             justify-content: space-around; 
-            /* 下段全体の幅を上段より少し狭めることで、隙間に収まりやすくなります */
             padding: 0 100px; 
         }
 
         .sub-name {
             font-size: 1.5rem;
             font-weight: bold;
+        }
+
+        /* --------------------------------------------------
+           ①② スマホ用（レスポンシブ）の設定
+        -------------------------------------------------- */
+        @media (max-width: 768px) {
+            body {
+                overflow-y: auto; /* スマホでボタンが多くなり画面を越える場合はスクロールを許可 */
+            }
+
+            .header-container {
+                margin: 40px auto 20px;
+                padding: 0 20px;
+            }
+
+            /* ① スマホで画面いっぱいに4回改行するくらいのサイズに調整 */
+            .welcome-header {
+                font-size: 1.8rem; /* 画面幅に合わせて微調整してください */
+                word-wrap: break-word;
+            }
+
+            /* ② 全体を縦並びに変更 */
+            .layout-wrapper {
+                width: 100%;
+                padding: 0 20px;
+                box-sizing: border-box;
+            }
+
+            .link-container {
+                flex-direction: column; /* 縦に並べる */
+                gap: 30px;
+            }
+
+            .item {
+                width: 100%;
+            }
+
+            .item-name {
+                white-space: normal; /* スマホでは改行を許可 */
+            }
+
+            .sub-container {
+                flex-direction: column; /* 縦に並べる */
+                margin-top: 30px;
+                padding: 0;
+                gap: 30px;
+                padding-bottom: 60px;
+            }
         }
     </style>
 </head>
