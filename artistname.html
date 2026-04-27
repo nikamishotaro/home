@@ -2,23 +2,119 @@
 <html lang="ja">
 <head>
     <meta charset="UTF-8">
-    <title>Leikh Ooy, nostalghia</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Leikh Ooy, nostalghia - nikamishotaro computer</title>
     <style>
-        body { text-align: center; font-family: sans-serif; padding: 50px; }
-        .social-links { margin-top: 30px; }
-        .social-links a { margin: 0 15px; text-decoration: none; color: #ff5500; font-weight: bold; }
+        /* ③・④ 画面固定とスライドショー背景の設定 */
+        body {
+            font-family: "Kozuka Gothic Pr6N", "Kozuka Gothic Pro", "Hiragino Kaku Gothic ProN", "Yu Gothic", sans-serif;
+            margin: 0;
+            padding: 0;
+            color: #00ff01;
+            height: 100vh;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-size: cover;
+            background-position: center;
+            /* ④ スライドショーのアニメーション（15秒サイクル） */
+            animation: backgroundSlideshow 15s infinite;
+        }
+
+        @keyframes backgroundSlideshow {
+            0%   { background-image: url('images/bg1.jpg'); }
+            33%  { background-image: url('images/bg2.jpg'); }
+            66%  { background-image: url('images/bg3.jpg'); }
+            100% { background-image: url('images/bg1.jpg'); }
+        }
+
+        /* ② Back to Home ボタン（右上固定） */
+        .back-home {
+            position: absolute;
+            top: 30px;
+            right: 40px;
+            padding: 10px 20px;
+            border: 1px solid #00ff01;
+            text-decoration: none;
+            color: inherit;
+            font-weight: bold;
+            transition: opacity 0.3s;
+            z-index: 10;
+        }
+        .back-home:hover {
+            opacity: 0.5;
+        }
+
+        /* ③ メインレイアウト */
+        .main-content {
+            display: flex;
+            align-items: center;
+            gap: 60px; /* ジャケ写とテキストの間隔 */
+        }
+
+        .jacket-wrapper img {
+            height: 500px; /* ジャケ写のサイズ基準 */
+            width: auto;
+            display: block;
+            border: 1px solid rgba(0, 255, 1, 0.3);
+        }
+
+        .info-wrapper {
+            height: 500px; /* ジャケ写の高さと一致させる */
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between; /* 縦幅いっぱいにリンクを分散 */
+            text-align: left;
+        }
+
+        .album-title {
+            font-size: 2rem;
+            font-weight: bold;
+            margin: 0;
+            letter-spacing: 0.1em;
+        }
+
+        .links-list {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .links-list a {
+            color: inherit;
+            text-decoration: none;
+            font-size: 1.2rem;
+            transition: opacity 0.3s;
+        }
+
+        .links-list a:hover {
+            opacity: 0.5;
+            text-decoration: underline;
+        }
     </style>
 </head>
 <body>
-    <h1>Leikh Ooy, nostalghia</h1>
-    <p>Music project by Nikami Shotaro.</p>
 
-    <div class="social-links">
-        <a href="index.html">Back to Top</a>
-        <a href="https://soundcloud.com/leikhooy" target="_blank">SoundCloud</a>
+    <a href="index.html" class="back-home">Back to Home</a>
+
+    <div class="main-content">
+        <div class="info-wrapper">
+            <h1 class="album-title">Album Name</h1>
+            
+            <div class="links-list">
+                <a href="https://soundcloud.com/leikhooy" target="_blank">SoundCloud</a>
+                <a href="https://music.apple.com/..." target="_blank">Apple Music</a>
+                <a href="https://open.spotify.com/..." target="_blank">Spotify</a>
+                <a href="https://youtube.com/@leikh-ooy" target="_blank">YouTube</a>
+                <a href="https://instagram.com/leikh_ooy" target="_blank">Instagram</a>
+            </div>
+        </div>
+
+        <div class="jacket-wrapper">
+            <img src="images/jacket.jpg" alt="Jacket Photo">
+        </div>
     </div>
 
-    <br>
-    <a href="index.html">トップページに戻る</a>
 </body>
 </html>
