@@ -5,31 +5,22 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Leikh Ooy, nostalghia - nikamishotaro computer</title>
     <style>
-        /* ③・④ 画面固定とスライドショー背景の設定 */
+        /* ① 背景の設定 */
         body {
             font-family: "Kozuka Gothic Pr6N", "Kozuka Gothic Pro", "Hiragino Kaku Gothic ProN", "Yu Gothic", sans-serif;
             margin: 0;
             padding: 0;
             color: #00ff01;
             height: 100vh;
+            width: 100vw;
             overflow: hidden;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            background-image: url('images/bg-leikh.jpg'); /* 背景画像 */
             background-size: cover;
             background-position: center;
-            /* ④ スライドショーのアニメーション（15秒サイクル） */
-            animation: backgroundSlideshow 15s infinite;
+            background-color: #000;
         }
 
-        @keyframes backgroundSlideshow {
-            0%   { background-image: url('images/bg1.jpg'); }
-            33%  { background-image: url('images/bg2.jpg'); }
-            66%  { background-image: url('images/bg3.jpg'); }
-            100% { background-image: url('images/bg1.jpg'); }
-        }
-
-        /* ② Back to Home ボタン（右上固定） */
+        /* 戻るボタン */
         .back-home {
             position: absolute;
             top: 30px;
@@ -39,82 +30,143 @@
             text-decoration: none;
             color: inherit;
             font-weight: bold;
-            transition: opacity 0.3s;
+            z-index: 1000;
+        }
+
+        /* ② アイコン（正方形）のスタイル */
+        .icon {
+            position: absolute;
+            width: 80px;  /* アイコンのサイズ */
+            height: 80px;
+            cursor: pointer;
+            border: 1px solid #00ff01;
+            background-size: cover;
+            background-position: center;
+            transition: transform 0.2s;
             z-index: 10;
         }
-        .back-home:hover {
-            opacity: 0.5;
+        .icon:hover {
+            transform: scale(1.1);
+            box-shadow: 0 0 15px #00ff01;
         }
 
-        /* ③ メインレイアウト */
-        .main-content {
-            display: flex;
+        /* ③ 中央の固定プロフィールアイコン */
+        .icon.center-fixed {
+            top: 50% !important;
+            left: 50% !important;
+            transform: translate(-50%, -50%);
+            width: 100px;
+            height: 100px;
+            z-index: 20;
+            border: 2px solid #00ff01;
+        }
+
+        /* ③ ポップアップ（モーダル）のスタイル */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 2000;
+            justify-content: center;
             align-items: center;
-            gap: 60px; /* ジャケ写とテキストの間隔 */
         }
 
-        .jacket-wrapper img {
-            height: 500px; /* ジャケ写のサイズ基準 */
-            width: auto;
-            display: block;
-            border: 1px solid rgba(0, 255, 1, 0.3);
-        }
-
-        .info-wrapper {
-            height: 500px; /* ジャケ写の高さと一致させる */
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between; /* 縦幅いっぱいにリンクを分散 */
+        .modal-content {
+            background: #000;
+            border: 1px solid #00ff01;
+            padding: 40px;
+            max-width: 500px;
+            width: 80%;
             text-align: left;
+            position: relative;
         }
 
-        .album-title {
-            font-size: 2rem;
-            font-weight: bold;
-            margin: 0;
-            letter-spacing: 0.1em;
-        }
+        .modal-content h2 { margin-top: 0; }
+        .modal-content a { color: #00ff01; display: block; margin: 10px 0; }
 
-        .links-list {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-        }
-
-        .links-list a {
-            color: inherit;
-            text-decoration: none;
-            font-size: 1.2rem;
-            transition: opacity 0.3s;
-        }
-
-        .links-list a:hover {
-            opacity: 0.5;
-            text-decoration: underline;
-        }
     </style>
 </head>
 <body>
 
     <a href="index.html" class="back-home">Back to Home</a>
 
-    <div class="main-content">
-        <div class="info-wrapper">
-            <h1 class="album-title">a house</h1>
-            
-            <div class="links-list">
+    <div id="desktop">
+        
+        <div class="icon" style="background-image: url('images/a-house-thumb.jpg');" 
+             onclick="openModal('a-house')"></div>
+        <div id="a-house" class="modal" onclick="closeModal(event, 'a-house')">
+            <div class="modal-content">
+                <h2>a house</h2>
+                <p>作品の説明文をここに記載します。</p>
                 <a href="https://soundcloud.com/leikhooy" target="_blank">SoundCloud</a>
-                <a href="https://music.apple.com/..." target="_blank">Apple Music</a>
-                <a href="https://open.spotify.com/..." target="_blank">Spotify</a>
-                <a href="https://youtube.com/@leikh-ooy" target="_blank">YouTube</a>
+                <a href="#" target="_blank">Spotify</a>
+            </div>
+        </div>
+        <div class="icon" style="background-image: url('images/philosophy-thumb.jpg');" 
+             onclick="openModal('philosophy')"></div>
+        <div id="philosophy" class="modal" onclick="closeModal(event, 'philosophy')">
+            <div class="modal-content">
+                <h2>philosophy/思想</h2>
+                <p>アンビエント・ドローン作品のコンセプトなど。</p>
+                <a href="https://soundcloud.com/leikhooy" target="_blank">SoundCloud</a>
+                <a href="#" target="_blank">Apple Music</a>
+            </div>
+        </div>
+
+        <div class="icon center-fixed" style="background-image: url('images/profile-thumb.jpg');" 
+             onclick="openModal('profile')"></div>
+        <div id="profile" class="modal" onclick="closeModal(event, 'profile')">
+            <div class="modal-content">
+                <h2>Profile</h2>
+                <p>Leikh Ooy, nostalghia: 匠太郎による音楽プロジェクト。</p>
                 <a href="https://instagram.com/leikh_ooy" target="_blank">Instagram</a>
             </div>
         </div>
 
-        <div class="jacket-wrapper">
-            <img src="images/a house.jpg" alt="Jacket Photo">
-        </div>
     </div>
 
+    <script>
+        // ②・③ ランダム配置の実行
+        window.onload = function() {
+            const icons = document.querySelectorAll('.icon:not(.center-fixed)');
+            const desktop = document.getElementById('desktop');
+            
+            icons.forEach(icon => {
+                // 画面の端に寄りすぎないように範囲を制限（5%〜85%の間）
+                const randomX = Math.floor(Math.random() * 80) + 5;
+                const randomY = Math.floor(Math.random() * 80) + 5;
+                
+                icon.style.left = randomX + '%';
+                icon.style.top = randomY + '%';
+            });
+        };
+
+        // ③ ポップアップ操作
+        function openModal(id) {
+            document.getElementById(id).style.display = 'flex';
+        }
+
+        function closeModal(event, id) {
+            // 背景クリック（PC）またはスワイプ的な動作の代わりとして、枠外クリックで閉じる
+            if (event.target.classList.contains('modal')) {
+                document.getElementById(id).style.display = 'none';
+            }
+        }
+
+        // スマホ用：簡易的なスワイプ（下方向）で閉じる
+        let touchstartY = 0;
+        document.addEventListener('touchstart', e => { touchstartY = e.changedTouches[0].screenY; });
+        document.addEventListener('touchend', e => {
+            const touchendY = e.changedTouches[0].screenY;
+            if (touchendY > touchstartY + 100) { // 100px以上下にスワイプしたら閉じる
+                const openModals = document.querySelectorAll('.modal[style*="display: flex"]');
+                openModals.forEach(m => m.style.display = 'none');
+            }
+        });
+    </script>
 </body>
 </html>
