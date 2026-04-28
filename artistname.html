@@ -88,6 +88,45 @@
         .modal-content h2 { margin-top: 0; }
         .modal-content a { color: #ffffff; display: block; margin: 10px 0; }
 
+        /* --------------------------------------------------
+           【追加】画像スライダー（円環構造）のスタイル
+        -------------------------------------------------- */
+        .carousel-container {
+            position: relative;
+            width: 100%;
+            height: 250px; /* 画像エリアの高さ。必要に応じて調整してください */
+            margin: 20px 0;
+            overflow: hidden;
+            cursor: pointer;
+        }
+        .carousel-img {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            max-height: 100%;
+            max-width: 60%; /* 中央の画像の最大幅 */
+            object-fit: contain;
+            transition: all 0.4s ease;
+            opacity: 0;
+            z-index: 0;
+            pointer-events: none; /* コンテナ全体でクリック判定させるため */
+        }
+        .carousel-img.active {
+            opacity: 1;
+            z-index: 2;
+            transform: translate(-50%, -50%) scale(1);
+        }
+        .carousel-img.prev {
+            opacity: 0.3; /* 端に見える画像の透明度 */
+            z-index: 1;
+            transform: translate(-120%, -50%) scale(0.8); /* 左端にずらして縮小 */
+        }
+        .carousel-img.next {
+            opacity: 0.3;
+            z-index: 1;
+            transform: translate(20%, -50%) scale(0.8); /* 右端にずらして縮小 */
+        }
+
     </style>
 </head>
 <body>
@@ -101,6 +140,11 @@
         <div id="a-house" class="modal" onclick="closeModal(event, 'a-house')">
             <div class="modal-content">
                 <h2>a house</h2>
+
+                <div class="carousel-container">
+                    <img class="carousel-img" src="images/a-house_jacket.jpg" alt="">
+                    <img class="carousel-img" src="images/a-house_sub1.jpg" alt=""> <img class="carousel-img" src="images/a-house_sub2.jpg" alt=""> </div>
+
                 <p>1st EP（2023）:<br>
                 This music was created for one house that was to be demolished.<br>
                 ----------<br>
@@ -117,6 +161,11 @@
         <div id="philosophy" class="modal" onclick="closeModal(event, 'philosophy')">
             <div class="modal-content">
                 <h2>philosophy/思想</h2>
+
+                <div class="carousel-container">
+                    <img class="carousel-img" src="images/philosophy_jacket.jpg" alt="">
+                    </div>
+
                 <p>2nd EP（2026）:<br>
                 This music was created to soundscape the atmosphere of "The philosophy of Living" a combined bookstore and flower shop.<br>
                 ----------<br>
@@ -127,11 +176,17 @@
                 <a href="#" target="_blank">Apple Music</a>
             </div>
         </div>
+
         <div class="icon" style="background-image: url('images/no-war_jacket.png');" 
              onclick="openModal('no-war')"></div>
         <div id="no-war" class="modal" onclick="closeModal(event, 'no-war')">
             <div class="modal-content">
                 <h2>NO WAR</h2>
+
+                <div class="carousel-container">
+                    <img class="carousel-img" src="images/no-war_jacket.png" alt="">
+                </div>
+
                 <p>Single（2026）:<br>
                 This is a piece of anti-war music—a definitive refusal of the inhumane massacres currently unfolding in our world. <br>
                 I am speaking in English purely for the sake of clarity and reach, as it is the most widely spoken official language; this choice in no way implies the superiority of any language or ethnicity. <br>
@@ -173,6 +228,9 @@
                 icon.style.left = randomX + '%';
                 icon.style.top = randomY + '%';
             });
+
+            // 【追加】画像スライダーの自動セットアップ
+            initCarousels();
         };
 
         // ③ ポップアップ操作
@@ -185,6 +243,54 @@
             if (event.target.classList.contains('modal')) {
                 document.getElementById(id).style.display = 'none';
             }
+        }
+
+        // 【追加】画像スライダーの操作ロジック
+        function initCarousels() {
+            document.querySelectorAll('.carousel-container').forEach(container => {
+                const images = container.querySelectorAll('.carousel-img');
+                if (images.length === 0) return;
+                
+                let currentIndex = 0;
+
+                function updateCarousel() {
+                    images.forEach((img, i) => {
+                        img.className = 'carousel-img'; // リセット
+                        if (i === currentIndex) {
+                            img.classList.add('active'); // 中央表示
+                        } else if (images.length === 2) {
+                            // 2枚の時：もう1枚を右側にチラ見せ
+                            if (i === ((currentIndex + 1) % 2)) img.classList.add('next');
+                        } else if (images.length > 2) {
+                            // 3枚以上の時：左右の円環構造
+                            let prevIndex = (currentIndex - 1 + images.length) % images.length;
+                            let nextIndex = (currentIndex + 1) % images.length;
+                            
+                            if (i === prevIndex) img.classList.add('prev');
+                            if (i === nextIndex) img.classList.add('next');
+                        }
+                    });
+                }
+
+                // 領域の左右をクリックしたときの判定
+                container.addEventListener('click', (e) => {
+                    if (images.length <= 1) return; // 1枚なら何もしない
+                    
+                    const rect = container.getBoundingClientRect();
+                    const clickX = e.clientX - rect.left;
+                    
+                    if (clickX < rect.width / 2) {
+                        // 左半分クリック -> 前の画像へ
+                        currentIndex = (currentIndex - 1 + images.length) % images.length;
+                    } else {
+                        // 右半分クリック -> 次の画像へ
+                        currentIndex = (currentIndex + 1) % images.length;
+                    }
+                    updateCarousel();
+                });
+
+                updateCarousel(); // 初回表示のセットアップ
+            });
         }
 
         // スマホ用：簡易的なスワイプ（下方向）で閉じる
