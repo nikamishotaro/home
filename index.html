@@ -70,12 +70,32 @@
             padding: 0;
         }
 
+        /* ブロック全体をリンク化するため display: block に変更 */
         .item {
             width: 320px; 
             text-align: left; 
+            display: block;
         }
 
+        /* ▼▼▼ ①-c 画像サイズの変更指示コメント ▼▼▼ */
+        .block-image {
+            /* 新たに配置した画像の大きさを変更する場合は、以下の数値を修正してください。
+               現状は幅いっぱいの正方形（320px × 320px）になるよう設定されています。
+               固定の大きさにしたい場合は「width: 200px; height: 200px;」などに書き換えてください。
+            */
+            width: 100%;
+            aspect-ratio: 1 / 1;
+            /* ------------------------------------------------------------------- */
+            object-fit: cover;
+            display: block;
+            margin-bottom: 15px; /* タイトルとの間隔 */
+            background-color: #333333; /* 画像が読み込めない時のダミー背景色 */
+        }
+        /* ▲▲▲ 画像サイズの変更指示コメント ここまで ▲▲▲ */
+
         .item-name {
+            /* ①-c タイトルのフォントをMS Pゴシックに変更 */
+            font-family: "MS PGothic", "ＭＳ Ｐゴシック", sans-serif;
             white-space: nowrap; 
             font-size: 1.5rem;
             display: block;
@@ -92,13 +112,17 @@
         .sub-container {
             margin-top: 80px; 
             display: flex;
-            justify-content: space-around; 
-            padding: 0 100px; 
+            /* ①-a オリンピックロゴのような均等配置（上段の隙間をセンターにする）ための調整 */
+            justify-content: center;
+            gap: 45px; 
         }
 
         .sub-name {
+            /* ①-c タイトルのフォントをMS Pゴシックに変更 */
+            font-family: "MS PGothic", "ＭＳ Ｐゴシック", sans-serif;
             font-size: 1.5rem;
             font-weight: bold;
+            display: block; /* 構造変更に伴うレイアウト維持のため追加 */
         }
 
         /* --------------------------------------------------
@@ -110,7 +134,12 @@
             }
 
             .header-container {
-                margin: 40px auto 20px;
+                /* ▼▼▼ ② SP版：テキストと下の画像との間隔の変更指示コメント ▼▼▼ */
+                /* SP版限定の「Hi, My name is...」と下部の画像との間隔（現在約5倍に設定）を変更する場合は、
+                   以下の「margin: 40px auto 100px;」の【100px】の数値を修正してください。
+                */
+                margin: 40px auto 100px;
+                /* ▲▲▲ SP版間隔の変更指示コメント ここまで ▲▲▲ */
                 padding: 0 20px;
                 max-width: 100%;
             }
@@ -159,24 +188,31 @@
 
     <div class="layout-wrapper">
         <div class="link-container">
-            <div class="item">
-                <a href="realname.html" class="item-name">二上 匠太郎（real）</a>
+            <a href="realname.html" class="item">
+                <img src="images/dummy1.jpg" alt="" class="block-image"> <span class="item-name">二上 匠太郎（real）</span>
                 <p class="description">research and philosophize.</p>
-            </div>
-            <div class="item">
-                <a href="handlename.html" class="item-name">Kim Diehl（handle）</a>
+            </a>
+            
+            <a href="handlename.html" class="item">
+                <img src="images/dummy2.jpg" alt="" class="block-image"> <span class="item-name">Kim Diehl（handle）</span>
                 <p class="description">twitter, instagram, note... all I have<br>
                     are like that.</p>
-            </div>
-            <div class="item">
-                <a href="artistname.html" class="item-name">Leikh Ooy, nostalghia（artist）</a>
+            </a>
+            
+            <a href="artistname.html" class="item">
+                <img src="images/dummy3.jpg" alt="" class="block-image"> <span class="item-name">Leikh Ooy, nostalghia（artist）</span>
                 <p class="description">musics, graphics, and so on.</p>
-            </div>
+            </a>
         </div>
 
         <div class="sub-container">
-            <a href="shop.html" class="sub-name">SHOP</a>
-            <a href="business.html" class="sub-name">BUSINESS</a>
+            <a href="shop.html" class="item">
+                <img src="images/dummy4.jpg" alt="" class="block-image"> <span class="sub-name">SHOP</span>
+            </a>
+            
+            <a href="business.html" class="item">
+                <img src="images/dummy5.jpg" alt="" class="block-image"> <span class="sub-name">BUSINESS</span>
+            </a>
         </div>
     </div>
 
