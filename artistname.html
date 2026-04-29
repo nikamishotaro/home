@@ -71,8 +71,9 @@
             height: 100%;
             background: rgba(0, 0, 0, 0.8);
             z-index: 2000;
-            justify-content: center;
-            align-items: center;
+            /* SP版スクロール戻り実装のため変更 */
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
         }
 
         .modal-content {
@@ -83,13 +84,23 @@
             width: 80%;
             text-align: left;
             position: relative;
+            /* 配置を中央にするための指定 */
+            margin: 100px auto; 
+        }
+
+        /* SP版：最下部スクロールで戻るための余白設定 */
+        @media (max-width: 768px) {
+            .modal-content {
+                margin-top: 100px;
+                margin-bottom: 100vh; /* スクロールしきった時に背景が見えるようにする */
+            }
         }
 
         .modal-content h2 { margin-top: 0; }
         .modal-content a { color: #ffffff; display: block; margin: 10px 0; }
 
         /* --------------------------------------------------
-           【追加】画像スライダー（円環構造）のスタイル
+            【追加】画像スライダー（円環構造）のスタイル
         -------------------------------------------------- */
         .carousel-container {
             position: relative;
@@ -231,18 +242,52 @@
 
             // 【追加】画像スライダーの自動セットアップ
             initCarousels();
+            // 【要求】スクロール監視のセットアップ
+            setupScrollClose();
         };
 
         // ③ ポップアップ操作
         function openModal(id) {
-            document.getElementById(id).style.display = 'flex';
+            const modal = document.getElementById(id);
+            modal.style.display = 'block'; // flexからblockに変更（スクロール制御のため）
+            modal.style.opacity = '1';
+            modal.scrollTop = 0;
         }
 
         function closeModal(event, id) {
-            // 背景クリック（PC）またはスワイプ的な動作の代わりとして、枠外クリックで閉じる
+            // 背景クリック（PC）で閉じる
             if (event.target.classList.contains('modal')) {
                 document.getElementById(id).style.display = 'none';
             }
+        }
+
+        // 【要求】SP版：スクロールしきったら戻る仕様の実装
+        function setupScrollClose() {
+            const modals = document.querySelectorAll('.modal');
+            
+            modals.forEach(modal => {
+                modal.addEventListener('scroll', function() {
+                    if (window.innerWidth > 768) return; // SP版のみ
+
+                    const content = modal.querySelector('.modal-content');
+                    const scrollBottom = modal.scrollHeight - modal.scrollTop - modal.clientHeight;
+                    
+                    // 最下部（100vhのバッファ）に近づくにつれて透明度を下げる
+                    // コンテンツが終わってから、画面高さ分スクロールする間にうっすら見えてくる演出
+                    const opacityThreshold = 400; // コンテンツ末尾から400px手前から透明化開始
+                    if (scrollBottom < opacityThreshold) {
+                        modal.style.opacity = (scrollBottom / opacityThreshold);
+                    } else {
+                        modal.style.opacity = '1';
+                    }
+
+                    // 完全に最下部までスクロールしきったら閉じる
+                    if (scrollBottom <= 0) {
+                        modal.style.display = 'none';
+                        modal.style.opacity = '1';
+                    }
+                });
+            });
         }
 
         // 【追加】画像スライダーの操作ロジック
@@ -287,22 +332,12 @@
                         currentIndex = (currentIndex + 1) % images.length;
                     }
                     updateCarousel();
+                    e.stopPropagation(); // モーダルのクリックイベントを阻止
                 });
 
                 updateCarousel(); // 初回表示のセットアップ
             });
         }
-
-        // スマホ用：簡易的なスワイプ（下方向）で閉じる
-        let touchstartY = 0;
-        document.addEventListener('touchstart', e => { touchstartY = e.changedTouches[0].screenY; });
-        document.addEventListener('touchend', e => {
-            const touchendY = e.changedTouches[0].screenY;
-            if (touchendY > touchstartY + 100) { // 100px以上下にスワイプしたら閉じる
-                const openModals = document.querySelectorAll('.modal[style*="display: flex"]');
-                openModals.forEach(m => m.style.display = 'none');
-            }
-        });
     </script>
 </body>
 </html>
