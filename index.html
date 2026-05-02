@@ -1,219 +1,231 @@
 <!DOCTYPE html> 
 <html lang="ja">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>nikamishotaro computer</title>
-    <style>
-        /* 全体の設定 */
-        body {
-            /* ① フォントをMS Pゴシック主体の設定に変更 */
-            font-family: "MS PGothic", "ＭＳ Ｐゴシック", "MS PMincho", "ＭＳ Ｐ明朝", sans-serif;
-            margin: 0;
-            padding: 0;
-            color: #00ffff;
-            line-height: 1.6;
-            height: 100vh;
-            overflow: hidden; 
-            display: flex;
-            flex-direction: column;
-            
-            background-image: url('images/background.jpg'); 
-            background-size: cover;
-            background-position: center;
-            background-attachment: fixed;
-            background-color: #f0f0f0; 
-        }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>nikamishotaro computer</title>
+    <style>
+        /* 全体の設定 */
+        body {
+            /* ① フォントをMS Pゴシック主体の設定に変更 */
+            font-family: "MS PGothic", "ＭＳ Ｐゴシック", "MS PMincho", "ＭＳ Ｐ明朝", sans-serif;
+            margin: 0;
+            padding: 0;
+            color: #00ffff;
+            line-height: 1.6;
+            height: 100vh;
+            overflow: hidden; 
+            display: flex;
+            flex-direction: column;
+            
+            background-image: url('images/background.jpg'); 
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            background-color: #f0f0f0; 
+        }
 
-        .header-container {
-            /* ③ 横幅を下の .layout-wrapper と同じ 1050px に設定 */
-            max-width: 1050px;
-            /* ④【調整箇所：上の余白と下の余白】 
-               「100px」が上、「100px」が下のリンクとの間隔（要求②）です */
-            margin: 100px auto 100px;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        .header-container {
+            /* ③ 横幅を下の .layout-wrapper と同じ 1050px に設定 */
+            max-width: 1050px;
+            
+            /* ▼▼▼ ③【調整箇所：PC版 title_text.pngと下部オブジェクトとの間隔】 ▼▼▼ */
+            /* 下記の margin の3つ目の数値「100px」が、上に配置した title_text.png と
+               下部のリンク群（もともと配置しているオブジェクト）との間隔になります。
+               間隔を変更したい場合はこの数値を調整してください。（例: margin: 100px auto 50px;） */
+            margin: 100px auto 100px;
+            /* ▲▲▲ PC版 間隔の調整箇所 ここまで ▲▲▲ */
+            
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-        .welcome-header {
-            /* ③【調整箇所：フォントサイズ】 
-               1050px幅に収まるよう 2.95rem に調整しています。微調整はここを変更してください */
-            font-size: 2.95rem; 
-            font-weight: bold;
-            letter-spacing: 0.05em;
-            text-align: left;
-            margin: 0;
-            white-space: normal;
-        }
+        .welcome-header {
+            /* ③【調整箇所：フォントサイズ】 
+               1050px幅に収まるよう 2.95rem に調整しています。微調整はここを変更してください */
+            font-size: 2.95rem; 
+            font-weight: bold;
+            letter-spacing: 0.05em;
+            text-align: left;
+            margin: 0;
+            white-space: normal;
+        }
 
-        a {
-            color: inherit;
-            text-decoration: none;
-            transition: opacity 0.3s;
-        }
-        a:hover {
-            opacity: 0.5;
-        }
+        /* ①で追加したタイトル画像（title_text.png）用のスタイル */
+        .title-image {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
 
-        /* --------------------------------------------------
-            配置の操作用スタイル
-        -------------------------------------------------- */
+        a {
+            color: inherit;
+            text-decoration: none;
+            transition: opacity 0.3s;
+        }
+        a:hover {
+            opacity: 0.5;
+        }
 
-        .layout-wrapper {
-            width: 1050px; 
-            margin: 0 auto;
-        }
+        /* --------------------------------------------------
+            配置の操作用スタイル
+        -------------------------------------------------- */
 
-        .link-container {
-            display: flex;
-            justify-content: space-between; 
-            padding: 0;
-        }
+        .layout-wrapper {
+            width: 1050px; 
+            margin: 0 auto;
+        }
 
-        /* ブロック全体をリンク化するため display: block に変更 */
-        .item {
-            width: 320px; 
-            text-align: left; 
-            display: block;
-        }
+        .link-container {
+            display: flex;
+            justify-content: space-between; 
+            padding: 0;
+        }
 
-        /* ▼▼▼ ①-c 画像サイズの変更指示コメント ▼▼▼ */
-        .block-image {
-            /* 新たに配置した画像の大きさを変更する場合は、以下の数値を修正してください。
-               現状は幅いっぱいの正方形（320px × 320px）になるよう設定されています。
-               固定の大きさにしたい場合は「width: 200px; height: 200px;」などに書き換えてください。
-            */
-            width: 100%;
-            aspect-ratio: 1 / 1;
-            /* ------------------------------------------------------------------- */
-            object-fit: cover;
-            display: block;
-            margin-bottom: 15px; /* タイトルとの間隔 */
-            background-color: #333333; /* 画像が読み込めない時のダミー背景色 */
-        }
-        /* ▲▲▲ 画像サイズの変更指示コメント ここまで ▲▲▲ */
+        /* ブロック全体をリンク化するため display: block に変更 */
+        .item {
+            width: 320px; 
+            text-align: left; 
+            display: block;
+        }
 
-        .item-name {
-            /* ①-c タイトルのフォントをMS Pゴシックに変更 */
-            font-family: "MS PGothic", "ＭＳ Ｐゴシック", sans-serif;
-            white-space: nowrap; 
-            font-size: 1.5rem;
-            display: block;
-            margin-bottom: 10px;
-            font-weight: bold;
-        }
+        /* ▼▼▼ ①-c 画像サイズの変更指示コメント ▼▼▼ */
+        .block-image {
+            /* 新たに配置した画像の大きさを変更する場合は、以下の数値を修正してください。
+               現状は幅いっぱいの正方形（320px × 320px）になるよう設定されています。
+               固定の大きさにしたい場合は「width: 200px; height: 200px;」などに書き換えてください。
+            */
+            width: 100%;
+            aspect-ratio: 1 / 1;
+            /* ------------------------------------------------------------------- */
+            object-fit: cover;
+            display: block;
+            margin-bottom: 15px; /* タイトルとの間隔 */
+            background-color: #333333; /* 画像が読み込めない時のダミー背景色 */
+        }
+        /* ▲▲▲ 画像サイズの変更指示コメント ここまで ▲▲▲ */
 
-        .description {
-            font-size: 0.9rem;
-            color: #00ffff;
-            margin: 0;
-        }
+        .item-name {
+            /* ①-c タイトルのフォントをMS Pゴシックに変更 */
+            font-family: "MS PGothic", "ＭＳ Ｐゴシック", sans-serif;
+            white-space: nowrap; 
+            font-size: 1.5rem;
+            display: block;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
 
-        .sub-container {
-            margin-top: 80px; 
-            display: flex;
-            /* ①-a オリンピックロゴのような均等配置（上段の隙間をセンターにする）ための調整 */
-            justify-content: center;
-            gap: 45px; 
-        }
+        .description {
+            font-size: 0.9rem;
+            color: #00ffff;
+            margin: 0;
+        }
 
-        .sub-name {
-            /* ①-c タイトルのフォントをMS Pゴシックに変更 */
-            font-family: "MS PGothic", "ＭＳ Ｐゴシック", sans-serif;
-            font-size: 1.5rem;
-            font-weight: bold;
-            display: block; /* 構造変更に伴うレイアウト維持のため追加 */
-        }
+        .sub-container {
+            margin-top: 80px; 
+            display: flex;
+            /* ①-a オリンピックロゴのような均等配置（上段の隙間をセンターにする）ための調整 */
+            justify-content: center;
+            gap: 45px; 
+        }
 
-        /* --------------------------------------------------
-            スマホ用（レスポンシブ）の設定
-        -------------------------------------------------- */
-        @media (max-width: 768px) {
-            body {
-                overflow-y: auto; 
-            }
+        .sub-name {
+            /* ①-c タイトルのフォントをMS Pゴシックに変更 */
+            font-family: "MS PGothic", "ＭＳ Ｐゴシック", sans-serif;
+            font-size: 1.5rem;
+            font-weight: bold;
+            display: block; /* 構造変更に伴うレイアウト維持のため追加 */
+        }
 
-            .header-container {
-                /* ▼▼▼ ② SP版：テキストと下の画像との間隔の変更指示コメント ▼▼▼ */
-                /* SP版限定の「Hi, My name is...」と下部の画像との間隔（現在約5倍に設定）を変更する場合は、
-                   以下の「margin: 40px auto 100px;」の【100px】の数値を修正してください。
-                */
-                margin: 40px auto 100px;
-                /* ▲▲▲ SP版間隔の変更指示コメント ここまで ▲▲▲ */
-                padding: 0 20px;
-                max-width: 100%;
-            }
+        /* --------------------------------------------------
+            スマホ用（レスポンシブ）の設定
+        -------------------------------------------------- */
+        @media (max-width: 768px) {
+            body {
+                overflow-y: auto; 
+            }
 
-            .welcome-header {
-                font-size: 1.8rem; 
-                word-wrap: break-word;
-            }
+            .header-container {
+                /* ▼▼▼ ③【調整箇所：SP(PSP)版 title_text.pngと下部オブジェクトとの間隔】 ▼▼▼ */
+                /* SP(PSP)版の title_text.png と下部のリンク群との間隔を変更する場合は、
+                   以下の margin の3つ目の数値「100px」を修正してください。 */
+                margin: 40px auto 100px;
+                /* ▲▲▲ SP(PSP)版 間隔の調整箇所 ここまで ▲▲▲ */
+                padding: 0 20px;
+                max-width: 100%;
+            }
 
-            .layout-wrapper {
-                width: 100%;
-                padding: 0 20px;
-                box-sizing: border-box;
-            }
+            .welcome-header {
+                font-size: 1.8rem; 
+                word-wrap: break-word;
+            }
 
-            .link-container {
-                flex-direction: column; 
-                gap: 30px;
-            }
+            .layout-wrapper {
+                width: 100%;
+                padding: 0 20px;
+                box-sizing: border-box;
+            }
 
-            .item {
-                width: 100%;
-            }
+            .link-container {
+                flex-direction: column; 
+                gap: 30px;
+            }
 
-            .item-name {
-                white-space: normal; 
-            }
+            .item {
+                width: 100%;
+            }
 
-            .sub-container {
-                flex-direction: column; 
-                margin-top: 30px;
-                padding: 0;
-                gap: 30px;
-                padding-bottom: 60px;
-            }
-        }
-    </style>
+            .item-name {
+                white-space: normal; 
+            }
+
+            .sub-container {
+                flex-direction: column; 
+                margin-top: 30px;
+                padding: 0;
+                gap: 30px;
+                padding-bottom: 60px;
+            }
+        }
+    </style>
 </head>
 <body>
 
-    <div class="header-container">
-        <h1 class="welcome-header">
-            <img src="images/title_text.png" alt="Hi, My name is Nikami Shotaro. Nice to meet you. I'm fine, thank you. And you?" style="max-width: 100%; height: auto; display: block;">
-        </h1>
-    </div>
+    <div class="header-container">
+        <h1 class="welcome-header">
+            <!-- ① テキストを title_text.png の画像表示に変更 -->
+            <img src="images/title_text.png" alt="Hi, My name is Nikami Shotaro. Nice to meet you. I'm fine, thank you. And you?" class="title-image">
+        </h1>
+    </div>
 
-    <div class="layout-wrapper">
-        <div class="link-container">
-            <a href="realname.html" class="item">
-                <img src="images/no image.jpg" alt="" class="block-image"> <span class="item-name">二上 匠太郎（logic）</span>
-                <p class="description">design and research.</p>
-            </a>
-            
-            <a href="handlename.html" class="item">
-                <img src="images/handle_background.jpg" alt="" class="block-image"> <span class="item-name">Kim Diehl（handle）</span>
-                <p class="description">twitter, instagram... all I have are like that.</p>
-            </a>
-            
-            <a href="artistname.html" class="item">
-                <img src="images/leihk-ooy_prof.jpg" alt="" class="block-image"> <span class="item-name">Leikh Ooy, nostalghia（art）</span>
-                <p class="description">musics and so on.</p>
-            </a>
-        </div>
+    <div class="layout-wrapper">
+        <div class="link-container">
+            <a href="realname.html" class="item">
+                <img src="images/no image.jpg" alt="" class="block-image"> <span class="item-name">二上 匠太郎（logic）</span>
+                <p class="description">design and research.</p>
+            </a>
+            
+            <a href="handlename.html" class="item">
+                <img src="images/handle_background.jpg" alt="" class="block-image"> <span class="item-name">Kim Diehl（handle）</span>
+                <p class="description">twitter, instagram... all I have are like that.</p>
+            </a>
+            
+            <a href="artistname.html" class="item">
+                <img src="images/leihk-ooy_prof.jpg" alt="" class="block-image"> <span class="item-name">Leikh Ooy, nostalghia（art）</span>
+                <p class="description">musics and so on.</p>
+            </a>
+        </div>
 
-        <div class="sub-container">
-            <a href="shop.html" class="item">
-                <img src="images/dummy4.jpg" alt="" class="block-image"> <span class="sub-name">SHOP</span>
-            </a>
-            
-            <a href="business.html" class="item">
-                <img src="images/dummy5.jpg" alt="" class="block-image"> <span class="sub-name">BUSINESS</span>
-            </a>
-        </div>
-    </div>
+        <div class="sub-container">
+            <a href="shop.html" class="item">
+                <img src="images/dummy4.jpg" alt="" class="block-image"> <span class="sub-name">SHOP</span>
+            </a>
+            
+            <a href="business.html" class="item">
+                <img src="images/dummy5.jpg" alt="" class="block-image"> <span class="sub-name">BUSINESS</span>
+            </a>
+        </div>
+    </div>
 
 </body>
 </html>
