@@ -29,10 +29,10 @@
             /* ③ 横幅を下の .layout-wrapper と同じ 1050px に設定 */
             max-width: 1050px;
             
-            /* ▼▼▼ ③【調整箇所：PC版 title_text.pngと下部オブジェクトとの間隔】 ▼▼▼ */
-            /* 下記の margin の3つ目の数値「100px」が、上に配置した title_text.png と
+            /* ▼▼▼ ③【調整箇所：PC版 タイトル画像と下部オブジェクトとの間隔】 ▼▼▼ */
+            /* 下記の margin の3つ目の数値「100px」が、上に配置したタイトル画像と
                下部のリンク群（もともと配置しているオブジェクト）との間隔になります。
-               間隔を変更したい場合はこの数値を調整してください。（例: margin: 100px auto 50px;） */
+               間隔を変更したい場合はこの数値を調整してください。 */
             margin: 100px auto 100px;
             /* ▲▲▲ PC版 間隔の調整箇所 ここまで ▲▲▲ */
             
@@ -51,7 +51,7 @@
             white-space: normal;
         }
 
-        /* ①で追加したタイトル画像（title_text.png）用のスタイル */
+        /* タイトル画像用のスタイル */
         .title-image {
             width: 100%;
             height: auto;
@@ -124,7 +124,6 @@
 
         .description {
             font-size: 0.9rem;
-            /* color: #0000ff; 元の指定を要求に合わせて変更 */
             margin: 0;
 
             /* ▼▼▼ 【要求①：ハイライト設定（説明文）】 ▼▼▼ */
@@ -167,12 +166,17 @@
                 overflow-y: auto; 
             }
 
+            /* 【要求①】 SP版のみタイトル画像を差し替え */
+            .title-image {
+                content: url('images/title_text_sp.png');
+            }
+
             .header-container {
-                /* ▼▼▼ ③【調整箇所：SP(PSP)版 title_text.pngと下部オブジェクトとの間隔】 ▼▼▼ */
-                /* SP(PSP)版の title_text.png と下部のリンク群との間隔を変更する場合は、
+                /* ▼▼▼ ③【調整箇所：SP版 タイトル画像と下部オブジェクトとの間隔】 ▼▼▼ */
+                /* SP版のタイトル画像と下部のリンク群との間隔を変更する場合は、
                    以下の margin の3つ目の数値「100px」を修正してください。 */
                 margin: 40px auto 100px;
-                /* ▲▲▲ SP(PSP)版 間隔の調整箇所 ここまで ▲▲▲ */
+                /* ▲▲▲ SP版 間隔の調整箇所 ここまで ▲▲▲ */
                 padding: 0 20px;
                 max-width: 100%;
             }
@@ -215,8 +219,8 @@
 
     <div class="header-container">
         <h1 class="welcome-header">
-            <!-- ① テキストを title_text.png の画像表示に変更 -->
-            <img src="images/title_text.png" alt="Hi, My name is Nikami Shotaro. Nice to meet you. I'm fine, thank you. And you?" class="title-image">
+            <!-- PC版のデフォルト画像。SP版はCSS（content属性）で title_text_sp.png に差し替わります -->
+            <img src="images/title_text.png" alt="Hi, My name is Nikami Shotaro." class="title-image">
         </h1>
     </div>
 
