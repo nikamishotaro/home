@@ -113,12 +113,27 @@
             display: block;
             margin-bottom: 10px;
             font-weight: bold;
+
+            /* ▼▼▼ 【要求①：ハイライト設定（アイテム名）】 ▼▼▼ */
+            background-color: #0000ff; /* ハイライトの色 */
+            color: #ffffff;           /* 文字の色 */
+            width: fit-content;       /* 幅をテキスト量に依存させる */
+            padding: 0 4px;           /* 左右の余白（ハイライトの長さの微調整用） */
+            /* ▲▲▲ ハイライト設定 ここまで ▲▲▲ */
         }
 
         .description {
             font-size: 0.9rem;
-            color: #0000ff;
+            /* color: #0000ff; 元の指定を要求に合わせて変更 */
             margin: 0;
+
+            /* ▼▼▼ 【要求①：ハイライト設定（説明文）】 ▼▼▼ */
+            background-color: #0000ff; /* ハイライトの色 */
+            color: #ffffff;           /* 文字の色 */
+            width: fit-content;       /* 幅をテキスト量に依存させる */
+            padding: 0 4px;           /* 左右の余白 */
+            display: block;           /* width: fit-contentを有効にするため追加 */
+            /* ▲▲▲ ハイライト設定 ここまで ▲▲▲ */
         }
 
         .sub-container {
@@ -135,6 +150,13 @@
             font-size: 1.5rem;
             font-weight: bold;
             display: block; /* 構造変更に伴うレイアウト維持のため追加 */
+
+            /* ▼▼▼ 【要求①：ハイライト設定（下段SHOP/BUSINESS）】 ▼▼▼ */
+            background-color: #0000ff; /* ハイライトの色 */
+            color: #ffffff;           /* 文字の色 */
+            width: fit-content;       /* 幅をテキスト量に依存させる */
+            padding: 0 4px;           /* 左右の余白 */
+            /* ▲▲▲ ハイライト設定 ここまで ▲▲▲ */
         }
 
         /* --------------------------------------------------
