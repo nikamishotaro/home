@@ -111,12 +111,12 @@
             white-space: nowrap; 
             font-size: 1.5rem;
             display: block;
-            margin-bottom: 10px;
+            margin-bottom: 0; /* 要求②：タイトルと説明文の間隔をなくすため 10px から 0 に変更 */
             font-weight: bold;
 
             /* ▼▼▼ 【要求①：ハイライト設定（アイテム名）】 ▼▼▼ */
             background-color: #0000ff; /* ハイライトの色 */
-            color: #ffffff;           /* 文字の色 */
+            color: #000000;           /* 要求①：文字の色を初期状態は黒に変更 */
             width: fit-content;       /* 幅をテキスト量に依存させる */
             padding: 0 4px;           /* 左右の余白（ハイライトの長さの微調整用） */
             /* ▲▲▲ ハイライト設定 ここまで ▲▲▲ */
@@ -128,7 +128,7 @@
 
             /* ▼▼▼ 【要求①：ハイライト設定（説明文）】 ▼▼▼ */
             background-color: #0000ff; /* ハイライトの色 */
-            color: #ffffff;           /* 文字の色 */
+            color: #000000;           /* 要求①：文字の色を初期状態は黒に変更 */
             width: fit-content;       /* 幅をテキスト量に依存させる */
             padding: 0 4px;           /* 左右の余白 */
             display: block;           /* width: fit-contentを有効にするため追加 */
@@ -152,10 +152,17 @@
 
             /* ▼▼▼ 【要求①：ハイライト設定（下段SHOP/BUSINESS）】 ▼▼▼ */
             background-color: #0000ff; /* ハイライトの色 */
-            color: #ffffff;           /* 文字の色 */
+            color: #000000;           /* 要求①：文字の色を初期状態は黒に変更 */
             width: fit-content;       /* 幅をテキスト量に依存させる */
             padding: 0 4px;           /* 左右の余白 */
             /* ▲▲▲ ハイライト設定 ここまで ▲▲▲ */
+        }
+
+        /* 要求①：カーソルを当てた際にタイトルと説明文の文字を白色に変化させる */
+        .item:hover .item-name,
+        .item:hover .description,
+        .item:hover .sub-name {
+            color: #ffffff;
         }
 
         /* --------------------------------------------------
@@ -222,7 +229,7 @@
                 grid-column: 2 / 3;
                 grid-row: 1 / 2;
                 margin-top: 0;
-                margin-bottom: 8px; /* 説明文との間隔 */
+                margin-bottom: 0; /* 要求②：説明文との間隔をなくすため 8px から 0 に変更 */
             }
 
             /* 説明文をタイトルの下に配置 */
@@ -277,12 +284,12 @@
 
         <div class="sub-container">
             <a href="shop.html" class="item">
-                <img src="images/dummy4.jpg" alt="" class="block-image"> <span class="sub-name">SHOP</span>
+                <img src="images/shop.png" alt="" class="block-image"> <span class="sub-name">SHOP</span>
                 <p class="description">all products by Nikami Shotaro</p>
             </a>
             
             <a href="business.html" class="item">
-                <img src="images/dummy5.jpg" alt="" class="block-image"> <span class="sub-name">BUSINESS</span>
+                <img src="images/business.png" alt="" class="block-image"> <span class="sub-name">BUSINESS</span>
                 <p class="description">Let's enrich our lives together.</p>
             </a>
         </div>
