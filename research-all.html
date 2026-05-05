@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Research All - 二上匠太郎</title>
+    <style>
+        /* デフォルトの余白をリセット */
+        body, h1, p, a, div {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: "Helvetica Neue", Arial, "Hiragino Kaku Gothic ProN", "Hiragino Sans", Meiryo, sans-serif;
+            background-color: #ffffff;
+        }
+
+        /* -----------------------------------
+            ヘッダー（元のコードを流用）
+        ----------------------------------- */
+        .site-header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background-color: rgba(255, 255, 255, 0.85); 
+            backdrop-filter: blur(5px);
+            z-index: 1000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 40px;
+        }
+
+        .site-header a {
+            text-decoration: none;
+            color: #111;
+            font-size: 0.9rem;
+            transition: color 0.3s;
+        }
+
+        .site-header a:hover {
+            color: #888;
+        }
+
+        .header-left a {
+            font-weight: bold;
+            font-size: 1.1rem;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+        }
+
+        .nav-item {
+            position: relative;
+            margin-left: 35px;
+            padding-bottom: 10px;
+            margin-bottom: -10px;
+        }
+
+        .nav-item > a {
+            font-weight: bold;
+            display: block;
+        }
+
+        .dropdown {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: -15px;
+            background-color: rgba(255, 255, 255, 0.95);
+            min-width: 150px;
+            box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.05);
+            flex-direction: column;
+            border-top: 2px solid #111;
+        }
+
+        .nav-item.has-dropdown:hover .dropdown {
+            display: flex;
+        }
+
+        .dropdown a {
+            padding: 12px 15px;
+            font-size: 0.85rem;
+            font-weight: normal;
+            border-bottom: 1px solid #eee;
+        }
+
+        .menu-toggle {
+            display: none;
+            flex-direction: column;
+            justify-content: space-between;
+            width: 30px;
+            height: 20px;
+            cursor: pointer;
+            z-index: 1100;
+            flex-shrink: 0;
+            margin-left: 15px;
+        }
+
+        .menu-toggle span {
+            display: block;
+            height: 2px;
+            width: 100%;
+            background-color: #111;
+            transition: 0.3s;
+        }
+
+        /* -----------------------------------
+            要求③：ジャンル絞り込みリンク
+        ----------------------------------- */
+        .filter-menu {
+            /* ヘッダーの高さ分だけ下にずらす */
+            margin-top: 80px; 
+            padding: 20px 40px;
+            display: flex;
+            gap: 20px; /* リンク同士の間隔 */
+        }
+
+        .filter-menu a {
+            text-decoration: none;
+            color: #111;
+            font-size: 1rem;
+            font-weight: bold;
+            transition: color 0.3s;
+        }
+
+        .filter-menu a:hover {
+            color: #888;
+        }
+
+        /* -----------------------------------
+            要求①：画像グリッドレイアウト
+        ----------------------------------- */
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr); /* PC版：横3列 */
+            gap: 30px; /* アイテム間の余白 */
+            padding: 0 40px 60px; /* 左右と下の余白 */
+        }
+
+        .grid-item {
+            text-decoration: none; /* リンクの下線を消す */
+            display: block;
+            color: inherit;
+        }
+
+        .grid-item:hover .image-wrapper img {
+            transform: scale(1.05); /* ホバー時に画像を少し拡大するエフェクト */
+        }
+
+        .image-wrapper {
+            width: 100%;
+            aspect-ratio: 3 / 4; /* 縦横比3:4に固定 */
+            overflow: hidden;
+            background-color: #f0f0f0; /* 画像読み込み前の背景色 */
+            margin-bottom: 15px;
+        }
+
+        .image-wrapper img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover; /* 比率を維持しつつ枠を埋める */
+            display: block;
+            transition: transform 0.3s ease;
+        }
+
+        /*
+        【要求①】テキストの調整用指示（コメントアウト）
+        文字の色、サイズ、行間を変更したい場合は、以下のコメントアウト(/* ... */)を外して数値を変更してください。
+        */
+        /*
+        .grid-item-title {
+            color: #111;              // タイトルの文字色
+            font-size: 1.1rem;        // タイトルの文字サイズ
+            line-height: 1.4;         // タイトルの行間
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .grid-item-desc {
+            color: #555;              // 説明文の文字色
+            font-size: 0.9rem;        // 説明文の文字サイズ
+            line-height: 1.6;         // 説明文の行間
+        }
+        */
+
+        /* コメントアウトを外すまでは、以下のデフォルトスタイルが適用されます */
+        .grid-item-title {
+            font-weight: bold;
+            font-size: 1.1rem;
+            margin-bottom: 5px;
+            color: #111;
+        }
+        .grid-item-desc {
+            font-size: 0.9rem;
+            color: #555;
+            line-height: 1.5;
+        }
+
+
+        /* -----------------------------------
+            SP版（スマホ）でのレスポンシブ対応
+        ----------------------------------- */
+        @media (max-width: 768px) {
+            .site-header {
+                padding: 15px 15px;
+            }
+
+            .menu-toggle {
+                display: flex;
+            }
+
+            .header-right {
+                position: fixed;
+                top: 0;
+                right: -100%;
+                width: 80%;
+                height: 100vh;
+                background-color: #fff;
+                flex-direction: column;
+                justify-content: flex-start;
+                align-items: flex-start;
+                padding: 80px 40px;
+                transition: 0.4s;
+                box-shadow: -5px 0 15px rgba(0,0,0,0.1);
+                overflow-y: auto;
+            }
+
+            .header-right.active {
+                right: 0;
+            }
+
+            .nav-item {
+                margin: 0 0 25px 0;
+                width: 100%;
+            }
+
+            .nav-item > a {
+                font-size: 1.2rem;
+                border-bottom: 1px solid #eee;
+                padding-bottom: 5px;
+            }
+
+            .dropdown {
+                position: static;
+                display: none;
+                box-shadow: none;
+                border-top: none;
+                padding-left: 20px;
+                background-color: transparent;
+            }
+
+            .nav-item.active .dropdown {
+                display: flex;
+            }
+
+            .menu-toggle.active span:nth-child(1) { transform: translateY(9px) rotate(45deg); }
+            .menu-toggle.active span:nth-child(2) { opacity: 0; }
+            .menu-toggle.active span:nth-child(3) { transform: translateY(-9px) rotate(-45deg); }
+
+            /* SP版用のレイアウト調整 */
+            .filter-menu {
+                margin-top: 60px;
+                padding: 15px 15px;
+            }
+
+            .grid-container {
+                grid-template-columns: 1fr; /* SP版：縦1列に並べる */
+                padding: 0 15px 30px;
+                gap: 40px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ヘッダー -->
+    <header class="site-header">
+        <div class="header-left">
+            <a href="#">二上匠太郎</a>
+        </div>
+
+        <div class="menu-toggle" id="mobile-menu">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+
+        <div class="header-right" id="nav-menu">
+            <div class="nav-item has-dropdown">
+                <a href="javascript:void(0)">design</a>
+                <div class="dropdown">
+                    <a href="design-all.html">all project</a>
+                    <a href="design-architecture.html">architecture</a>
+                    <a href="design-product.html">product</a>
+                    <a href="design-graphic.html">graphic</a>
+                    <a href="design-event.html">event</a>
+                </div>
+            </div>
+            <div class="nav-item has-dropdown">
+                <a href="javascript:void(0)">research</a>
+                <div class="dropdown">
+                    <a href="research-all.html">all project</a>
+                    <a href="research-treatise.html">treatise</a>
+                    <a href="research-study.html">study</a>
+                </div>
+            </div>
+            <div class="nav-item"><a href="about.html">about</a></div>
+            <div class="nav-item"><a href="project.html">contact</a></div>
+            <div class="nav-item"><a href="https://nikamishotaro.github.io/home/index.html">back to home</a></div>
+        </div>
+    </header>
+
+    <!-- 要求③：ジャンル絞り込みリンク -->
+    <div class="filter-menu">
+        <!-- allをクリックすると research-all.html に遷移します -->
+        <a href="research-all.html">all</a>
+        <a href="#">treties</a>
+        <a href="#">study</a>
+    </div>
+
+    <!-- 要求①：画像グリッド (PC3列, SP1列) -->
+    <div class="grid-container">
+        <!-- 1つ目のプロジェクト -->
+        <!-- aタグ全体がリンクになります -->
+        <a href="#" class="grid-item">
+            <div class="image-wrapper">
+                <img src="images/砺波平野.jpg" alt="砺波散村の発生要因と持続要因の研究">
+            </div>
+            <div class="grid-item-title">砺波散村の発生要因と持続要因の研究</div>
+            <div class="grid-item-desc">卒業論文の説明文や概要がここに入ります。</div>
+        </a>
+
+        <!-- 2つ目のプロジェクト -->
+        <a href="#" class="grid-item">
+            <div class="image-wrapper">
+                <img src="images/カラミ.jpg" alt="近代日本-建築史">
+            </div>
+            <div class="grid-item-title">近代日本-建築史</div>
+            <div class="grid-item-desc">近代的構造材への仕方からみる、国家・都市・村落における創造的適応としての近代化受容80年の研究</div>
+        </a>
+
+        <!-- 3つ目のプロジェクト -->
+        <a href="#" class="grid-item">
+            <div class="image-wrapper">
+                <img src="images/ダミー画像.jpg" alt="その他の研究">
+            </div>
+            <div class="grid-item-title">タイトル未定の研究</div>
+            <div class="grid-item-desc">プロジェクトの説明文がここに入ります。行数が増えても自動的に改行されます。</div>
+        </a>
+        
+        <!-- 必要に応じて <a href="#" class="grid-item">...</a> のブロックをコピペして追加してください -->
+    </div>
+
+    <!-- JavaScript (ハンバーガーメニュー用) -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const mobileMenu = document.getElementById('mobile-menu');
+            const navMenu = document.getElementById('nav-menu');
+            const navItems = document.querySelectorAll('.nav-item.has-dropdown');
+
+            mobileMenu.addEventListener('click', () => {
+                mobileMenu.classList.toggle('active');
+                navMenu.classList.toggle('active');
+            });
+
+            // SP版：親要素クリックでドロップダウン表示
+            navItems.forEach(item => {
+                item.addEventListener('click', (e) => {
+                    if (window.innerWidth <= 768) {
+                        item.classList.toggle('active');
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
