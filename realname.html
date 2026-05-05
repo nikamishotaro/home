@@ -17,14 +17,17 @@
         }
 
         /* -----------------------------------
-           要求②：透明度が設定されたヘッダー
+            要求②・③：透明度が設定されたヘッダー
         ----------------------------------- */
         .site-header {
             position: fixed; /* スクロールしても常に表示 */
             top: 0;
             left: 0;
             width: 100%;     /* PC版・SP版ともに横幅いっぱい */
-            background-color: rgba(255, 255, 255, 0.85); /* 透明度を設定 */
+            
+            /* 【要求③】ヘッダーの透明度操作：以下のrgbaの4番目の数値（0.85）を0〜1の間で変更してください */
+            background-color: rgba(255, 255, 255, 0.85); 
+            
             backdrop-filter: blur(5px);
             z-index: 1000;
             display: flex;
@@ -49,6 +52,7 @@
             font-size: 1.1rem;
         }
 
+        /* PC版メニュー */
         .header-right {
             display: flex;
             align-items: center;
@@ -57,7 +61,7 @@
         .nav-item {
             position: relative;
             margin-left: 35px;
-            padding-bottom: 10px; /* ホバー領域の確保 */
+            padding-bottom: 10px;
             margin-bottom: -10px;
         }
 
@@ -66,7 +70,6 @@
             display: block;
         }
 
-        /* ホバー時のハンバーガーメニュー的（ドロップダウン）表示 */
         .dropdown {
             display: none;
             position: absolute;
@@ -90,23 +93,36 @@
             border-bottom: 1px solid #eee;
         }
 
-        .dropdown a:last-child {
-            border-bottom: none;
+        /* ハンバーガーボタン（初期状態は非表示） */
+        .menu-toggle {
+            display: none;
+            flex-direction: column;
+            justify-content: space-between;
+            width: 30px;
+            height: 20px;
+            cursor: pointer;
+            z-index: 1100;
         }
 
-        .dropdown a:hover {
-            background-color: #f9f9f9;
+        .menu-toggle span {
+            display: block;
+            height: 2px;
+            width: 100%;
+            background-color: #111;
+            transition: 0.3s;
         }
 
         /* -----------------------------------
-           要求①：ページ上部の自動切り替え画像
+            要求①：ページ上部の自動切り替え画像
         ----------------------------------- */
         .slider-container {
             position: relative;
             width: 100%;
-            aspect-ratio: 16 / 9; /* PC・SPともに比率16:9を維持 */
+            aspect-ratio: 16 / 9;
             overflow: hidden;
             background-color: #f0f0f0;
+            /* 【要求③】ヘッダーの高さ分（約65px）だけデフォルトで画像が被らないように配置 */
+            margin-top: 65px; 
         }
 
         .slide {
@@ -131,21 +147,20 @@
             display: block;
         }
 
-        /* 画像左下のテキスト被り設定 */
         .slide-text {
             position: absolute;
             bottom: 10%;
             left: 5%;
             z-index: 2;
             color: #ffffff;
-            text-shadow: 0px 2px 4px rgba(0,0,0,0.6); /* 視認性向上のための影 */
-            pointer-events: none; /* テキスト上のクリックを画像に貫通させる */
+            text-shadow: 0px 2px 4px rgba(0,0,0,0.6);
+            pointer-events: none;
         }
 
         .slide-title {
             font-size: 2rem;
             font-weight: bold;
-            margin-bottom: 8px; /* タイトルの下に概要を配置 */
+            margin-bottom: 8px;
         }
 
         .slide-desc {
@@ -153,46 +168,76 @@
             font-weight: normal;
         }
 
-        /* 元コード配置用コンテナ */
-        .original-content-wrapper {
-            padding: 80px 20px;
-            text-align: center;
-        }
-
-        /* SP版（スマホ）でのレスポンシブ対応 */
+        /* -----------------------------------
+            SP版（スマホ）でのレスポンシブ対応
+        ----------------------------------- */
         @media (max-width: 768px) {
             .site-header {
-                flex-direction: column;
                 padding: 15px 20px;
             }
 
+            /* PC用メニューを隠し、ハンバーガーを表示 */
+            .menu-toggle {
+                display: flex;
+            }
+
             .header-right {
-                margin-top: 15px;
-                flex-wrap: wrap;
-                justify-content: center;
-                row-gap: 10px;
+                position: fixed;
+                top: 0;
+                right: -100%; /* メニューを画面外へ */
+                width: 80%;
+                height: 100vh;
+                background-color: #fff;
+                flex-direction: column;
+                justify-content: flex-start;
+                align-items: flex-start;
+                padding: 80px 40px;
+                transition: 0.4s;
+                box-shadow: -5px 0 15px rgba(0,0,0,0.1);
+                overflow-y: auto;
+            }
+
+            .header-right.active {
+                right: 0; /* メニューを表示 */
             }
 
             .nav-item {
-                margin-left: 10px;
-                margin-right: 10px;
-                margin-bottom: 0;
+                margin: 0 0 25px 0;
+                width: 100%;
+            }
+
+            .nav-item > a {
+                font-size: 1.2rem;
+                border-bottom: 1px solid #eee;
                 padding-bottom: 5px;
             }
 
+            /* SP版ドロップダウンの展開（クリックで表示されるようにJSで制御） */
             .dropdown {
-                left: 50%;
-                transform: translateX(-50%);
+                position: static;
+                display: none;
+                box-shadow: none;
+                border-top: none;
+                padding-left: 20px;
+                background-color: transparent;
+            }
+
+            .nav-item.active .dropdown {
+                display: flex;
             }
 
             .slide-title {
                 font-size: 1.2rem;
-                margin-bottom: 5px;
             }
 
             .slide-desc {
                 font-size: 0.8rem;
             }
+
+            /* ハンバーガーのアニメーション */
+            .menu-toggle.active span:nth-child(1) { transform: translateY(9px) rotate(45deg); }
+            .menu-toggle.active span:nth-child(2) { opacity: 0; }
+            .menu-toggle.active span:nth-child(3) { transform: translateY(-9px) rotate(-45deg); }
         }
     </style>
 </head>
@@ -201,12 +246,19 @@
     <!-- ヘッダー -->
     <header class="site-header">
         <div class="header-left">
-            <!-- 名前をクリックでトップ（#）に戻る -->
             <a href="#">二上匠太郎</a>
         </div>
-        <div class="header-right">
+
+        <!-- ハンバーガーメニューボタン -->
+        <div class="menu-toggle" id="mobile-menu">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+
+        <div class="header-right" id="nav-menu">
             <div class="nav-item has-dropdown">
-                <a href="#">design</a>
+                <a href="javascript:void(0)">design</a>
                 <div class="dropdown">
                     <a href="design-all.html">all project</a>
                     <a href="design-architecture.html">architecture</a>
@@ -216,7 +268,7 @@
                 </div>
             </div>
             <div class="nav-item has-dropdown">
-                <a href="#">research</a>
+                <a href="javascript:void(0)">research</a>
                 <div class="dropdown">
                     <a href="research-all.html">all project</a>
                     <a href="research-treatise.html">treatise</a>
@@ -224,7 +276,6 @@
                 </div>
             </div>
             <div class="nav-item"><a href="about.html">about</a></div>
-            <!-- 指定されたnendo風プロジェクトページへのリンク -->
             <div class="nav-item"><a href="project.html">contact</a></div>
             <div class="nav-item"><a href="https://nikamishotaro.github.io/home/index.html">back to home</a></div>
         </div>
@@ -234,8 +285,7 @@
     <div class="slider-container">
         <!-- 1枚目 -->
         <div class="slide active">
-            <!-- srcはダミー画像を入れています。適宜実際の画像パスに変更してください -->
-            <img src="ワイナリー.jpg" alt="Slider 1">
+            <img src="images/ワイナリー.jpg" alt="Slider 1">
             <div class="slide-text">
                 <div class="slide-title">WINE SCAPE IN JAPAN（2022）</div>
                 <div class="slide-desc">山梨県甲府市をフィールドとして、ブドウ畑とワイナリー建築を環境シミュレーションによって横断的に設計する提案</div>
@@ -243,7 +293,7 @@
         </div>
         <!-- 2枚目 -->
         <div class="slide">
-            <img src="女性の家" alt="Slider 2">
+            <img src="images/女性の家.jpg" alt="Slider 2">
             <div class="slide-text">
                 <div class="slide-title">Rasing and Braiding（2022）</div>
                 <div class="slide-desc">セネガルをフィールドとして、女性や子どもの力だけで自力建設可能な空間と工法の提案</div>
@@ -251,7 +301,7 @@
         </div>
         <!-- 3枚目 -->
         <div class="slide">
-            <img src="ハイパースクール.jpg" alt="Slider 3">
+            <img src="images/ハイパースクール.jpg" alt="Slider 3">
             <div class="slide-text">
                 <div class="slide-title">太陽と水の小学校（2020）</div>
                 <div class="slide-desc">太陽の動きと連動して教室を配置した、遊水地と隣接した地元の小学校の設計提案</div>
@@ -259,7 +309,7 @@
         </div>
         <!-- 4枚目 -->
         <div class="slide">
-            <img src="砺波平野.jpg" alt="Slider 4">
+            <img src="images/砺波平野.jpg" alt="Slider 4">
             <div class="slide-text">
                 <div class="slide-title">砺波散村の発生要因と持続要因の研究（2021）</div>
                 <div class="slide-desc">卒業論文</div>
@@ -267,7 +317,7 @@
         </div>
         <!-- 5枚目 -->
         <div class="slide">
-            <img src="カラミ煉瓦.jpg" alt="Slider 5">
+            <img src="images/カラミ煉瓦.jpg" alt="Slider 5">
             <div class="slide-text">
                 <div class="slide-title">近代日本-建築史（2023）</div>
                 <div class="slide-desc">近代的構造材への仕方からみる、国家・都市・村落における創造的適応としての近代化受容80年の研究（修士論文）</div>
@@ -275,7 +325,7 @@
         </div>
         <!-- 6枚目 -->
         <div class="slide">
-            <img src="別邸.jpg" alt="Slider 6">
+            <img src="images/別邸.jpg" alt="Slider 6">
             <div class="slide-text">
                 <div class="slide-title">別邸出版（2025）</div>
                 <div class="slide-desc">各種グラフィックのデザインと展示用什器の設計</div>
@@ -283,31 +333,38 @@
         </div>
     </div>
 
-    <!-- 元コード部分（一切の変更を加えていません） -->
-    <div class="original-content-wrapper">
-<h1>Coming Soon: 二上匠太郎 Page</h1>
-<a href="index.html">Back to Top</a>
-    </div>
-
     <!-- スライダー用のJavaScript -->
     <script>
         document.addEventListener('DOMContentLoaded', () => {
+            // スライダー制御
             const slides = document.querySelectorAll('.slide');
             let currentIndex = 0;
 
             function nextSlide() {
-                // 現在のスライドから active クラスを削除
                 slides[currentIndex].classList.remove('active');
-                
-                // 次のスライドのインデックスを計算
                 currentIndex = (currentIndex + 1) % slides.length;
-                
-                // 次のスライドに active クラスを追加
                 slides[currentIndex].classList.add('active');
             }
-
-            // 4秒（4000ミリ秒）ごとに nextSlide を実行
             setInterval(nextSlide, 4000);
+
+            // 【要求②】ハンバーガーメニュー制御
+            const mobileMenu = document.getElementById('mobile-menu');
+            const navMenu = document.getElementById('nav-menu');
+            const navItems = document.querySelectorAll('.nav-item.has-dropdown');
+
+            mobileMenu.addEventListener('click', () => {
+                mobileMenu.classList.toggle('active');
+                navMenu.classList.toggle('active');
+            });
+
+            // SP版：親要素クリックでドロップダウン表示
+            navItems.forEach(item => {
+                item.addEventListener('click', (e) => {
+                    if (window.innerWidth <= 768) {
+                        item.classList.toggle('active');
+                    }
+                });
+            });
         });
     </script>
 </body>

@@ -94,6 +94,25 @@
                 margin-top: 100px;
                 margin-bottom: 100vh; /* スクロールしきった時に背景が見えるようにする */
             }
+
+            /* 【要求①】アイコンのサイズを4分の1（80px → 20px）に変更 */
+            .icon, .icon.center-fixed {
+                width: 20px;
+                height: 20px;
+            }
+
+            /* 【要求②】Back to Homeボタンを4分の1サイズにし、画面右上に寄せる */
+            .back-home {
+                transform: scale(0.25); /* 縦横比を保ったまま縮小 */
+                transform-origin: top right; /* 右上を基準に縮小 */
+                top: 10px; /* 余白を詰めて右上に寄せる */
+                right: 10px;
+            }
+
+            /* 【要求③】ポップアップの横スクロール（ぶれ）をロック */
+            .modal {
+                overflow-x: hidden;
+            }
         }
 
         .modal-content h2 { margin-top: 0; }
@@ -190,7 +209,7 @@
                 Drawing: Hagioda Taiga<br>
                 typography: Leikh Ooy, nostalghia</p>
                 <a href="https://soundcloud.com/leikhooy/sets/a-house" target="_blank">SoundCloud</a>
-                <a href="#" target="_blank">Spotify</a>
+                <!--<a href="#" target="_blank">Spotify</a>-->
             </div>
         </div>
         <div class="icon" style="background-image: url('images/philosophy_jacket.jpg');" 
@@ -210,7 +229,7 @@
                 All Arrangement: Leikh Ooy, nostalghia<br>
                 Artwork: Leikh Ooy, nostalghia</p>
                 <a href="https://soundcloud.com/leikhooy/sets/philosophy-i" target="_blank">SoundCloud</a>
-                <a href="#" target="_blank">Apple Music</a>
+                <!--<a href="#" target="_blank">Apple Music</a>-->
             </div>
         </div>
 
