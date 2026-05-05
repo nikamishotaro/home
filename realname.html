@@ -93,7 +93,7 @@
             border-bottom: 1px solid #eee;
         }
 
-        /* ハンバーガーボタン（初期状態は非表示） */
+        /* 【要求①修正】ハンバーガーボタン */
         .menu-toggle {
             display: none;
             flex-direction: column;
@@ -102,6 +102,8 @@
             height: 20px;
             cursor: pointer;
             z-index: 1100;
+            flex-shrink: 0; /* 潰れを防止 */
+            margin-left: 15px;
         }
 
         .menu-toggle span {
@@ -123,6 +125,7 @@
             background-color: #f0f0f0;
             /* 【要求③】ヘッダーの高さ分（約65px）だけデフォルトで画像が被らないように配置 */
             margin-top: 65px; 
+            cursor: pointer; /* クリック可能であることを示す */
         }
 
         .slide {
@@ -133,6 +136,7 @@
             height: 100%;
             opacity: 0;
             transition: opacity 1s ease-in-out;
+            pointer-events: none; /* 下層のクリック判定を邪魔しない */
         }
 
         .slide.active {
@@ -147,13 +151,15 @@
             display: block;
         }
 
+        /* 【要求②修正】テキストの影除去と配置調整 */
         .slide-text {
             position: absolute;
-            bottom: 10%;
+            /* 【テキスト位置調整】下端からの距離を調整する場合は、下の 'bottom' の値を変更してください */
+            bottom: 5%; 
             left: 5%;
             z-index: 2;
             color: #ffffff;
-            text-shadow: 0px 2px 4px rgba(0,0,0,0.6);
+            text-shadow: none; /* 影を削除 */
             pointer-events: none;
         }
 
@@ -173,7 +179,7 @@
         ----------------------------------- */
         @media (max-width: 768px) {
             .site-header {
-                padding: 15px 20px;
+                padding: 15px 15px; /* 要求①：左右の余白を調整し見切れを防止 */
             }
 
             /* PC用メニューを隠し、ハンバーガーを表示 */
@@ -282,7 +288,7 @@
     </header>
 
     <!-- 自動切り替えスライダー -->
-    <div class="slider-container">
+    <div class="slider-container" id="slider-container">
         <!-- 1枚目 -->
         <div class="slide active">
             <img src="images/ワイナリー.jpg" alt="Slider 1">
@@ -317,7 +323,7 @@
         </div>
         <!-- 5枚目 -->
         <div class="slide">
-            <img src="images/カラミ煉瓦.jpg" alt="Slider 5">
+            <img src="images/カラミ.jpg" alt="Slider 5">
             <div class="slide-text">
                 <div class="slide-title">近代日本-建築史（2023）</div>
                 <div class="slide-desc">近代的構造材への仕方からみる、国家・都市・村落における創造的適応としての近代化受容80年の研究（修士論文）</div>
@@ -338,14 +344,58 @@
         document.addEventListener('DOMContentLoaded', () => {
             // スライダー制御
             const slides = document.querySelectorAll('.slide');
+            const sliderContainer = document.getElementById('slider-container');
             let currentIndex = 0;
+            let slideInterval;
+
+            function showSlide(index) {
+                slides[currentIndex].classList.remove('active');
+                currentIndex = (index + slides.length) % slides.length;
+                slides[currentIndex].classList.add('active');
+                resetInterval();
+            }
 
             function nextSlide() {
-                slides[currentIndex].classList.remove('active');
-                currentIndex = (currentIndex + 1) % slides.length;
-                slides[currentIndex].classList.add('active');
+                showSlide(currentIndex + 1);
             }
-            setInterval(nextSlide, 4000);
+
+            function prevSlide() {
+                showSlide(currentIndex - 1);
+            }
+
+            function resetInterval() {
+                clearInterval(slideInterval);
+                slideInterval = setInterval(nextSlide, 4000);
+            }
+
+            resetInterval();
+
+            /* 【要求③修正】クリックで画像切り替え（PC向け） */
+            sliderContainer.addEventListener('click', (e) => {
+                const rect = sliderContainer.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                // 画像の左30%をクリックで戻る、右30%をクリックで進む
+                if (x < rect.width * 0.3) {
+                    prevSlide();
+                } else if (x > rect.width * 0.7) {
+                    nextSlide();
+                }
+            });
+
+            /* 【要求③修正】スワイプで画像切り替え（SP向け） */
+            let touchStartX = 0;
+            sliderContainer.addEventListener('touchstart', (e) => {
+                touchStartX = e.changedTouches[0].screenX;
+            }, { passive: true });
+
+            sliderContainer.addEventListener('touchend', (e) => {
+                let touchEndX = e.changedTouches[0].screenX;
+                if (touchStartX - touchEndX > 50) {
+                    nextSlide(); // 左にスワイプで次へ
+                } else if (touchStartX - touchEndX < -50) {
+                    prevSlide(); // 右にスワイプで前へ
+                }
+            }, { passive: true });
 
             // 【要求②】ハンバーガーメニュー制御
             const mobileMenu = document.getElementById('mobile-menu');
