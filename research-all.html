@@ -17,7 +17,7 @@
         }
 
         /* -----------------------------------
-            ヘッダー（元のコードを流用）
+            ヘッダー
         ----------------------------------- */
         .site-header {
             position: fixed;
@@ -30,7 +30,11 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 20px 40px;
+            
+            /* 【要求①】右側の見切れ防止のため box-sizing を明示し、左右に余白を設定 */
+            box-sizing: border-box; 
+            /* ヘッダー内要素の「左端」と「右端」の余白を調整する場合は、以下の padding の値を変更してください */
+            padding: 20px 40px; 
         }
 
         .site-header a {
@@ -110,14 +114,13 @@
         }
 
         /* -----------------------------------
-            要求③：ジャンル絞り込みリンク
+            ジャンル絞り込みリンク
         ----------------------------------- */
         .filter-menu {
-            /* ヘッダーの高さ分だけ下にずらす */
             margin-top: 80px; 
             padding: 20px 40px;
             display: flex;
-            gap: 20px; /* リンク同士の間隔 */
+            gap: 20px;
         }
 
         .filter-menu a {
@@ -133,62 +136,41 @@
         }
 
         /* -----------------------------------
-            要求①：画像グリッドレイアウト
+            画像グリッドレイアウト
         ----------------------------------- */
         .grid-container {
             display: grid;
-            grid-template-columns: repeat(3, 1fr); /* PC版：横3列 */
-            gap: 30px; /* アイテム間の余白 */
-            padding: 0 40px 60px; /* 左右と下の余白 */
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+            padding: 0 40px 60px;
         }
 
         .grid-item {
-            text-decoration: none; /* リンクの下線を消す */
+            text-decoration: none;
             display: block;
             color: inherit;
         }
 
         .grid-item:hover .image-wrapper img {
-            transform: scale(1.05); /* ホバー時に画像を少し拡大するエフェクト */
+            transform: scale(1.05);
         }
 
         .image-wrapper {
             width: 100%;
-            aspect-ratio: 4 / 3; /* 縦横比4:3に固定 */
+            aspect-ratio: 4 / 3;
             overflow: hidden;
-            background-color: #f0f0f0; /* 画像読み込み前の背景色 */
+            background-color: #f0f0f0;
             margin-bottom: 15px;
         }
 
         .image-wrapper img {
             width: 100%;
             height: 100%;
-            object-fit: cover; /* 比率を維持しつつ枠を埋める */
+            object-fit: cover;
             display: block;
             transition: transform 0.3s ease;
         }
 
-        /*
-        【要求①】テキストの調整用指示（コメントアウト）
-        文字の色、サイズ、行間を変更したい場合は、以下のコメントアウト(/* ... */)を外して数値を変更してください。
-        */
-        /*
-        .grid-item-title {
-            color: #111;              // タイトルの文字色
-            font-size: 1.1rem;        // タイトルの文字サイズ
-            line-height: 1.4;         // タイトルの行間
-            font-weight: bold;
-            margin-bottom: 5px;
-        }
-
-        .grid-item-desc {
-            color: #555;              // 説明文の文字色
-            font-size: 0.9rem;        // 説明文の文字サイズ
-            line-height: 1.6;         // 説明文の行間
-        }
-        */
-
-        /* コメントアウトを外すまでは、以下のデフォルトスタイルが適用されます */
         .grid-item-title {
             font-weight: bold;
             font-size: 1.1rem;
@@ -207,7 +189,8 @@
         ----------------------------------- */
         @media (max-width: 768px) {
             .site-header {
-                padding: 15px 15px;
+                /* 【要求①】SP版での左右の余白を調整する場合は、以下の padding を変更してください */
+                padding: 15px 15px; 
             }
 
             .menu-toggle {
@@ -254,6 +237,7 @@
                 background-color: transparent;
             }
 
+            /* .active クラスがついた時だけ表示する設定 */
             .nav-item.active .dropdown {
                 display: flex;
             }
@@ -262,14 +246,13 @@
             .menu-toggle.active span:nth-child(2) { opacity: 0; }
             .menu-toggle.active span:nth-child(3) { transform: translateY(-9px) rotate(-45deg); }
 
-            /* SP版用のレイアウト調整 */
             .filter-menu {
                 margin-top: 60px;
                 padding: 15px 15px;
             }
 
             .grid-container {
-                grid-template-columns: 1fr; /* SP版：縦1列に並べる */
+                grid-template-columns: 1fr;
                 padding: 0 15px 30px;
                 gap: 40px;
             }
@@ -315,18 +298,13 @@
         </div>
     </header>
 
-    <!-- 要求③：ジャンル絞り込みリンク -->
     <div class="filter-menu">
-        <!-- allをクリックすると research-all.html に遷移します -->
         <a href="research-all.html">all</a>
         <a href="research-treatise.html">treatise</a>
         <a href="research-study.html">study</a>
     </div>
 
-    <!-- 要求①：画像グリッド (PC3列, SP1列) -->
     <div class="grid-container">
-        <!-- 1つ目のプロジェクト -->
-        <!-- 要求①：リンク先を具体的なページに設定することでクリック時に遷移するように変更 -->
         <a href="https://www.nakatani-seminar.org/nnl-wp/wp-content/uploads/2021/12/%E5%8D%92%E8%AB%96%E6%9C%80%E7%B5%82%E7%99%BA%E8%A1%A8%E3%83%AC%E3%82%B7%E3%82%99%E3%83%A5%E3%83%A1%EF%BC%BF%E4%BA%8C%E4%B8%8A%E5%8C%A0%E5%A4%AA%E9%83%8E.pdf" class="grid-item">
             <div class="image-wrapper">
                 <img src="images/砺波平野.jpg" alt="砺波散村の発生要因と持続要因の研究">
@@ -335,8 +313,6 @@
             <div class="grid-item-desc">砺波散村の発生要因と持続要因の研究</div>
         </a>
 
-        <!-- 2つ目のプロジェクト -->
-        <!-- 要求①：リンク先を具体的なページに設定 -->
         <a href="https://www.nakatani-seminar.org/nnl-wp/wp-content/uploads/2024/04/%E4%BF%AE%E8%AB%96%E3%83%AC%E3%82%B8%E3%83%A5%E3%83%A1_%E4%BA%8C%E4%B8%8A_compressed.pdf" class="grid-item">
             <div class="image-wrapper">
                 <img src="images/カラミ.jpg" alt="近代日本-建築史">
@@ -345,8 +321,6 @@
             <div class="grid-item-desc">近代日本 建築史－近代的構造材への仕方からみる、国家・都市・村落における創造的適応としての近代化受容80年の研究－</div>
         </a>
 
-        <!-- 3つ目のプロジェクト -->
-        <!-- 要求①：リンク先を具体的なページに設定 -->
         <a href="#" class="grid-item">
             <div class="image-wrapper">
                 <img src="images/ダミー画像.jpg" alt="その他の研究">
@@ -354,11 +328,8 @@
             <div class="grid-item-title">小屋建築の研究</div>
             <div class="grid-item-desc">Coming Soon</div>
         </a>
-        
-        <!-- 必要に応じて <a href="#" class="grid-item">...</a> のブロックをコピペして追加してください -->
     </div>
 
-    <!-- JavaScript (ハンバーガーメニュー用) -->
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             const mobileMenu = document.getElementById('mobile-menu');
@@ -370,10 +341,13 @@
                 navMenu.classList.toggle('active');
             });
 
-            // SP版：親要素クリックでドロップダウン表示
+            // 【要求②】SP版：クリック（タップ）のたびに active クラスを付け外しして開閉を切り替える
             navItems.forEach(item => {
                 item.addEventListener('click', (e) => {
                     if (window.innerWidth <= 768) {
+                        // 他のメニューを閉じたい場合は以下を有効にしてください
+                        // navItems.forEach(other => { if(other !== item) other.classList.remove('active'); });
+                        
                         item.classList.toggle('active');
                     }
                 });

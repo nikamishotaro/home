@@ -379,10 +379,13 @@
                 navMenu.classList.toggle('active');
             });
 
-            // SP版：親要素クリックでドロップダウン表示
+            // 【要求②】SP版：クリック（タップ）のたびに active クラスを付け外しして開閉を切り替える
             navItems.forEach(item => {
                 item.addEventListener('click', (e) => {
                     if (window.innerWidth <= 768) {
+                        // 他のメニューを閉じたい場合は以下を有効にしてください
+                        // navItems.forEach(other => { if(other !== item) other.classList.remove('active'); });
+                        
                         item.classList.toggle('active');
                     }
                 });
