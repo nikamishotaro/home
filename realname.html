@@ -1,2 +1,290 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>二上匠太郎 Page</title>
+    <style>
+        /* デフォルトの余白をリセット */
+        body, h1, p, a, div {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: "Helvetica Neue", Arial, "Hiragino Kaku Gothic ProN", "Hiragino Sans", Meiryo, sans-serif;
+            background-color: #ffffff;
+        }
+
+        /* -----------------------------------
+           要求②：透明度が設定されたヘッダー
+        ----------------------------------- */
+        .site-header {
+            position: fixed; /* スクロールしても常に表示 */
+            top: 0;
+            left: 0;
+            width: 100%;     /* PC版・SP版ともに横幅いっぱい */
+            background-color: rgba(255, 255, 255, 0.85); /* 透明度を設定 */
+            backdrop-filter: blur(5px);
+            z-index: 1000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 40px;
+        }
+
+        .site-header a {
+            text-decoration: none;
+            color: #111;
+            font-size: 0.9rem;
+            transition: color 0.3s;
+        }
+
+        .site-header a:hover {
+            color: #888;
+        }
+
+        .header-left a {
+            font-weight: bold;
+            font-size: 1.1rem;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+        }
+
+        .nav-item {
+            position: relative;
+            margin-left: 35px;
+            padding-bottom: 10px; /* ホバー領域の確保 */
+            margin-bottom: -10px;
+        }
+
+        .nav-item > a {
+            font-weight: bold;
+            display: block;
+        }
+
+        /* ホバー時のハンバーガーメニュー的（ドロップダウン）表示 */
+        .dropdown {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: -15px;
+            background-color: rgba(255, 255, 255, 0.95);
+            min-width: 150px;
+            box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.05);
+            flex-direction: column;
+            border-top: 2px solid #111;
+        }
+
+        .nav-item.has-dropdown:hover .dropdown {
+            display: flex;
+        }
+
+        .dropdown a {
+            padding: 12px 15px;
+            font-size: 0.85rem;
+            font-weight: normal;
+            border-bottom: 1px solid #eee;
+        }
+
+        .dropdown a:last-child {
+            border-bottom: none;
+        }
+
+        .dropdown a:hover {
+            background-color: #f9f9f9;
+        }
+
+        /* -----------------------------------
+           要求①：ページ上部の自動切り替え画像
+        ----------------------------------- */
+        .slider-container {
+            position: relative;
+            width: 100%;
+            aspect-ratio: 16 / 9; /* PC・SPともに比率16:9を維持 */
+            overflow: hidden;
+            background-color: #f0f0f0;
+        }
+
+        .slide {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            transition: opacity 1s ease-in-out;
+        }
+
+        .slide.active {
+            opacity: 1;
+            z-index: 1;
+        }
+
+        .slide img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        /* 画像左下のテキスト被り設定 */
+        .slide-text {
+            position: absolute;
+            bottom: 10%;
+            left: 5%;
+            z-index: 2;
+            color: #ffffff;
+            text-shadow: 0px 2px 4px rgba(0,0,0,0.6); /* 視認性向上のための影 */
+            pointer-events: none; /* テキスト上のクリックを画像に貫通させる */
+        }
+
+        .slide-title {
+            font-size: 2rem;
+            font-weight: bold;
+            margin-bottom: 8px; /* タイトルの下に概要を配置 */
+        }
+
+        .slide-desc {
+            font-size: 1rem;
+            font-weight: normal;
+        }
+
+        /* 元コード配置用コンテナ */
+        .original-content-wrapper {
+            padding: 80px 20px;
+            text-align: center;
+        }
+
+        /* SP版（スマホ）でのレスポンシブ対応 */
+        @media (max-width: 768px) {
+            .site-header {
+                flex-direction: column;
+                padding: 15px 20px;
+            }
+
+            .header-right {
+                margin-top: 15px;
+                flex-wrap: wrap;
+                justify-content: center;
+                row-gap: 10px;
+            }
+
+            .nav-item {
+                margin-left: 10px;
+                margin-right: 10px;
+                margin-bottom: 0;
+                padding-bottom: 5px;
+            }
+
+            .dropdown {
+                left: 50%;
+                transform: translateX(-50%);
+            }
+
+            .slide-title {
+                font-size: 1.2rem;
+                margin-bottom: 5px;
+            }
+
+            .slide-desc {
+                font-size: 0.8rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ヘッダー -->
+    <header class="site-header">
+        <div class="header-left">
+            <!-- 名前をクリックでトップ（#）に戻る -->
+            <a href="#">二上匠太郎</a>
+        </div>
+        <div class="header-right">
+            <div class="nav-item has-dropdown">
+                <a href="#">design</a>
+                <div class="dropdown">
+                    <a href="design-all.html">all project</a>
+                    <a href="design-architecture.html">architecture</a>
+                    <a href="design-product.html">product</a>
+                    <a href="design-graphic.html">graphic</a>
+                    <a href="design-event.html">event</a>
+                </div>
+            </div>
+            <div class="nav-item has-dropdown">
+                <a href="#">research</a>
+                <div class="dropdown">
+                    <a href="research-all.html">all project</a>
+                    <a href="research-treatise.html">treatise</a>
+                    <a href="research-study.html">study</a>
+                </div>
+            </div>
+            <div class="nav-item"><a href="about.html">about</a></div>
+            <!-- 指定されたnendo風プロジェクトページへのリンク -->
+            <div class="nav-item"><a href="project.html">contact</a></div>
+            <div class="nav-item"><a href="https://nikamishotaro.github.io/home/index.html">back to home</a></div>
+        </div>
+    </header>
+
+    <!-- 自動切り替えスライダー -->
+    <div class="slider-container">
+        <!-- 1枚目 -->
+        <div class="slide active">
+            <!-- srcはダミー画像を入れています。適宜実際の画像パスに変更してください -->
+            <img src="https://picsum.photos/1920/1080?random=1" alt="Slider 1">
+            <div class="slide-text">
+                <div class="slide-title">プロジェクトタイトル 01</div>
+                <div class="slide-desc">プロジェクト概要がここに入ります。</div>
+            </div>
+        </div>
+        <!-- 2枚目 -->
+        <div class="slide">
+            <img src="https://picsum.photos/1920/1080?random=2" alt="Slider 2">
+            <div class="slide-text">
+                <div class="slide-title">プロジェクトタイトル 02</div>
+                <div class="slide-desc">プロジェクト概要がここに入ります。</div>
+            </div>
+        </div>
+        <!-- 3枚目 -->
+        <div class="slide">
+            <img src="https://picsum.photos/1920/1080?random=3" alt="Slider 3">
+            <div class="slide-text">
+                <div class="slide-title">プロジェクトタイトル 03</div>
+                <div class="slide-desc">プロジェクト概要がここに入ります。</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 元コード部分（一切の変更を加えていません） -->
+    <div class="original-content-wrapper">
 <h1>Coming Soon: 二上匠太郎 Page</h1>
 <a href="index.html">Back to Top</a>
+    </div>
+
+    <!-- スライダー用のJavaScript -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const slides = document.querySelectorAll('.slide');
+            let currentIndex = 0;
+
+            function nextSlide() {
+                // 現在のスライドから active クラスを削除
+                slides[currentIndex].classList.remove('active');
+                
+                // 次のスライドのインデックスを計算
+                currentIndex = (currentIndex + 1) % slides.length;
+                
+                // 次のスライドに active クラスを追加
+                slides[currentIndex].classList.add('active');
+            }
+
+            // 4秒（4000ミリ秒）ごとに nextSlide を実行
+            setInterval(nextSlide, 4000);
+        });
+    </script>
+</body>
+</html>
