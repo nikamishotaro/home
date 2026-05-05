@@ -177,7 +177,9 @@
                    以下の margin の3つ目の数値「100px」を修正してください。 */
                 margin: 40px auto 100px;
                 /* ▲▲▲ SP版 間隔の調整箇所 ここまで ▲▲▲ */
-                padding: 0 20px;
+                
+                /* 【要求①】画面いっぱいの幅まで拡大させるため、paddingを0に変更 */
+                padding: 0;
                 max-width: 100%;
             }
 
@@ -197,12 +199,43 @@
                 gap: 30px;
             }
 
+            /* 【要求②】画像とテキストのレイアウト変更（左に画像、右にテキスト） */
             .item {
                 width: 100%;
+                display: grid;
+                grid-template-columns: 1fr 1fr; /* 左半分と右半分に均等分割 */
+                grid-template-rows: max-content 1fr; /* 1行目はタイトルの高さに合わせる */
+                column-gap: 15px; /* 画像とテキストの隙間 */
             }
 
+            /* スマホ版のみ画像のマージンをリセットし、グリッドの左側に配置 */
+            .block-image {
+                grid-column: 1 / 2;
+                grid-row: 1 / 3;
+                margin-bottom: 0;
+                align-self: start; /* 画像が縦に間延びするのを防ぐ */
+            }
+
+            /* タイトルを画像の上端に合わせる */
             .item-name {
                 white-space: normal; 
+                grid-column: 2 / 3;
+                grid-row: 1 / 2;
+                margin-top: 0;
+                margin-bottom: 8px; /* 説明文との間隔 */
+            }
+
+            /* 説明文をタイトルの下に配置 */
+            .description {
+                grid-column: 2 / 3;
+                grid-row: 2 / 3;
+            }
+
+            /* SHOP、BUSINESSのタイトルも同様に画像右上に配置 */
+            .sub-name {
+                grid-column: 2 / 3;
+                grid-row: 1 / 2;
+                margin-top: 0;
             }
 
             .sub-container {
