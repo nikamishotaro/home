@@ -25,6 +25,9 @@
             left: 0;
             width: 100%;     /* PC版・SP版ともに横幅いっぱい */
             
+            /* 【要求③】幅100%とpaddingによるヘッダー右側の見切れを防止 */
+            box-sizing: border-box; 
+            
             /* 【要求③】ヘッダーの透明度操作：以下のrgbaの4番目の数値（0.85）を0〜1の間で変更してください */
             background-color: rgba(255, 255, 255, 0.85); 
             
@@ -33,6 +36,8 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
+            
+            /* 【要求③】ヘッダー内要素群の左端・右端と画面端との隙間幅を調整する場合は、以下の padding の左右の値（現在は40px）を変更してください */
             padding: 20px 40px;
         }
 
@@ -91,6 +96,11 @@
             font-size: 0.85rem;
             font-weight: normal;
             border-bottom: 1px solid #eee;
+        }
+
+        /* 【要求①】SP用右側コンテナ（PCでは非表示） */
+        .sp-header-right {
+            display: none;
         }
 
         /* 【要求①修正】ハンバーガーボタン */
@@ -179,12 +189,37 @@
         ----------------------------------- */
         @media (max-width: 768px) {
             .site-header {
+                /* 【要求③】SP版：ヘッダー内要素群の左端・右端と画面端との隙間幅を調整する場合は、以下の padding の左右の値（現在は15px）を変更してください */
                 padding: 15px 15px; /* 要求①：左右の余白を調整し見切れを防止 */
+            }
+
+            /* 【要求①】SP用右側コンテナの表示設定 */
+            .sp-header-right {
+                display: flex;
+                align-items: center;
             }
 
             /* PC用メニューを隠し、ハンバーガーを表示 */
             .menu-toggle {
                 display: flex;
+            }
+
+            /* 【要求①】SP版Back to Homeボタンのデザイン */
+            .sp-home-btn {
+                margin-left: 15px;
+                padding: 6px 12px;
+                background-color: #111;
+                color: #fff !important;
+                border-radius: 4px;
+                font-size: 0.85rem;
+                font-weight: bold;
+                text-decoration: none;
+                white-space: nowrap;
+                transition: background-color 0.3s;
+            }
+
+            .sp-home-btn:hover {
+                background-color: #555;
             }
 
             .header-right {
@@ -255,11 +290,16 @@
             <a href="#">二上匠太郎</a>
         </div>
 
-        <!-- ハンバーガーメニューボタン -->
-        <div class="menu-toggle" id="mobile-menu">
-            <span></span>
-            <span></span>
-            <span></span>
+        <!-- 【要求①】SP用の右側要素（ハンバーガーとBack to Homeをまとめるコンテナ） -->
+        <div class="sp-header-right">
+            <!-- ハンバーガーメニューボタン -->
+            <div class="menu-toggle" id="mobile-menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+            <!-- 【要求①】SP版Back to Homeボタン -->
+            <a href="https://nikamishotaro.github.io/home/index.html" class="sp-home-btn">Back to Home</a>
         </div>
 
         <div class="header-right" id="nav-menu">
@@ -283,7 +323,7 @@
             </div>
             <div class="nav-item"><a href="about.html">about</a></div>
             <div class="nav-item"><a href="project.html">contact</a></div>
-            <div class="nav-item"><a href="https://nikamishotaro.github.io/home/index.html">Back to Home</a></div>
+            <!-- 【要求②】ここにあった「Back to Home」を削除しました -->
         </div>
     </header>
 
