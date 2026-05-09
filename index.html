@@ -1,301 +1,299 @@
 <!DOCTYPE html> 
 <html lang="ja">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>nikamishotaro computer</title>
-    <style>
-        /* 全体の設定 */
-        body {
-            /* ① フォントをMS Pゴシック主体の設定に変更 */
-            font-family: "MS PGothic", "ＭＳ Ｐゴシック", "MS PMincho", "ＭＳ Ｐ明朝", sans-serif;
-            margin: 0;
-            padding: 0;
-            color: #0000ff;
-            line-height: 1.6;
-            /* 【要求①修正】スクロールを可能にするため、高さを最小値指定に変更し、はみ出しを許可する */
-            min-height: 100vh;
-            overflow-y: auto; 
-            display: flex;
-            flex-direction: column;
-            
-            background-image: url('images/background.jpg'); 
-            background-size: cover;
-            background-position: center;
-            background-attachment: fixed;
-            background-color: #f0f0f0; 
-        }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>nikamishotaro computer</title>
+    <style>
+        /* 全体の設定 */
+        body {
+            /* ① フォントをMS Pゴシック主体の設定に変更 */
+            font-family: "MS PGothic", "ＭＳ Ｐゴシック", "MS PMincho", "ＭＳ Ｐ明朝", sans-serif;
+            margin: 0;
+            padding: 0;
+            color: #0000ff;
+            line-height: 1.6;
+            min-height: 100vh; /* 【要求①：スクロール可能にするための変更】heightをmin-heightに変更 */
+            overflow-y: auto; /* 【要求①：スクロール可能にするための変更】overflow: hiddenをoverflow-y: autoに変更 */
+            display: flex;
+            flex-direction: column;
+            
+            background-image: url('images/background.jpg'); 
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            background-color: #f0f0f0; 
+        }
 
-        .header-container {
-            /* ③ 横幅を下の .layout-wrapper と同じ 1050px に設定 */
-            max-width: 1050px;
-            
-            /* ▼▼▼ ③【調整箇所：PC版 タイトル画像と下部オブジェクトとの間隔】 ▼▼▼ */
-            /* 下記の margin の3つ目の数値「100px」が、上に配置したタイトル画像と
-               下部のリンク群（もともと配置しているオブジェクト）との間隔になります。
-               間隔を変更したい場合はこの数値を調整してください。 */
-            margin: 100px auto 100px;
-            /* ▲▲▲ PC版 間隔の調整箇所 ここまで ▲▲▲ */
-            
-            padding: 0;
-            box-sizing: border-box;
-        }
+        .header-container {
+            /* ③ 横幅を下の .layout-wrapper と同じ 1050px に設定 */
+            max-width: 1050px;
+            
+            /* ▼▼▼ ③【調整箇所：PC版 タイトル画像と下部オブジェクトとの間隔】 ▼▼▼ */
+            /* 下記の margin の3つ目の数値「100px」が、上に配置したタイトル画像と
+               下部のリンク群（もともと配置しているオブジェクト）との間隔になります。
+               間隔を変更したい場合はこの数値を調整してください。 */
+            margin: 100px auto 100px;
+            /* ▲▲▲ PC版 間隔の調整箇所 ここまで ▲▲▲ */
+            
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-        .welcome-header {
-            /* ③【調整箇所：フォントサイズ】 
-               1050px幅に収まるよう 2.95rem に調整しています。微調整はここを変更してください */
-            font-size: 2.95rem; 
-            font-weight: bold;
-            letter-spacing: 0.05em;
-            text-align: left;
-            margin: 0;
-            white-space: normal;
-        }
+        .welcome-header {
+            /* ③【調整箇所：フォントサイズ】 
+               1050px幅に収まるよう 2.95rem に調整しています。微調整はここを変更してください */
+            font-size: 2.95rem; 
+            font-weight: bold;
+            letter-spacing: 0.05em;
+            text-align: left;
+            margin: 0;
+            white-space: normal;
+        }
 
-        /* タイトル画像用のスタイル */
-        .title-image {
-            width: 100%;
-            height: auto;
-            display: block;
-        }
+        /* タイトル画像用のスタイル */
+        .title-image {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
 
-        a {
-            color: inherit;
-            text-decoration: none;
-            transition: opacity 0.3s;
-        }
-        a:hover {
-            opacity: 0.5;
-            transition: opacity 0.3s;
-        }
+        a {
+            color: inherit;
+            text-decoration: none;
+            transition: opacity 0.3s;
+        }
+        a:hover {
+            opacity: 0.5;
+        }
 
-        /* --------------------------------------------------
-            配置の操作用スタイル
-        -------------------------------------------------- */
+        /* --------------------------------------------------
+            配置の操作用スタイル
+        -------------------------------------------------- */
 
-        .layout-wrapper {
-            width: 1050px; 
-            margin: 0 auto;
-        }
+        .layout-wrapper {
+            width: 1050px; 
+            margin: 0 auto;
+        }
 
-        .link-container {
-            display: flex;
-            justify-content: space-between; 
-            padding: 0;
-        }
+        .link-container {
+            display: flex;
+            justify-content: space-between; 
+            padding: 0;
+        }
 
-        /* ブロック全体をリンク化するため display: block に変更 */
-        .item {
-            width: 320px; 
-            text-align: left; 
-            display: block;
-        }
+        /* ブロック全体をリンク化するため display: block に変更 */
+        .item {
+            width: 320px; 
+            text-align: left; 
+            display: block;
+        }
 
-        /* ▼▼▼ ①-c 画像サイズの変更指示コメント ▼▼▼ */
-        .block-image {
-            /* 新たに配置した画像の大きさを変更する場合は、以下の数値を修正してください。
-               現状は幅いっぱいの正方形（320px × 320px）になるよう設定されています。
-               固定の大きさにしたい場合は「width: 200px; height: 200px;」などに書き換えてください。
-            */
-            width: 100%;
-            aspect-ratio: 1 / 1;
-            /* ------------------------------------------------------------------- */
-            object-fit: cover;
-            display: block;
-            margin-bottom: 15px; /* タイトルとの間隔 */
-            background-color: #333333; /* 画像が読み込めない時のダミー背景色 */
-        }
-        /* ▲▲▲ 画像サイズの変更指示コメント ここまで ▲▲▲ */
+        /* ▼▼▼ ①-c 画像サイズの変更指示コメント ▼▼▼ */
+        .block-image {
+            /* 新たに配置した画像の大きさを変更する場合は、以下の数値を修正してください。
+               現状は幅いっぱいの正方形（320px × 320px）になるよう設定されています。
+               固定の大きさにしたい場合は「width: 200px; height: 200px;」などに書き換えてください。
+            */
+            width: 100%;
+            aspect-ratio: 1 / 1;
+            /* ------------------------------------------------------------------- */
+            object-fit: cover;
+            display: block;
+            margin-bottom: 15px; /* タイトルとの間隔 */
+            background-color: #333333; /* 画像が読み込めない時のダミー背景色 */
+        }
+        /* ▲▲▲ 画像サイズの変更指示コメント ここまで ▲▲▲ */
 
-        .item-name {
-            /* ①-c タイトルのフォントをMS Pゴシックに変更 */
-            font-family: "MS PGothic", "ＭＳ Ｐゴシック", sans-serif;
-            white-space: nowrap; 
-            font-size: 1.5rem;
-            display: block;
-            margin-bottom: 0; /* 要求②：タイトルと説明文の間隔をなくすため 10px から 0 に変更 */
-            font-weight: bold;
+        .item-name {
+            /* ①-c タイトルのフォントをMS Pゴシックに変更 */
+            font-family: "MS PGothic", "ＭＳ Ｐゴシック", sans-serif;
+            white-space: nowrap; 
+            font-size: 1.5rem;
+            display: block;
+            margin-bottom: 0; /* 要求②：タイトルと説明文の間隔をなくすため 10px から 0 に変更 */
+            font-weight: bold;
 
-            /* ▼▼▼ 【要求①：ハイライト設定（アイテム名）】 ▼▼▼ */
-            background-color: #0000ff; /* ハイライトの色 */
-            color: #000000;           /* 要求①：文字の色を初期状態は黒に変更 */
-            width: fit-content;       /* 幅をテキスト量に依存させる */
-            padding: 0 4px;           /* 左右の余白（ハイライトの長さの微調整用） */
-            /* ▲▲▲ ハイライト設定 ここまで ▲▲▲ */
-        }
+            /* ▼▼▼ 【要求①：ハイライト設定（アイテム名）】 ▼▼▼ */
+            background-color: #0000ff; /* ハイライトの色 */
+            color: #000000;           /* 要求①：文字の色を初期状態は黒に変更 */
+            width: fit-content;       /* 幅をテキスト量に依存させる */
+            padding: 0 4px;           /* 左右の余白（ハイライトの長さの微調整用） */
+            /* ▲▲▲ ハイライト設定 ここまで ▲▲▲ */
+        }
 
-        .description {
-            font-size: 0.9rem;
-            margin: 0;
+        .description {
+            font-size: 0.9rem;
+            margin: 0;
 
-            /* ▼▼▼ 【要求①：ハイライト設定（説明文）】 ▼▼▼ */
-            background-color: #0000ff; /* ハイライトの色 */
-            color: #000000;           /* 要求①：文字の色を初期状態は黒に変更 */
-            width: fit-content;       /* 幅をテキスト量に依存させる */
-            padding: 0 4px;           /* 左右の余白 */
-            display: block;           /* width: fit-contentを有効にするため追加 */
-            /* ▲▲▲ ハイライト設定 ここまで ▲▲▲ */
-        }
+            /* ▼▼▼ 【要求①：ハイライト設定（説明文）】 ▼▼▼ */
+            background-color: #0000ff; /* ハイライトの色 */
+            color: #000000;           /* 要求①：文字の色を初期状態は黒に変更 */
+            width: fit-content;       /* 幅をテキスト量に依存させる */
+            padding: 0 4px;           /* 左右の余白 */
+            display: block;           /* width: fit-contentを有効にするため追加 */
+            /* ▲▲▲ ハイライト設定 ここまで ▲▲▲ */
+        }
 
-        .sub-container {
-            margin-top: 80px; 
-            display: flex;
-            /* ①-a オリンピックロゴのような均等配置（上段の隙間をセンターにする）ための調整 */
-            justify-content: center;
-            gap: 45px; 
-        }
+        .sub-container {
+            margin-top: 80px; 
+            display: flex;
+            /* ①-a オリンピックロゴのような均等配置（上段の隙間をセンターにする）ための調整 */
+            justify-content: center;
+            gap: 45px; 
+        }
 
-        .sub-name {
-            /* ①-c タイトルのフォントをMS Pゴシックに変更 */
-            font-family: "MS PGothic", "ＭＳ Ｐゴシック", sans-serif;
-            font-size: 1.5rem;
-            font-weight: bold;
-            display: block; /* 構造変更に伴うレイアウト維持のため追加 */
+        .sub-name {
+            /* ①-c タイトルのフォントをMS Pゴシックに変更 */
+            font-family: "MS PGothic", "ＭＳ Ｐゴシック", sans-serif;
+            font-size: 1.5rem;
+            font-weight: bold;
+            display: block; /* 構造変更に伴うレイアウト維持のため追加 */
 
-            /* ▼▼▼ 【要求①：ハイライト設定（下段SHOP/BUSINESS）】 ▼▼▼ */
-            background-color: #0000ff; /* ハイライトの色 */
-            color: #000000;           /* 要求①：文字の色を初期状態は黒に変更 */
-            width: fit-content;       /* 幅をテキスト量に依存させる */
-            padding: 0 4px;           /* 左右の余白 */
-            /* ▲▲▲ ハイライト設定 ここまで ▲▲▲ */
-        }
+            /* ▼▼▼ 【要求①：ハイライト設定（下段SHOP/BUSINESS）】 ▼▼▼ */
+            background-color: #0000ff; /* ハイライトの色 */
+            color: #000000;           /* 要求①：文字の色を初期状態は黒に変更 */
+            width: fit-content;       /* 幅をテキスト量に依存させる */
+            padding: 0 4px;           /* 左右の余白 */
+            /* ▲▲▲ ハイライト設定 ここまで ▲▲▲ */
+        }
 
-        /* 要求①：カーソルを当てた際にタイトルと説明文の文字を白色に変化させる */
-        .item:hover .item-name,
-        .item:hover .description,
-        .item:hover .sub-name {
-            color: #ffffff;
-        }
+        /* 要求①：カーソルを当てた際にタイトルと説明文の文字を白色に変化させる */
+        .item:hover .item-name,
+        .item:hover .description,
+        .item:hover .sub-name {
+            color: #ffffff;
+        }
 
-        /* --------------------------------------------------
-            スマホ用（レスポンシブ）の設定
-        -------------------------------------------------- */
-        @media (max-width: 768px) {
-            body {
-                overflow-y: auto; 
-            }
+        /* --------------------------------------------------
+            スマホ用（レスポンシブ）の設定
+        -------------------------------------------------- */
+        @media (max-width: 768px) {
+            body {
+                overflow-y: auto; 
+            }
 
-            /* 【要求①】 SP版のみタイトル画像を差し替え */
-            .title-image {
-                content: url('images/title_text_sp.png');
-            }
+            /* 【要求①】 SP版のみタイトル画像を差し替え */
+            .title-image {
+                content: url('images/title_text_sp.png');
+            }
 
-            .header-container {
-                /* ▼▼▼ ③【調整箇所：SP版 タイトル画像と下部オブジェクトとの間隔】 ▼▼▼ */
-                /* SP版のタイトル画像と下部のリンク群との間隔を変更する場合は、
-                   以下の margin の3つ目の数値「100px」を修正してください。 */
-                margin: 40px auto 100px;
-                /* ▲▲▲ SP版 間隔の調整箇所 ここまで ▲▲▲ */
-                
-                /* 【要求①】画面いっぱいの幅まで拡大させるため、paddingを0に変更 */
-                padding: 20px;
-                max-width: 100%;
-            }
+            .header-container {
+                /* ▼▼▼ ③【調整箇所：SP版 タイトル画像と下部オブジェクトとの間隔】 ▼▼▼ */
+                /* SP版のタイトル画像と下部のリンク群との間隔を変更する場合は、
+                   以下の margin の3つ目の数値「100px」を修正してください。 */
+                margin: 40px auto 100px;
+                /* ▲▲▲ SP版 間隔の調整箇所 ここまで ▲▲▲ */
+                
+                /* 【要求①】画面いっぱいの幅まで拡大させるため、paddingを0に変更 */
+                padding: 20px;
+                max-width: 100%;
+            }
 
-            .welcome-header {
-                font-size: 1.8rem; 
-                word-wrap: break-word;
-            }
+            .welcome-header {
+                font-size: 1.8rem; 
+                word-wrap: break-word;
+            }
 
-            .layout-wrapper {
-                width: 100%;
-                padding: 0 20px;
-                box-sizing: border-box;
-            }
+            .layout-wrapper {
+                width: 100%;
+                padding: 0 20px;
+                box-sizing: border-box;
+            }
 
-            .link-container {
-                flex-direction: column; 
-                gap: 30px;
-            }
+            .link-container {
+                flex-direction: column; 
+                gap: 30px;
+            }
 
-            /* 【要求②】画像とテキストのレイアウト変更（左に画像、右にテキスト） */
-            .item {
-                width: 100%;
-                display: grid;
-                grid-template-columns: 1fr 1fr; /* 左半分と右半分に均等分割 */
-                grid-template-rows: max-content 1fr; /* 1行目はタイトルの高さに合わせる */
-                column-gap: 15px; /* 画像とテキストの隙間 */
-            }
+            /* 【要求②】画像とテキストのレイアウト変更（左に画像、右にテキスト） */
+            .item {
+                width: 100%;
+                display: grid;
+                grid-template-columns: 1fr 1fr; /* 左半分と右半分に均等分割 */
+                grid-template-rows: max-content 1fr; /* 1行目はタイトルの高さに合わせる */
+                column-gap: 15px; /* 画像とテキストの隙間 */
+            }
 
-            /* スマホ版のみ画像のマージンをリセットし、グリッドの左側に配置 */
-            .block-image {
-                grid-column: 1 / 2;
-                grid-row: 1 / 3;
-                margin-bottom: 0;
-                align-self: start; /* 画像が縦に間延びするのを防ぐ */
-            }
+            /* スマホ版のみ画像のマージンをリセットし、グリッドの左側に配置 */
+            .block-image {
+                grid-column: 1 / 2;
+                grid-row: 1 / 3;
+                margin-bottom: 0;
+                align-self: start; /* 画像が縦に間延びするのを防ぐ */
+            }
 
-            /* タイトルを画像の上端に合わせる */
-            .item-name {
-                white-space: normal; 
-                grid-column: 2 / 3;
-                grid-row: 1 / 2;
-                margin-top: 0;
-                margin-bottom: 0; /* 要求②：説明文との間隔をなくすため 8px から 0 に変更 */
-            }
+            /* タイトルを画像の上端に合わせる */
+            .item-name {
+                white-space: normal; 
+                grid-column: 2 / 3;
+                grid-row: 1 / 2;
+                margin-top: 0;
+                margin-bottom: 0; /* 要求②：説明文との間隔をなくすため 8px から 0 に変更 */
+            }
 
-            /* 説明文をタイトルの下に配置 */
-            .description {
-                grid-column: 2 / 3;
-                grid-row: 2 / 3;
-            }
+            /* 説明文をタイトルの下に配置 */
+            .description {
+                grid-column: 2 / 3;
+                grid-row: 2 / 3;
+            }
 
-            /* SHOP、BUSINESSのタイトルも同様に画像右上に配置 */
-            .sub-name {
-                grid-column: 2 / 3;
-                grid-row: 1 / 2;
-                margin-top: 0;
-            }
+            /* SHOP、BUSINESSのタイトルも同様に画像右上に配置 */
+            .sub-name {
+                grid-column: 2 / 3;
+                grid-row: 1 / 2;
+                margin-top: 0;
+            }
 
-            .sub-container {
-                flex-direction: column; 
-                margin-top: 30px;
-                padding: 0;
-                gap: 30px;
-                padding-bottom: 60px;
-            }
-        }
-    </style>
+            .sub-container {
+                flex-direction: column; 
+                margin-top: 30px;
+                padding: 0;
+                gap: 30px;
+                padding-bottom: 60px;
+            }
+        }
+    </style>
 </head>
 <body>
 
-    <div class="header-container">
-        <h1 class="welcome-header">
-            <!-- PC版のデフォルト画像。SP版はCSS（content属性）で title_text_sp.png に差し替わります -->
-            <img src="images/title_text_pc.png" alt="Hi, My name is Nikami Shotaro." class="title-image">
-        </h1>
-    </div>
+    <div class="header-container">
+        <h1 class="welcome-header">
+            <!-- PC版のデフォルト画像。SP版はCSS（content属性）で title_text_sp.png に差し替わります -->
+            <img src="images/title_text_pc.png" alt="Hi, My name is Nikami Shotaro." class="title-image">
+        </h1>
+    </div>
 
-    <div class="layout-wrapper">
-        <div class="link-container">
-            <a href="realname.html" class="item">
-                <img src="images/no-image.png" alt="" class="block-image"> <span class="item-name">二上 匠太郎（logic）</span>
-                <p class="description">design and research.</p>
-            </a>
-            
-            <a href="handlename.html" class="item">
-                <img src="images/handle_background.jpg" alt="" class="block-image"> <span class="item-name">Kim Diehl（handle）</span>
-                <p class="description">twitter, instagram... all I have are like that.</p>
-            </a>
-            
-            <a href="artistname.html" class="item">
-                <img src="images/leihk-ooy_prof.jpg" alt="" class="block-image"> <span class="item-name">Leikh Ooy, nostalghia（art）</span>
-                <p class="description">musics and so on.</p>
-            </a>
-        </div>
+    <div class="layout-wrapper">
+        <div class="link-container">
+            <a href="realname.html" class="item">
+                <img src="images/no-image.png" alt="" class="block-image"> <span class="item-name">二上 匠太郎（logic）</span>
+                <p class="description">design and research.</p>
+            </a>
+            
+            <a href="handlename.html" class="item">
+                <img src="images/handle_background.jpg" alt="" class="block-image"> <span class="item-name">Kim Diehl（handle）</span>
+                <p class="description">twitter, instagram... all I have are like that.</p>
+            </a>
+            
+            <a href="artistname.html" class="item">
+                <img src="images/leihk-ooy_prof.jpg" alt="" class="block-image"> <span class="item-name">Leikh Ooy, nostalghia（art）</span>
+                <p class="description">musics and so on.</p>
+            </a>
+        </div>
 
-        <div class="sub-container">
-            <a href="shop.html" class="item">
-                <img src="images/shop.png" alt="" class="block-image"> <span class="sub-name">SHOP</span>
-                <p class="description">all products by Nikami Shotaro</p>
-            </a>
-            
-            <a href="business.html" class="item">
-                <img src="images/business.png" alt="" class="block-image"> <span class="sub-name">BUSINESS</span>
-                <p class="description">Let's enrich our lives together.</p>
-            </a>
-        </div>
-    </div>
+        <div class="sub-container">
+            <a href="shop.html" class="item">
+                <img src="images/shop.png" alt="" class="block-image"> <span class="sub-name">SHOP</span>
+                <p class="description">all products by Nikami Shotaro</p>
+            </a>
+            
+            <a href="business.html" class="item">
+                <img src="images/business.png" alt="" class="block-image"> <span class="sub-name">BUSINESS</span>
+                <p class="description">Let's enrich our lives together.</p>
+            </a>
+        </div>
+    </div>
 
 </body>
 </html>
