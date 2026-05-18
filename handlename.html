@@ -5,101 +5,375 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Kim Diehl - nikamishotaro computer</title>
     <style>
-        /* ① 安いブログ風のデザインに変更（FC2ブログ風） */
-        body {
-            font-family: "ＭＳ Ｐゴシック", "MS PGothic", sans-serif;
+        /* デフォルトの余白をリセット */
+        /* 【要求①】見切れ防止のため、header要素もbox-sizing: border-boxの対象に追加 */
+        body, h1, p, a, div, header {
             margin: 0;
-            padding: 20px;
-            color: #333333;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: "Helvetica Neue", Arial, "Hiragino Kaku Gothic ProN", "Hiragino Sans", Meiryo, sans-serif;
             background-color: #ffffff;
+        }
+
+        /* -----------------------------------
+            ヘッダー
+        ----------------------------------- */
+        .site-header {
+            /* 【要求①】左右の隙間（余白）を後で調整しやすいよう変数として定義 */
+            --header-gap-x: 40px; 
+
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background-color: rgba(255, 255, 255, 0.85); 
+            backdrop-filter: blur(5px);
+            z-index: 1000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            /* 定義した変数を使用して左右のパディングを設定 */
+            padding: 20px var(--header-gap-x);
+        }
+
+        .site-header a {
+            text-decoration: none;
+            color: #111;
+            font-size: 0.9rem;
+            transition: color 0.3s;
+        }
+
+        .site-header a:hover {
+            color: #888;
+        }
+
+        .header-left a {
+            font-weight: bold;
+            font-size: 1.1rem;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+        }
+
+        .nav-item {
+            position: relative;
+            margin-left: 35px;
+            padding-bottom: 10px;
+            margin-bottom: -10px;
+        }
+
+        .nav-item > a {
+            font-weight: bold;
+            display: block;
+        }
+
+        .dropdown {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: -15px;
+            background-color: rgba(255, 255, 255, 0.95);
+            min-width: 150px;
+            box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.05);
+            flex-direction: column;
+            border-top: 2px solid #111;
+        }
+
+        .nav-item.has-dropdown:hover .dropdown {
+            display: flex;
+        }
+
+        .dropdown a {
+            padding: 12px 15px;
+            font-size: 0.85rem;
+            font-weight: normal;
+            border-bottom: 1px solid #eee;
+        }
+
+        .menu-toggle {
+            display: none;
+            flex-direction: column;
+            justify-content: space-between;
+            width: 30px;
+            height: 20px;
+            cursor: pointer;
+            z-index: 1100;
+            flex-shrink: 0;
+            margin-left: 15px;
+        }
+
+        .menu-toggle span {
+            display: block;
+            height: 2px;
+            width: 100%;
+            background-color: #111;
+            transition: 0.3s;
+        }
+
+        /* -----------------------------------
+            ジャンル絞り込みリンク
+        ----------------------------------- */
+        .filter-menu {
+            margin-top: 80px; 
+            padding: 20px 40px;
+            display: flex;
+            gap: 20px;
+        }
+
+        .filter-menu a {
+            text-decoration: none;
+            color: #111;
+            font-size: 1rem;
+            font-weight: bold;
+            transition: color 0.3s;
+        }
+
+        .filter-menu a:hover {
+            color: #888;
+        }
+
+        /* -----------------------------------
+            画像グリッドレイアウト
+        ----------------------------------- */
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+            padding: 0 40px 60px;
+        }
+
+        .grid-item {
+            text-decoration: none;
+            display: block;
+            color: inherit;
+        }
+
+        .grid-item:hover .image-wrapper img {
+            transform: scale(1.05);
+        }
+
+        .image-wrapper {
+            width: 100%;
+            aspect-ratio: 4 / 3;
+            overflow: hidden;
+            background-color: #f0f0f0;
+            margin-bottom: 15px;
+        }
+
+        .image-wrapper img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            transition: transform 0.3s ease;
+        }
+
+        .grid-item-title {
+            font-weight: bold;
+            font-size: 1.1rem;
+            margin-bottom: 5px;
+            color: #111;
+        }
+        .grid-item-desc {
+            font-size: 0.9rem;
+            color: #555;
             line-height: 1.5;
         }
 
-        .back-home {
-            color: #0000ff;
-            text-decoration: underline;
-            font-size: 14px;
-        }
-        .back-home:hover {
-            color: #ff0000;
-        }
 
-        .page-title {
-            font-size: 24px;
-            border-bottom: 1px dotted #999999;
-            padding-bottom: 5px;
-            margin-top: 20px;
-            margin-bottom: 30px;
-        }
+        /* -----------------------------------
+            SP版（スマホ）でのレスポンシブ対応
+        ----------------------------------- */
+        @media (max-width: 768px) {
+            .site-header {
+                /* 【要求①】SP版用の隙間幅を変数で定義（ここを書き換えるだけでSP版の左端・右端の余白が調整できます） */
+                --header-gap-x-sp: 15px; 
+                padding: 15px var(--header-gap-x-sp);
+            }
 
-        .sns-container {
-            width: 100%;
-            max-width: 600px;
-            margin: 0 auto;
-        }
+            .menu-toggle {
+                display: flex;
+            }
 
-        .sns-box {
-            margin-bottom: 30px;
-            padding: 15px;
-            border: 1px solid #cccccc;
-            background-color: #f7f7f7;
-        }
+            .header-right {
+                position: fixed;
+                top: 0;
+                right: -100%;
+                width: 80%;
+                height: 100vh;
+                background-color: #fff;
+                flex-direction: column;
+                justify-content: flex-start;
+                align-items: flex-start;
+                padding: 80px 40px;
+                transition: 0.4s;
+                box-shadow: -5px 0 15px rgba(0,0,0,0.1);
+                overflow-y: auto;
+            }
 
-        .sns-link-button {
-            display: inline-block;
-            font-size: 16px;
-            font-weight: bold;
-            color: #0000ff;
-            text-decoration: underline;
-            margin-bottom: 10px;
-        }
-        .sns-link-button:hover {
-            color: #ff0000;
-        }
+            .header-right.active {
+                right: 0;
+            }
 
-        .embed-area {
-            background-color: #ffffff;
-            border: 1px inset #cccccc;
-            padding: 20px;
-            min-height: 100px;
-            text-align: center;
-            color: #666666;
-            font-size: 14px;
+            .nav-item {
+                margin: 0 0 25px 0;
+                width: 100%;
+            }
+
+            .nav-item > a {
+                font-size: 1.2rem;
+                border-bottom: 1px solid #eee;
+                padding-bottom: 5px;
+            }
+
+            .dropdown {
+                position: static;
+                display: none;
+                box-shadow: none;
+                border-top: none;
+                padding-left: 20px;
+                background-color: transparent;
+            }
+
+            .nav-item.active .dropdown {
+                display: flex;
+            }
+
+            .menu-toggle.active span:nth-child(1) { transform: translateY(9px) rotate(45deg); }
+            .menu-toggle.active span:nth-child(2) { opacity: 0; }
+            .menu-toggle.active span:nth-child(3) { transform: translateY(-9px) rotate(-45deg); }
+
+            .filter-menu {
+                margin-top: 60px;
+                padding: 15px 15px;
+            }
+
+            .grid-container {
+                grid-template-columns: 1fr;
+                padding: 0 15px 30px;
+                gap: 40px;
+            }
         }
-    </style>
+    </st>
 </head>
 <body>
 
-    <a href="index.html" class="back-home">Back to Home</a>
+    <!-- ヘッダー -->
+    <header class="site-header">
+        <div class="header-left">
+            <a href="#">Kim Diehl</a>
+        </div>
 
-    <h1 class="page-title">Kim Diehl</h1>
+        <div class="menu-toggle" id="mobile-menu">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
 
-    <div class="sns-container">
-        
-        <div class="sns-box">
-            <a href="https://x.com/kimdiehl_?s=21&t=TNiLdtVttNRR3dYV9uExgw" target="_blank" class="sns-link-button">Twitter</a>
-            <div class="embed-area">
-                <a class="twitter-timeline" href="https://twitter.com/KimDiehl_?ref_src=twsrc%5Etfw">Tweets by KimDiehl_</a> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+        <div class="header-right" id="nav-menu">
+            <div class="nav-item has-dropdown">
+                <a href="javascript:void(0)">design</a>
+                <div class="dropdown">
+                    <a href="design-all.html">一覧（all project）</a>
+                    <a href="design-architecture.html">建築（architecture）</a>
+                    <a href="design-product.html">製品（product）</a>
+                    <a href="design-graphic.html">図表（graphic）</a>
+                    <a href="design-event.html">企画（event）</a>
+                </div>
             </div>
-        </div>
-
-        <div class="sns-box">
-            <a href="https://instagram.com/kimdiehl_" target="_blank" class="sns-link-button">Instagram</a>
-            <div class="embed-area">
-                【Instagramのコードをここに貼り付けてください】
-                
+            <div class="nav-item has-dropdown">
+                <a href="javascript:void(0)">research</a>
+                <div class="dropdown">
+                    <a href="research-all.html">一覧（all project）</a>
+                    <a href="research-treatise.html">論文（treatise）</a>
+                    <a href="research-study.html">執筆（writing）</a>
+                    <a href="research-book.html">書籍（book）</a>
                 </div>
+            </div>
+            <div class="nav-item"><a href="about.html">about</a></div>
+            <div class="nav-item"><a href="project.html">contact</a></div>
+            <div class="nav-item"><a href="https://nikamishotaro.github.io/home/index.html">Back to Home</a></div>
         </div>
+    </header>
 
-        <div class="sns-box">
-            <a href="https://note.com/kimdiehl_" target="_blank" class="sns-link-button">note</a>
-            <div class="embed-area">
-                <!-- Feedwind コード開始 --> <script type="text/javascript" src="https://feed.mikle.com/js/fw-loader.js" preloader-text="Loading" data-fw-param="178059/"></script> <!-- Feedwind コード終了 -->
-                
-                </div>
-        </div>
-
+    <!-- ジャンル絞り込みリンク -->
+    <div class="filter-menu">
+        <a href="design-all.html">all</a>
+        <a href="design-architecture.html">architecture</a>
+        <a href="design-product.html">product</a>
+        <a href="design-graphic.html">graphic</a>
+        <a href="design-event.html">event</a>
     </div>
 
+    <!-- 画像グリッド (PC3列, SP1列) -->
+    <div class="grid-container">
+        <a href="#" class="grid-item">
+            <div class="image-wrapper">
+                <img src="images/俯瞰パース.png" alt="オリンピック島">
+            </div>
+            <div class="grid-item-title">オリンピック島（2021）</div>
+            <div class="grid-item-desc">人類がオリンピックを諦めないための海上移動建築群の提案（卒業設計）［共同設計者：兵頭, 松尾］</div>
+        </a>
+
+        <a href="https://www.sabed.jp/wp/wp-content/uploads/2021/12/20412a9f06321592bd5ab9efdd0f27bc.pdf" class="grid-item">
+            <div class="image-wrapper">
+                <img src="images/ワイナリー.jpg" alt="WINE SCAPE IN JAPAN">
+            </div>
+            <div class="grid-item-title">WINESCAPE IN JAPAN（2022）</div>
+            <div class="grid-item-desc">山梨県甲府市をフィールドとして、ブドウ畑とワイナリー建築を環境シミュレーションによって横断的に設計する提案［共同設計者：小川, 豊住, 銅木］</div>
+        </a>
+
+        <a href="#" class="grid-item">
+            <div class="image-wrapper">
+                <img src="images/女性の家.jpg" alt="女性の家">
+            </div>
+            <div class="grid-item-title">Rasing and Braiding（2022）</div>
+            <div class="grid-item-desc">セネガルをフィールドとして、女性や子どもの力だけで自力建設可能な空間と工法の提案［共同設計者：佐久間, 高塚, 月森, 鄭, 山本］</div>
+        </a>
+
+        <a href="#" class="grid-item">
+            <div class="image-wrapper">
+                <img src="images/別邸.jpg" alt="別邸">
+            </div>
+            <div class="grid-item-title">四分の二国（2025）</div>
+            <div class="grid-item-desc">各種グラフィックのデザインと展示用什器の設計</div>
+        </a>
+
+        <a href="#" class="grid-item">
+            <div class="image-wrapper">
+                <img src="images/ダミー画像.jpg" alt="その他のプロジェクト">
+            </div>
+            <div class="grid-item-title">Coming Soon</div>
+            <div class="grid-item-desc"></div>
+        </a>
+    </div>
+
+    <!-- JavaScript (ハンバーガーメニュー用) -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const mobileMenu = document.getElementById('mobile-menu');
+            const navMenu = document.getElementById('nav-menu');
+            const navItems = document.querySelectorAll('.nav-item.has-dropdown');
+
+            mobileMenu.addEventListener('click', () => {
+                mobileMenu.classList.toggle('active');
+                navMenu.classList.toggle('active');
+            });
+
+            // 【要求②】SP版：クリック（タップ）のたびに active クラスを付け外し（toggle）して、
+            // 開いた状態でもう一度タップすると閉じる仕様に変更
+            navItems.forEach(item => {
+                item.addEventListener('click', (e) => {
+                    if (window.innerWidth <= 768) {
+                        item.classList.toggle('active');
+                    }
+                });
+            });
+        });
+    </script>
 </body>
 </html>
