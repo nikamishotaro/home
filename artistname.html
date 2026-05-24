@@ -20,26 +20,17 @@
             background-color: #000;
         }
 
-        /* 【要求①修正】戻るボタン（画像リンク）の配置とサイズ */
-        .back-home {
-            position: fixed; /* 常に最前面の右上に固定 */
+        /* 戻るボタン */
+        .sp-home-btn {
+            position: absolute;
             top: 20px;
-            right: 40px;
-            z-index: 3000;
-            text-decoration: none;
-            display: flex;
-            align-items: center;
-            transition: opacity 0.3s;
+            right: 20px;
+            z-index: 1000;
         }
-
-        .back-home img {
-            height: 20px; /* 参照コードの .home-icon-pc に準拠 */
-            width: auto;
+        .sp-home-btn img {
+            width: 40px; /* 画面右上に小さく配置 */
+            height: auto;
             display: block;
-        }
-
-        .back-home:hover {
-            opacity: 0.6;
         }
 
         /* ② アイコン（正方形）のスタイル */
@@ -104,23 +95,21 @@
                 margin-bottom: 100vh; /* スクロールしきった時に背景が見えるようにする */
             }
 
-            /* アイコンのサイズ */
+            /* 【要求①】アイコンのサイズを4分の1（80px → 20px）に変更 */
             .icon, .icon.center-fixed {
                 width: 40px;
                 height: 40px;
             }
 
-            /* 【要求①修正】SP版でのBack to Home配置 */
-            .back-home {
-                top: 15px;
-                right: 15px;
+            /* 【要求②】Back to Homeボタンを4分の1サイズにし、画面右上に寄せる */
+            .sp-home-btn {
+                transform: scale(0.75); /* 縦横比を保ったまま縮小 */
+                transform-origin: top right; /* 右上を基準に縮小 */
+                top: 10px; /* 余白を詰めて右上に寄せる */
+                right: 10px;
             }
 
-            .back-home img {
-                height: 25px; /* 参照コードの .sp-home-btn img に準拠 */
-            }
-
-            /* ポップアップの横スクロール（ぶれ）をロック */
+            /* 【要求③】ポップアップの横スクロール（ぶれ）をロック */
             .modal {
                 overflow-x: hidden;
             }
@@ -128,17 +117,24 @@
 
         .modal-content h2 { margin-top: 0; }
 
+        /* --------------------------------------------------
+            【要求①】ハイライト（背景色）と文字色の設定
+            ここでハイライトの見た目を修正できます。
+        -------------------------------------------------- */
+        
         /* 説明文（pタグ）のハイライト設定 */
         .modal-content p {
+            /*background-color: #0000ff;*/ /* ハイライトの色：青 */
             color: #ffffff;           /* 文字の色：白 */
-            width: fit-content;       /* 長さをテキスト量に依存させる */
-            padding: 4px 8px;         /* ハイライトの余白 */
+            width: fit-content;       /* 長さをテキスト量に依存させる（箱の幅を文字に合わせる） */
+            padding: 4px 8px;         /* ハイライトの余白（太さの調整） */
             margin-bottom: 12px;      /* 段落間の隙間 */
-            line-height: 1.6;         /* 行間 */
+            line-height: 1.6;         /* 行間（ハイライト同士が重ならない程度に調整） */
         }
 
         /* リンク（aタグ）のハイライト設定 */
         .modal-content a {
+            /*background-color: #0000ff;*/ /* ハイライトの色：青 */
             color: #ffffff;           /* 文字の色：白 */
             display: inline-block;    /* 長さをテキスト量に依存させる */
             margin: 10px 5px 10px 0;  /* リンクボタン同士の間隔 */
@@ -146,10 +142,15 @@
             text-decoration: none;    /* 下線を消す */
         }
 
+        /* -------------------------------------------------- */
+
+        /* --------------------------------------------------
+            【追加】画像スライダー（円環構造）のスタイル
+        -------------------------------------------------- */
         .carousel-container {
             position: relative;
             width: 100%;
-            height: 250px; 
+            height: 250px; /* 画像エリアの高さ。必要に応じて調整してください */
             margin: 20px 0;
             overflow: hidden;
             cursor: pointer;
@@ -159,12 +160,12 @@
             top: 50%;
             left: 50%;
             max-height: 100%;
-            max-width: 60%; 
+            max-width: 60%; /* 中央の画像の最大幅 */
             object-fit: contain;
             transition: all 0.4s ease;
             opacity: 0;
             z-index: 0;
-            pointer-events: none;
+            pointer-events: none; /* コンテナ全体でクリック判定させるため */
         }
         .carousel-img.active {
             opacity: 1;
@@ -172,23 +173,23 @@
             transform: translate(-50%, -50%) scale(1);
         }
         .carousel-img.prev {
-            opacity: 0.3;
+            opacity: 0.3; /* 端に見える画像の透明度 */
             z-index: 1;
-            transform: translate(-120%, -50%) scale(0.8);
+            transform: translate(-120%, -50%) scale(0.8); /* 左端にずらして縮小 */
         }
         .carousel-img.next {
             opacity: 0.3;
             z-index: 1;
-            transform: translate(20%, -50%) scale(0.8);
+            transform: translate(20%, -50%) scale(0.8); /* 右端にずらして縮小 */
         }
 
     </style>
 </head>
 <body>
 
-    <a href="https://nikamishotaro.github.io/home/index.html" class="back-home">
-        <img src="images/home-icon.png" alt="Back to Home">
-    </a>
+    <a href="https://nikamishotaro.github.io/home/index.html" class="sp-home-btn">
+                <img src="images/home-icon.png" alt="Back to Home">
+            </a>
 
     <div id="desktop">
         
@@ -218,7 +219,6 @@
                 <a href="https://soundcloud.com/leikhooy/sets/a-house" target="_blank">SoundCloud</a>
                 </div>
         </div>
-
         <div class="icon" style="background-image: url('images/philosophy_jacket.jpg');" 
              onclick="openModal('philosophy')"></div>
         <div id="philosophy" class="modal" onclick="closeModal(event, 'philosophy')">
@@ -227,7 +227,7 @@
 
                 <div class="carousel-container">
                     <img class="carousel-img" src="images/philosophy_jacket.jpg" alt="">
-                </div>
+                    </div>
 
                 <p>2nd EP（2026）:<br>
                 This music was created to soundscape the atmosphere of "The philosophy of Living" a combined bookstore and flower shop.<br>
@@ -240,61 +240,159 @@
             </div>
         </div>
 
+        <div class="icon" style="background-image: url('images/no-war_jacket.png');" 
+             onclick="openModal('no-war')"></div>
+        <div id="no-war" class="modal" onclick="closeModal(event, 'no-war')">
+            <div class="modal-content">
+                <h2>NO WAR</h2>
+
+                <div class="carousel-container">
+                    <img class="carousel-img" src="images/no-war_jacket.png" alt="">
+                </div>
+
+                <p>Single（2026）:<br>
+                This is a piece of anti-war music—a definitive refusal of the inhumane massacres currently unfolding in our world. <br>
+                I am speaking in English purely for the sake of clarity and reach, as it is the most widely spoken official language; this choice in no way implies the superiority of any language or ethnicity. <br>
+                Following this statement, you will hear the words 'no war' spoken in 63 different languages—every language accessible via Google Translate as of 9:07 PM JST on March 24, 2026. <br>
+                Please, listen.<br>
+                ----------<br>
+                Music: Leikh Ooy, nostalghia<br>
+                All Arrangement: Leikh Ooy, nostalghia<br>
+                Artwork: Leikh Ooy, nostalghia</p>
+                <a href="https://www.youtube.com/watch?v=OfUNWZveuKM" target="_blank">YouTube</a>
+                <a href="https://soundcloud.com/leikhooy/no-war" target="_blank">SoundCloud</a>
+            </div>
+        </div>
+
+        <div class="icon center-fixed" style="background-image: url('images/leihk-ooy_prof.jpg');" 
+             onclick="openModal('profile')"></div>
+        <div id="profile" class="modal" onclick="closeModal(event, 'profile')">
+            <div class="modal-content">
+                <h2>Profile</h2>
+                <p>Leikh Ooy, nostalghia: <br>
+                    A music production project by Shotaro Nikami. The work primarily explores ambient, electronic, drone, contemporary music, field recordings, and spoken word.</p>
+                <a href="https://instagram.com/leikh_ooy" target="_blank">Instagram</a>
+                <a href="https://music.apple.com/jp/artist/leikh-ooy-nostalghia/1896694676" target="_blank">Apple Music</a>
+                <a href="https://open.spotify.com/intl-ja/artist/47tY3PLWIj5hTmIVzoyLoj?si=WgdjMr8_Rl-F7q2J44fadg" target="_blank">Spotify</a>
+                <a href="https://soundcloud.com/leikhooy" target="_blank">SoundCloud</a>
+            </div>
+        </div>
+
     </div>
 
     <script>
-        // モーダルとスライダーのスクリプト（変更なし）
+        // ②・③ ランダム配置の実行
+        window.onload = function() {
+            const icons = document.querySelectorAll('.icon:not(.center-fixed)');
+            const desktop = document.getElementById('desktop');
+            
+            icons.forEach(icon => {
+                // 画面の端に寄りすぎないように範囲を制限（5%〜85%の間）
+                const randomX = Math.floor(Math.random() * 80) + 5;
+                const randomY = Math.floor(Math.random() * 80) + 5;
+                
+                icon.style.left = randomX + '%';
+                icon.style.top = randomY + '%';
+            });
+
+            // 【追加】画像スライダーの自動セットアップ
+            initCarousels();
+            // 【要求】スクロール監視のセットアップ
+            setupScrollClose();
+        };
+
+        // ③ ポップアップ操作
         function openModal(id) {
             const modal = document.getElementById(id);
-            modal.style.display = "block";
-            document.body.style.overflow = "hidden";
-            initCarousel(modal);
+            modal.style.display = 'block'; // flexからblockに変更（スクロール制御のため）
+            modal.style.opacity = '1';
+            modal.scrollTop = 0;
         }
 
         function closeModal(event, id) {
+            // 背景クリック（PC）で閉じる
             if (event.target.classList.contains('modal')) {
-                document.getElementById(id).style.display = "none";
-                document.body.style.overflow = "auto";
+                document.getElementById(id).style.display = 'none';
             }
         }
 
-        function initCarousel(modal) {
-            const container = modal.querySelector('.carousel-container');
-            if (!container) return;
-            const imgs = container.querySelectorAll('.carousel-img');
-            let currentIndex = 0;
+        // 【要求】SP版：スクロールしきったら戻る仕様の実装
+        function setupScrollClose() {
+            const modals = document.querySelectorAll('.modal');
+            
+            modals.forEach(modal => {
+                modal.addEventListener('scroll', function() {
+                    if (window.innerWidth > 768) return; // SP版のみ
 
-            function updateCarousel() {
-                imgs.forEach((img, i) => {
-                    img.classList.remove('active', 'prev', 'next');
-                    if (i === currentIndex) {
-                        img.classList.add('active');
-                    } else if (i === (currentIndex - 1 + imgs.length) % imgs.length) {
-                        img.classList.add('prev');
-                    } else if (i === (currentIndex + 1) % imgs.length) {
-                        img.classList.add('next');
+                    const content = modal.querySelector('.modal-content');
+                    const scrollBottom = modal.scrollHeight - modal.scrollTop - modal.clientHeight;
+                    
+                    // 最下部（100vhのバッファ）に近づくにつれて透明度を下げる
+                    // コンテンツが終わってから、画面高さ分スクロールする間にうっすら見えてくる演出
+                    const opacityThreshold = 400; // コンテンツ末尾から400px手前から透明化開始
+                    if (scrollBottom < opacityThreshold) {
+                        modal.style.opacity = (scrollBottom / opacityThreshold);
+                    } else {
+                        modal.style.opacity = '1';
+                    }
+
+                    // 完全に最下部までスクロールしきったら閉じる
+                    if (scrollBottom <= 0) {
+                        modal.style.display = 'none';
+                        modal.style.opacity = '1';
                     }
                 });
-            }
-
-            container.onclick = function() {
-                currentIndex = (currentIndex + 1) % imgs.length;
-                updateCarousel();
-            };
-
-            updateCarousel();
+            });
         }
 
-        // デスクトップ上のアイコン配置（簡易ランダム）
-        document.addEventListener("DOMContentLoaded", function() {
-            const icons = document.querySelectorAll('.icon:not(.center-fixed)');
-            icons.forEach(icon => {
-                const x = Math.random() * 70 + 10;
-                const y = Math.random() * 70 + 10;
-                icon.style.left = x + "vw";
-                icon.style.top = y + "vh";
+        // 【追加】画像スライダーの操作ロジック
+        function initCarousels() {
+            document.querySelectorAll('.carousel-container').forEach(container => {
+                const images = container.querySelectorAll('.carousel-img');
+                if (images.length === 0) return;
+                
+                let currentIndex = 0;
+
+                function updateCarousel() {
+                    images.forEach((img, i) => {
+                        img.className = 'carousel-img'; // リセット
+                        if (i === currentIndex) {
+                            img.classList.add('active'); // 中央表示
+                        } else if (images.length === 2) {
+                            // 2枚の時：もう1枚を右側にチラ見せ
+                            if (i === ((currentIndex + 1) % 2)) img.classList.add('next');
+                        } else if (images.length > 2) {
+                            // 3枚以上の時：左右の円環構造
+                            let prevIndex = (currentIndex - 1 + images.length) % images.length;
+                            let nextIndex = (currentIndex + 1) % images.length;
+                            
+                            if (i === prevIndex) img.classList.add('prev');
+                            if (i === nextIndex) img.classList.add('next');
+                        }
+                    });
+                }
+
+                // 領域の左右をクリックしたときの判定
+                container.addEventListener('click', (e) => {
+                    if (images.length <= 1) return; // 1枚なら何もしない
+                    
+                    const rect = container.getBoundingClientRect();
+                    const clickX = e.clientX - rect.left;
+                    
+                    if (clickX < rect.width / 2) {
+                        // 左半分クリック -> 前の画像へ
+                        currentIndex = (currentIndex - 1 + images.length) % images.length;
+                    } else {
+                        // 右半分クリック -> 次の画像へ
+                        currentIndex = (currentIndex + 1) % images.length;
+                    }
+                    updateCarousel();
+                    e.stopPropagation(); // モーダルのクリックイベントを阻止
+                });
+
+                updateCarousel(); // 初回表示のセットアップ
             });
-        });
+        }
     </script>
 </body>
 </html>
