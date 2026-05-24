@@ -31,6 +31,14 @@
             color: inherit;
             font-weight: bold;
             z-index: 1000;
+            /* 画像への置き換え設定 */
+            background-image: url('images/back-to-home.png');
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+            width: 120px; /* 画像の表示幅に合わせて調整 */
+            height: 40px; /* 画像の表示高さに合わせて調整 */
+            display: block;
         }
 
         /* ② アイコン（正方形）のスタイル */
@@ -187,7 +195,7 @@
 </head>
 <body>
 
-    <a href="index.html" class="back-home">Back to Home</a>
+    <a href="index.html" class="back-home"></a>
 
     <div id="desktop">
         
@@ -215,8 +223,7 @@
                 Drawing: Hagioda Taiga<br>
                 typography: Leikh Ooy, nostalghia</p>
                 <a href="https://soundcloud.com/leikhooy/sets/a-house" target="_blank">SoundCloud</a>
-                <!--<a href="#" target="_blank">Spotify</a>-->
-            </div>
+                </div>
         </div>
         <div class="icon" style="background-image: url('images/philosophy_jacket.jpg');" 
              onclick="openModal('philosophy')"></div>

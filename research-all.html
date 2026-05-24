@@ -6,7 +6,8 @@
     <title>Research All - 二上匠太郎</title>
     <style>
         /* デフォルトの余白をリセット */
-        body, h1, p, a, div {
+        /* 【要求①】見切れ防止のため、header要素もbox-sizing: border-boxの対象に追加 */
+        body, h1, p, a, div, header {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
@@ -20,6 +21,9 @@
             ヘッダー
         ----------------------------------- */
         .site-header {
+            /* 【要求①】左右の隙間（余白）を後で調整しやすいよう変数として定義 */
+            --header-gap-x: 40px; 
+
             position: fixed;
             top: 0;
             left: 0;
@@ -30,11 +34,8 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            
-            /* 【要求①】右側の見切れ防止のため box-sizing を明示し、左右に余白を設定 */
-            box-sizing: border-box; 
-            /* ヘッダー内要素の「左端」と「右端」の余白を調整する場合は、以下の padding の値を変更してください */
-            padding: 20px 40px; 
+            /* 定義した変数を使用して左右のパディングを設定 */
+            padding: 20px var(--header-gap-x);
         }
 
         .site-header a {
@@ -120,15 +121,22 @@
             margin-top: 80px; 
             padding: 20px 40px;
             display: flex;
-            gap: 20px;
+            gap: 5px;
         }
 
         .filter-menu a {
             text-decoration: none;
             color: #111;
-            font-size: 1rem;
+            font-size: 0.8rem;
+            font-weight: normal;
+            transition: color 0.3s, background-color 0.3s;
+            padding: 4px 12px;
+        }
+
+        .filter-menu a.active {
             font-weight: bold;
-            transition: color 0.3s;
+            color: #ffffff;
+            background-color: #000000;
         }
 
         .filter-menu a:hover {
@@ -138,16 +146,25 @@
         /* -----------------------------------
             画像グリッドレイアウト
         ----------------------------------- */
+        :root {
+            --title-font-size: 1.0rem;
+            --desc-font-size: 0.8rem;
+            --showmore-font-size: 0.8rem;
+        }
+
         .grid-container {
             display: grid;
-            grid-template-columns: repeat(3, 1fr);
+            grid-template-columns: 1fr;
             gap: 30px;
             padding: 0 40px 60px;
         }
 
         .grid-item {
             text-decoration: none;
-            display: block;
+            display: grid;
+            grid-template-columns: 25% 1fr;
+            grid-template-rows: auto auto 1fr;
+            column-gap: 20px;
             color: inherit;
         }
 
@@ -156,11 +173,12 @@
         }
 
         .image-wrapper {
+            grid-column: 1 / 2;
+            grid-row: 1 / 4;
             width: 100%;
             aspect-ratio: 4 / 3;
             overflow: hidden;
             background-color: #f0f0f0;
-            margin-bottom: 15px;
         }
 
         .image-wrapper img {
@@ -172,25 +190,37 @@
         }
 
         .grid-item-title {
+            grid-column: 2 / 3;
+            grid-row: 1 / 2;
             font-weight: bold;
-            font-size: 1.1rem;
+            font-size: var(--title-font-size);
             margin-bottom: 5px;
             color: #111;
         }
         .grid-item-desc {
-            font-size: 0.9rem;
+            grid-column: 2 / 3;
+            grid-row: 2 / 3;
+            font-size: var(--desc-font-size);
             color: #555;
             line-height: 1.5;
         }
-
+        .grid-item-showmore {
+            grid-column: 2 / 3;
+            grid-row: 3 / 4;
+            font-size: var(--showmore-font-size);
+            color: #111;
+            align-self: end;
+            margin-top: 10px;
+        }
 
         /* -----------------------------------
             SP版（スマホ）でのレスポンシブ対応
         ----------------------------------- */
         @media (max-width: 768px) {
             .site-header {
-                /* 【要求①】SP版での左右の余白を調整する場合は、以下の padding を変更してください */
-                padding: 15px 15px; 
+                /* 【要求①】SP版用の隙間幅を変数で定義（ここを書き換えるだけでSP版の左端・右端の余白が調整できます） */
+                --header-gap-x-sp: 15px; 
+                padding: 15px var(--header-gap-x-sp);
             }
 
             .menu-toggle {
@@ -237,7 +267,6 @@
                 background-color: transparent;
             }
 
-            /* .active クラスがついた時だけ表示する設定 */
             .nav-item.active .dropdown {
                 display: flex;
             }
@@ -295,7 +324,7 @@
             </div>
             <div class="nav-item"><a href="about.html">about</a></div>
             <div class="nav-item"><a href="project.html">contact</a></div>
-            <div class="nav-item"><a href="https://nikamishotaro.github.io/home/realname.html">Top</a></div>
+            <div class="nav-item"><a href="https://nikamishotaro.github.io/home/realname.html">TOP</a></div>
         </div>
     </header>
 
