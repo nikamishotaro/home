@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Research All - 二上匠太郎</title>
+    <title>Design All - 二上匠太郎</title>
     <style>
         /* デフォルトの余白をリセット */
         /* 【要求①】見切れ防止のため、header要素もbox-sizing: border-boxの対象に追加 */
@@ -128,8 +128,15 @@
             text-decoration: none;
             color: #111;
             font-size: 1rem;
+            font-weight: normal;
+            transition: color 0.3s, background-color 0.3s;
+            padding: 4px 12px;
+        }
+
+        .filter-menu a.active {
             font-weight: bold;
-            transition: color 0.3s;
+            color: #ffffff;
+            background-color: #000000;
         }
 
         .filter-menu a:hover {
@@ -139,16 +146,25 @@
         /* -----------------------------------
             画像グリッドレイアウト
         ----------------------------------- */
+        :root {
+            --title-font-size: 1.1rem;
+            --desc-font-size: 0.9rem;
+            --showmore-font-size: 0.9rem;
+        }
+
         .grid-container {
             display: grid;
-            grid-template-columns: repeat(3, 1fr);
+            grid-template-columns: 1fr;
             gap: 30px;
             padding: 0 40px 60px;
         }
 
         .grid-item {
             text-decoration: none;
-            display: block;
+            display: grid;
+            grid-template-columns: 25% 1fr;
+            grid-template-rows: auto auto 1fr;
+            column-gap: 20px;
             color: inherit;
         }
 
@@ -157,11 +173,12 @@
         }
 
         .image-wrapper {
+            grid-column: 1 / 2;
+            grid-row: 1 / 4;
             width: 100%;
             aspect-ratio: 4 / 3;
             overflow: hidden;
             background-color: #f0f0f0;
-            margin-bottom: 15px;
         }
 
         .image-wrapper img {
@@ -173,17 +190,28 @@
         }
 
         .grid-item-title {
+            grid-column: 2 / 3;
+            grid-row: 1 / 2;
             font-weight: bold;
-            font-size: 1.1rem;
+            font-size: var(--title-font-size);
             margin-bottom: 5px;
             color: #111;
         }
         .grid-item-desc {
-            font-size: 0.9rem;
+            grid-column: 2 / 3;
+            grid-row: 2 / 3;
+            font-size: var(--desc-font-size);
             color: #555;
             line-height: 1.5;
         }
-
+        .grid-item-showmore {
+            grid-column: 2 / 3;
+            grid-row: 3 / 4;
+            font-size: var(--showmore-font-size);
+            color: #111;
+            align-self: end;
+            margin-top: 10px;
+        }
 
         /* -----------------------------------
             SP版（スマホ）でのレスポンシブ対応
@@ -302,7 +330,7 @@
 
     <!-- ジャンル絞り込みリンク -->
     <div class="filter-menu">
-        <a href="design-all.html">all</a>
+        <a href="design-all.html" class="active">all</a>
         <a href="design-architecture.html">architecture</a>
         <a href="design-product.html">product</a>
         <a href="design-graphic.html">graphic</a>
@@ -317,6 +345,7 @@
             </div>
             <div class="grid-item-title">オリンピック島（2021）</div>
             <div class="grid-item-desc">人類がオリンピックを諦めないための海上移動建築群の提案（卒業設計）［共同設計者：兵頭, 松尾］</div>
+            <div class="grid-item-showmore">show more</div>
         </a>
 
         <a href="https://www.sabed.jp/wp/wp-content/uploads/2021/12/20412a9f06321592bd5ab9efdd0f27bc.pdf" class="grid-item">
@@ -325,6 +354,7 @@
             </div>
             <div class="grid-item-title">WINESCAPE IN JAPAN（2022）</div>
             <div class="grid-item-desc">山梨県甲府市をフィールドとして、ブドウ畑とワイナリー建築を環境シミュレーションによって横断的に設計する提案［共同設計者：小川, 豊住, 銅木］</div>
+            <div class="grid-item-showmore">show more</div>
         </a>
 
         <a href="#" class="grid-item">
@@ -333,6 +363,7 @@
             </div>
             <div class="grid-item-title">Rasing and Braiding（2022）</div>
             <div class="grid-item-desc">セネガルをフィールドとして、女性や子どもの力だけで自力建設可能な空間と工法の提案［共同設計者：佐久間, 高塚, 月森, 鄭, 山本］</div>
+            <div class="grid-item-showmore">show more</div>
         </a>
 
         <a href="#" class="grid-item">
@@ -341,6 +372,7 @@
             </div>
             <div class="grid-item-title">四分の二国（2025）</div>
             <div class="grid-item-desc">各種グラフィックのデザインと展示用什器の設計</div>
+            <div class="grid-item-showmore">show more</div>
         </a>
 
         <a href="#" class="grid-item">
@@ -349,6 +381,7 @@
             </div>
             <div class="grid-item-title">Coming Soon</div>
             <div class="grid-item-desc"></div>
+            <div class="grid-item-showmore">show more</div>
         </a>
     </div>
 
