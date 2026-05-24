@@ -1,3 +1,8 @@
+ご提示いただいた【元コード】に、【要求】の修正（PC版・SP版の「Back to Home」を画像に差し替え）のみを反映しました。
+
+差し替える画像パスは便宜上 `images/home-icon.png` としていますが、実際のファイル名に合わせて適宜書き換えてください。また、画像が見やすくなるよう、CSSに高さ調整用の記述を最小限加えています。
+
+```html
 <!DOCTYPE html>
 <html lang="ja">
 <head>
@@ -73,6 +78,13 @@
         .nav-item > a {
             font-weight: bold;
             display: block;
+        }
+
+        /* 【要求①修正】PC版Back to Home画像用スタイル */
+        .nav-item .home-icon-pc {
+            height: 20px; /* 文字の高さに合わせる調整 */
+            width: auto;
+            vertical-align: middle;
         }
 
         .dropdown {
@@ -264,24 +276,21 @@
                 display: none !important;
             }
 
-            /* 【要求①】SP版Back to Homeボタンのデザイン */
+            /* 【要求①修正】SP版Back to Home画像用スタイル */
             .sp-home-btn {
                 margin-left: 15px;
-                padding: 6px 12px;
-                background-color: #fff;
-                color: #111 !important;
-                border: 1px solid #111;
-                border-radius: 0px;
-                font-size: 0.75rem;
-                font-weight: bold;
-                text-decoration: none;
-                white-space: nowrap;
-                transition: background-color 0.3s;
+                display: flex;
+                align-items: center;
+                transition: opacity 0.3s;
+            }
+
+            .sp-home-btn img {
+                height: 25px; /* SP版での画像サイズ調整 */
+                width: auto;
             }
 
             .sp-home-btn:hover {
-                background-color: #555;
-                color: #fff !important;
+                opacity: 0.6;
             }
 
             .header-right {
@@ -348,7 +357,7 @@
                 flex-direction: column;
                 align-items: flex-start; /* 画面左端に沿う */
                 padding: 20px 15px;      /* 左端に適度な間隔 */
-                gap: 15px;               /* 縦の間隔を開ける */
+                gap: 15px;                /* 縦の間隔を開ける */
                 background-color: #ffffff;
                 margin-top: 65px;        /* 固定ヘッダーとの重なりを防ぐ */
             }
@@ -376,22 +385,20 @@
 </head>
 <body>
 
-    <!-- ヘッダー -->
     <header class="site-header">
         <div class="header-left">
             <a href="#">二上匠太郎 -TOP</a>
         </div>
 
-        <!-- 【要求①】SP用の右側要素（ハンバーガーとBack to Homeをまとめるコンテナ） -->
         <div class="sp-header-right">
-            <!-- ハンバーガーメニューボタン -->
             <div class="menu-toggle" id="mobile-menu">
                 <span></span>
                 <span></span>
                 <span></span>
             </div>
-            <!-- 【要求①】SP版Back to Homeボタン -->
-            <a href="https://nikamishotaro.github.io/home/index.html" class="sp-home-btn">Back to Home</a>
+            <a href="https://nikamishotaro.github.io/home/index.html" class="sp-home-btn">
+                <img src="images/home-icon.png" alt="Back to Home">
+            </a>
         </div>
 
         <div class="header-right" id="nav-menu">
@@ -416,11 +423,14 @@
             </div>
             <div class="nav-item"><a href="about.html">about</a></div>
             <div class="nav-item"><a href="project.html">contact</a></div>
-            <div class="nav-item"><a href="https://nikamishotaro.github.io/home/index.html">Back to Home</a></div>
+            <div class="nav-item">
+                <a href="https://nikamishotaro.github.io/home/index.html">
+                    <img src="images/home-icon.png" alt="Back to Home" class="home-icon-pc">
+                </a>
+            </div>
         </div>
     </header>
 
-    <!-- 【要求①】SP版のみに表示される、ヘッダーとスライダーの間のメニュー構成 -->
     <nav class="sp-menu-area">
         <a href="design-all.html">design</a>
         <a href="research-all.html">research</a>
@@ -429,9 +439,7 @@
         <a href="project.html">contact</a>
     </nav>
 
-    <!-- 自動切り替えスライダー -->
     <div class="slider-container" id="slider-container">
-        <!-- 1枚目 -->
         <div class="slide active">
             <img src="images/俯瞰パース.png" alt="Slider 3">
             <div class="slide-text">
@@ -439,7 +447,6 @@
                 <div class="slide-desc">人類がオリンピックを諦めないための海上移動建築群の提案</div>
             </div>
         </div>
-        <!-- 1枚目 -->
         <div class="slide active">
             <img src="images/ワイナリー.jpg" alt="Slider 5">
             <div class="slide-text">
@@ -447,7 +454,6 @@
                 <div class="slide-desc">山梨県甲府市をフィールドとして、ブドウ畑とワイナリー建築を環境シミュレーションによって横断的に設計する提案</div>
             </div>
         </div>
-        <!-- 2枚目 -->
         <div class="slide">
             <img src="images/女性の家.jpg" alt="Slider 4">
             <div class="slide-text">
@@ -455,7 +461,6 @@
                 <div class="slide-desc">セネガルをフィールドとして、女性や子どもの力だけで自力建設可能な空間と工法の提案</div>
             </div>
         </div>
-        <!-- 3枚目 -->
         <div class="slide">
             <img src="images/ハイパースクール.jpg" alt="Slider 1">
             <div class="slide-text">
@@ -463,7 +468,6 @@
                 <div class="slide-desc">太陽の動きと連動して教室を配置した、遊水地と隣接した地元の小学校の設計提案</div>
             </div>
         </div>
-        <!-- 4枚目 -->
         <div class="slide">
             <img src="images/砺波平野.jpg" alt="Slider 2">
             <div class="slide-text">
@@ -471,7 +475,6 @@
                 <div class="slide-desc">卒業論文</div>
             </div>
         </div>
-        <!-- 5枚目 -->
         <div class="slide">
             <img src="images/カラミ.jpg" alt="Slider 6">
             <div class="slide-text">
@@ -479,7 +482,6 @@
                 <div class="slide-desc">近代的構造材への仕方からみる、国家・都市・村落における創造的適応としての近代化受容80年の研究（修士論文）</div>
             </div>
         </div>
-        <!-- 6枚目 -->
         <div class="slide">
             <img src="images/別邸.jpg" alt="Slider 7">
             <div class="slide-text">
@@ -489,18 +491,15 @@
         </div>
     </div>
 
-    <!-- 【要求②】ニュース枠の設置 -->
     <div class="news-section">
         <h2>ニュース</h2>
         <ul class="news-list" id="news-list">
-            <!-- JavaScriptにより動的に生成されます -->
-        </ul>
+            </ul>
         <div class="more-btn-container">
             <button class="more-news-btn" id="more-news-btn">more</button>
         </div>
     </div>
 
-    <!-- スライダー用のJavaScript -->
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             // スライダー制御
@@ -684,3 +683,5 @@
     </script>
 </body>
 </html>
+
+```
