@@ -5,9 +5,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Kim Diehl - nikamishotaro computer</title>
     <style>
+        /* 【追加】共通の変数を:rootで定義し、どこからでも参照できるように修正 */
+        :root {
+            --header-gap-x: 40px; 
+            --header-gap-x-sp: 15px; 
+        }
+
         /* デフォルトの余白をリセット */
-        /* 【要求①】見切れ防止のため、header要素もbox-sizing: border-boxの対象に追加 */
-        body, h1, p, a, div, header {
+        /* 【要求①】見切れ防止のため、header要素もbox-sizing: border-boxの対象に追加。inputやbuttonも追加。 */
+        body, h1, p, a, div, header, input, button {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
@@ -27,9 +33,6 @@
             ヘッダー
         ----------------------------------- */
         .site-header {
-            /* 【要求①】左右の隙間（余白）を後で調整しやすいよう変数として定義 */
-            --header-gap-x: 40px; 
-
             position: fixed;
             top: 0;
             left: 0;
@@ -65,9 +68,17 @@
             align-items: center;
         }
 
+        /* 【要求②③】アイコン用のスタイル */
+        .header-icon {
+            width: 24px;
+            height: 24px;
+            object-fit: contain;
+            display: block;
+        }
+
         .nav-item {
             position: relative;
-            margin-left: 35px;
+            margin-left: 20px; /* アイコン配置に合わせて調整 */
             padding-bottom: 10px;
             margin-bottom: -10px;
         }
@@ -81,7 +92,8 @@
             display: none;
             position: absolute;
             top: 100%;
-            left: -15px;
+            left: auto;
+            right: 0; /* アイコンから見切れないように右揃え */
             background-color: rgba(255, 255, 255, 0.95);
             min-width: 150px;
             box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.05);
@@ -100,45 +112,101 @@
             border-bottom: 1px solid #eee;
         }
 
-        .menu-toggle {
-            display: none;
-            flex-direction: column;
-            justify-content: space-between;
-            width: 30px;
-            height: 20px;
-            cursor: pointer;
-            z-index: 1100;
-            flex-shrink: 0;
-            margin-left: 15px;
-        }
-
-        .menu-toggle span {
-            display: block;
-            height: 2px;
-            width: 100%;
-            background-color: #111;
-            transition: 0.3s;
-        }
-
         /* -----------------------------------
-            検索窓 (PC版：ヘッダー中央)
+            【要求④⑤⑥】検索窓とHot Search (PC/SP共通)
         ----------------------------------- */
+        .search-area-wrapper {
+            margin: 100px auto 30px;
+            width: 100%;
+            max-width: 600px;
+            padding: 0 var(--header-gap-x);
+        }
+
         .search-container {
-            position: fixed;
-            top: 15px;
-            left: 50%;
-            transform: translateX(-50%);
-            z-index: 1001;
-            width: 300px;
+            display: flex;
+            gap: 10px;
+            width: 100%;
+            align-items: stretch;
+        }
+
+        .search-box {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            border: 1px solid #ccc;
+            border-radius: 20px;
+            padding: 5px 15px;
+            background: #fff;
+            overflow-x: auto;
+        }
+
+        .tags-container {
+            display: flex;
+            gap: 5px;
+        }
+
+        .search-tag {
+            background-color: #ffcc99;
+            color: #333;
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-size: 0.85rem;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            white-space: nowrap;
+        }
+
+        .search-tag .remove-tag {
+            cursor: pointer;
+            font-weight: bold;
         }
 
         .search-input {
-            width: 100%;
-            padding: 8px 15px;
-            border: 1px solid #ccc;
-            border-radius: 20px;
-            font-size: 0.9rem;
+            flex: 1;
+            border: none;
             outline: none;
+            min-width: 120px;
+            padding: 5px;
+            font-size: 0.9rem;
+        }
+
+        /* 検索ボタン */
+        .search-btn {
+            padding: 0 20px;
+            border-radius: 20px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+            border: 1px solid #ff6600;
+            background-color: #ffffff;
+            color: #ff6600;
+            white-space: nowrap;
+        }
+
+        .search-btn.active {
+            background-color: #ff6600;
+            color: #ffffff;
+            border: 1px solid #ffffff;
+        }
+
+        /* Hot Search */
+        .hot-search {
+            display: flex;
+            gap: 12px;
+            margin-top: 10px;
+            flex-wrap: wrap;
+            padding: 0 5px;
+        }
+
+        .hot-search-item {
+            font-size: 0.85rem;
+            color: #1da1f2;
+            cursor: pointer;
+            text-decoration: none;
+        }
+        .hot-search-item:hover {
+            text-decoration: underline;
         }
 
         /* -----------------------------------
@@ -146,11 +214,10 @@
         ----------------------------------- */
         .grid-container {
             display: grid;
-            /* 【要求②】PC版：画面幅に合わせて最大6列になるよう設定 */
             grid-template-columns: repeat(6, 1fr);
             gap: 30px;
             padding: 0 40px 60px;
-            margin-top: 100px; /* ジャンル絞り込みリンクを消したため余白を追加 */
+            margin-top: 20px;
         }
 
         /* レスポンシブで最大列数を調整 */
@@ -173,7 +240,6 @@
 
         .image-wrapper {
             width: 100%;
-            /* 【要求②】画像を正方形に修正 */
             aspect-ratio: 1 / 1; 
             overflow: hidden;
             background-color: #f0f0f0;
@@ -197,7 +263,7 @@
         
         .grid-item-hashtag {
             font-size: 0.85rem;
-            color: #1da1f2; /* ハッシュタグらしい色に変更 */
+            color: #1da1f2;
             line-height: 1.4;
         }
 
@@ -206,118 +272,94 @@
         ----------------------------------- */
         @media (max-width: 768px) {
             .site-header {
-                /* 【要求①】SP版用の隙間幅を変数で定義 */
-                --header-gap-x-sp: 15px; 
                 padding: 15px var(--header-gap-x-sp);
             }
 
-            .menu-toggle {
-                display: flex;
-            }
-
+            /* 【要求②】ハンバーガーメニューに伴う全体覆うスライドメニューを解除し、ヘッダー右上に固定 */
             .header-right {
-                position: fixed;
-                top: 0;
-                right: -100%;
-                width: 80%;
-                height: 100vh;
-                background-color: #fff;
-                flex-direction: column;
-                justify-content: flex-start;
-                align-items: flex-start;
-                padding: 80px 40px;
-                transition: 0.4s;
-                box-shadow: -5px 0 15px rgba(0,0,0,0.1);
-                overflow-y: auto;
-            }
-
-            .header-right.active {
-                right: 0;
+                position: static;
+                width: auto;
+                height: auto;
+                background-color: transparent;
+                flex-direction: row;
+                padding: 0;
+                box-shadow: none;
+                overflow: visible;
             }
 
             .nav-item {
-                margin: 0 0 25px 0;
-                width: 100%;
+                margin: 0 0 0 15px;
+                width: auto;
             }
 
             .nav-item > a {
-                font-size: 1.2rem;
-                border-bottom: 1px solid #eee;
-                padding-bottom: 5px;
+                border-bottom: none;
+                padding-bottom: 0;
             }
 
             .dropdown {
-                position: static;
-                display: none;
-                box-shadow: none;
-                border-top: none;
-                padding-left: 20px;
-                background-color: transparent;
+                position: absolute;
+                top: 100%;
+                left: auto;
+                right: 0;
+                background-color: rgba(255, 255, 255, 0.95);
+                box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.05);
+                border-top: 2px solid #111;
+                padding-left: 0;
             }
 
             .nav-item.active .dropdown {
                 display: flex;
             }
 
-            .menu-toggle.active span:nth-child(1) { transform: translateY(9px) rotate(45deg); }
-            .menu-toggle.active span:nth-child(2) { opacity: 0; }
-            .menu-toggle.active span:nth-child(3) { transform: translateY(-9px) rotate(-45deg); }
-
-            /* 【要求④】SP版：検索窓をジャンル絞り込みリンクがあった位置に配置 */
-            .search-container {
-                position: static;
-                transform: none;
-                margin: 80px 15px 20px;
-                width: auto;
+            /* 【要求①】SP版：検索窓の見切れ防止の余白適用 */
+            .search-area-wrapper {
+                margin-top: 80px;
+                padding: 0 var(--header-gap-x-sp);
             }
 
             .grid-container {
-                /* 【要求②】SP版：横に二つ並ぶように変更 */
                 grid-template-columns: repeat(2, 1fr);
                 padding: 0 15px 30px;
                 gap: 15px;
                 margin-top: 0;
             }
         }
-    /* 【要求①】</st>という誤記を修正 */
     </style>
 </head>
 <body>
 
-    <!-- ヘッダー -->
     <header class="site-header">
         <div class="header-left">
-            <!-- 【要求⑤】クリックするとページ上部に自動でスクロールして戻る -->
             <a href="#" onclick="window.scrollTo({top: 0, behavior: 'smooth'}); return false;">Kim Diehl</a>
         </div>
 
-        <div class="menu-toggle" id="mobile-menu">
-            <span></span>
-            <span></span>
-            <span></span>
-        </div>
-
         <div class="header-right" id="nav-menu">
-            <!-- 【要求③④】「design」「research」「about」を削除し、「contact」を「SNS」に変更。「Back to Home」は残す。 -->
             <div class="nav-item has-dropdown">
-                <a href="javascript:void(0)">SNS</a>
+                <a href="javascript:void(0)"><img src="images/sns-icon.png" alt="SNS" class="header-icon"></a>
                 <div class="dropdown">
                     <a href="#">Twitter</a>
                     <a href="#">Instagram</a>
                     <a href="#">note</a>
                 </div>
             </div>
-            <div class="nav-item"><a href="https://nikamishotaro.github.io/home/index.html">Back to Home</a></div>
+            <div class="nav-item">
+                <a href="https://nikamishotaro.github.io/home/index.html"><img src="images/home-icon.png" alt="Back to Home" class="header-icon"></a>
+            </div>
         </div>
     </header>
 
-    <!-- 【要求③④】ジャンル絞り込みリンクをなくし、検索窓を設置 -->
-    <div class="search-container">
-        <input type="text" id="search-input" class="search-input" placeholder="ハッシュタグを検索 (例: #2021)">
+    <div class="search-area-wrapper">
+        <div class="search-container">
+            <div class="search-box">
+                <div id="tags-container" class="tags-container"></div>
+                <input type="text" id="search-input" class="search-input" placeholder="ハッシュタグを検索 (例: 2021)">
+            </div>
+            <button id="search-btn" class="search-btn">search</button>
+        </div>
+        <div class="hot-search" id="hot-search"></div>
     </div>
 
-    <!-- 画像グリッド -->
-    <!-- 【要求②】画像アイコン・タイトル・ハッシュタグのひと塊をリンク化（既存の<a>タグを利用） -->
     <div class="grid-container" id="grid-container">
         <a href="#" class="grid-item">
             <div class="image-wrapper">
@@ -360,20 +402,11 @@
         </a>
     </div>
 
-    <!-- JavaScript -->
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            const mobileMenu = document.getElementById('mobile-menu');
-            const navMenu = document.getElementById('nav-menu');
             const navItems = document.querySelectorAll('.nav-item.has-dropdown');
 
-            // ハンバーガーメニューの開閉
-            mobileMenu.addEventListener('click', () => {
-                mobileMenu.classList.toggle('active');
-                navMenu.classList.toggle('active');
-            });
-
-            // SP版：ドロップダウンメニューの開閉
+            // SP版：ドロップダウンメニューの開閉（ハンバーガーメニュー廃止後もタップ対応として維持）
             navItems.forEach(item => {
                 item.addEventListener('click', (e) => {
                     if (window.innerWidth <= 768) {
@@ -382,20 +415,119 @@
                 });
             });
 
-            // 【要求③④】ハッシュタグの検索機能
+            // 【要求④⑤⑥】再定義したハッシュタグ検索機能
             const searchInput = document.getElementById('search-input');
+            const tagsContainer = document.getElementById('tags-container');
+            const searchBtn = document.getElementById('search-btn');
+            const hotSearchContainer = document.getElementById('hot-search');
             const gridItems = document.querySelectorAll('.grid-item');
+            
+            let availableTags = [];
+            let selectedTags = [];
+            const tagCounts = {};
 
-            searchInput.addEventListener('input', function() {
-                const query = this.value.trim().toLowerCase();
+            // ページ内のハッシュタグを抽出し、検索可能タグと出現頻度を集計
+            gridItems.forEach(item => {
+                const hashtagElem = item.querySelector('.grid-item-hashtag');
+                if (hashtagElem) {
+                    const text = hashtagElem.textContent;
+                    // #で分割して前後の空白を除去
+                    const tags = text.split('#').map(t => t.trim()).filter(t => t !== '');
+                    tags.forEach(t => {
+                        if(!availableTags.includes(t)) {
+                            availableTags.push(t);
+                        }
+                        tagCounts[t] = (tagCounts[t] || 0) + 1;
+                    });
+                }
+            });
 
+            // 【要求⑥】Hot Search (出現頻度上位5つを配置)
+            const sortedTags = Object.keys(tagCounts).sort((a, b) => tagCounts[b] - tagCounts[a]).slice(0, 5);
+            sortedTags.forEach(t => {
+                const span = document.createElement('span');
+                span.className = 'hot-search-item';
+                span.textContent = '#' + t;
+                span.addEventListener('click', () => {
+                    if (!selectedTags.includes(t)) {
+                        addTag(t);
+                    }
+                });
+                hotSearchContainer.appendChild(span);
+            });
+
+            // 検索window内にハッシュタグを描画
+            function renderTags() {
+                tagsContainer.innerHTML = '';
+                selectedTags.forEach(t => {
+                    const tagEl = document.createElement('div');
+                    tagEl.className = 'search-tag';
+                    // 語頭に「#」、語尾に「×」を付与
+                    tagEl.innerHTML = `<span>#${t}</span> <span class="remove-tag">×</span>`;
+                    tagEl.querySelector('.remove-tag').addEventListener('click', (e) => {
+                        e.stopPropagation(); // 親へのイベント伝播を防ぐ
+                        removeTag(t);
+                    });
+                    tagsContainer.appendChild(tagEl);
+                });
+                updateSearchState(); // タグ増減時にヒット数を再計算
+            }
+
+            function addTag(tag) {
+                selectedTags.push(tag);
+                renderTags();
+            }
+
+            function removeTag(tag) {
+                selectedTags = selectedTags.filter(t => t !== tag);
+                renderTags();
+            }
+
+            // 【要求⑤】検索ボタン押下前のヒット数表示とボタンのスタイリング変更
+            function updateSearchState() {
+                if (selectedTags.length === 0) {
+                    searchBtn.textContent = 'search';
+                    searchBtn.className = 'search-btn';
+                } else {
+                    let hits = 0;
+                    gridItems.forEach(item => {
+                        const hashtagElem = item.querySelector('.grid-item-hashtag');
+                        if (hashtagElem) {
+                            const itemTags = hashtagElem.textContent;
+                            // 複数タグでの絞り込み(AND検索)
+                            const isMatch = selectedTags.every(st => itemTags.includes('#' + st));
+                            if (isMatch) hits++;
+                        }
+                    });
+                    searchBtn.textContent = hits + ' hit';
+                    searchBtn.className = 'search-btn active';
+                }
+            }
+
+            // 【要求④】文字入力時に検索可能タグであれば自動でタグに変換して充填
+            searchInput.addEventListener('input', (e) => {
+                let val = e.target.value.trim();
+                // ユーザーが手動で#を入力した場合は除去して判定
+                if(val.startsWith('#')) val = val.substring(1);
+                
+                // 完全一致かつまだ選択されていないタグの場合に充填
+                if (availableTags.includes(val) && !selectedTags.includes(val)) {
+                    addTag(val);
+                    e.target.value = ''; // 入力窓をクリア
+                }
+            });
+
+            // 検索ボタン押下時に表示の絞り込みを実行
+            searchBtn.addEventListener('click', () => {
                 gridItems.forEach(item => {
-                    const hashtagElem = item.querySelector('.grid-item-hashtag');
-                    if (hashtagElem) {
-                        const hashtagsText = hashtagElem.textContent.toLowerCase();
-                        // 検索窓の文字がハッシュタグの内容に含まれているか判定
-                        if (hashtagsText.includes(query)) {
-                            item.style.display = 'block';
+                    if (selectedTags.length === 0) {
+                        item.style.display = 'block';
+                    } else {
+                        const hashtagElem = item.querySelector('.grid-item-hashtag');
+                        if (hashtagElem) {
+                            const itemTags = hashtagElem.textContent;
+                            const isMatch = selectedTags.every(st => itemTags.includes('#' + st));
+                            item.style.display = isMatch ? 'block' : 'none';
                         } else {
                             item.style.display = 'none';
                         }
