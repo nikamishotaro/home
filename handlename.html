@@ -122,6 +122,21 @@
             padding: 0 var(--header-gap-x);
         }
 
+        /* 【追加・要求③】ソートUI用スタイル */
+        .sort-container {
+            display: flex;
+            justify-content: flex-end;
+            margin-bottom: 10px;
+        }
+
+        .sort-select {
+            padding: 5px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            font-size: 0.85rem;
+            outline: none;
+        }
+
         .search-container {
             display: flex;
             gap: 10px;
@@ -220,6 +235,17 @@
             margin-top: 20px;
         }
 
+        /* 【追加・要求④】年区切りヘッダー用スタイル */
+        .year-divider {
+            grid-column: 1 / -1;
+            font-size: 1.5rem;
+            font-weight: bold;
+            border-bottom: 2px solid #eee;
+            padding-bottom: 5px;
+            margin-top: 15px;
+            margin-bottom: 10px;
+        }
+
         /* レスポンシブで最大列数を調整 */
         @media (max-width: 1200px) {
             .grid-container { grid-template-columns: repeat(4, 1fr); }
@@ -254,11 +280,32 @@
             transition: transform 0.3s ease;
         }
 
+        /* 【追加・要求②】タイトルと閲覧数を横並びにするためのコンテナスタイル */
+        .grid-item-title-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 5px;
+        }
+
         .grid-item-title {
             font-weight: bold;
             font-size: 1.1rem;
-            margin-bottom: 5px;
             color: #111;
+        }
+
+        /* 【追加・要求②】閲覧数表示のスタイル */
+        .view-count {
+            display: flex;
+            align-items: center;
+            font-size: 0.85rem;
+            color: #666;
+        }
+
+        .view-count img.eye-icon {
+            width: 16px;
+            height: auto;
+            margin-right: 4px;
         }
         
         .grid-item-hashtag {
@@ -319,11 +366,30 @@
             }
 
             .grid-container {
+                /* デフォルト設定は維持しつつ、JS付与のクラスで上書きします */
                 grid-template-columns: repeat(2, 1fr);
                 padding: 0 15px 30px;
                 gap: 15px;
                 margin-top: 0;
             }
+
+            /* 【追加・要求⑤】SP版ピンチズーム状態ごとのレイアウト設定 */
+            .grid-container.zoom-0 { grid-template-columns: 1fr; gap: 20px; }
+            .grid-container.zoom-1 { grid-template-columns: repeat(3, 1fr); gap: 10px; }
+            .grid-container.zoom-2 { grid-template-columns: repeat(5, 1fr); gap: 5px; }
+            .grid-container.zoom-3 { grid-template-columns: repeat(11, 1fr); gap: 2px; }
+
+            /* 要素の表示非表示制御 */
+            .grid-container.zoom-3 .grid-item-title-container,
+            .grid-container.zoom-3 .grid-item-hashtag { display: none !important; }
+
+            .grid-container.zoom-2 .grid-item-hashtag,
+            .grid-container.zoom-2 .view-count { display: none !important; }
+            .grid-container.zoom-2 .grid-item-title { font-size: 0.7rem; }
+
+            .grid-container.zoom-1 .grid-item-hashtag { display: none !important; }
+            .grid-container.zoom-1 .grid-item-title { font-size: 0.8rem; }
+            .grid-container.zoom-1 .view-count { font-size: 0.7rem; }
         }
     </style>
 </head>
@@ -350,10 +416,18 @@
     </header>
 
     <div class="search-area-wrapper">
+        <div class="sort-container">
+            <select id="sort-select" class="sort-select">
+                <option value="date-desc">新しい順</option>
+                <option value="date-asc">古い順</option>
+                <option value="view-desc">閲覧が多い順</option>
+                <option value="view-asc">閲覧が少ない順</option>
+            </select>
+        </div>
         <div class="search-container">
             <div class="search-box">
                 <div id="tags-container" class="tags-container"></div>
-                <input type="text" id="search-input" class="search-input" placeholder="ハッシュタグを検索 (例: 2021)">
+                <input type="text" id="search-input" class="search-input" placeholder="ハッシュタグ・年を検索 (例: 2021)">
             </div>
             <button id="search-btn" class="search-btn">search</button>
         </div>
@@ -361,43 +435,73 @@
     </div>
 
     <div class="grid-container" id="grid-container">
-        <a href="#" class="grid-item">
+        <a href="#" class="grid-item" data-id="item-1" data-date="2021-08-01">
             <div class="image-wrapper">
                 <img src="images/俯瞰パース.png" alt="オリンピック島">
             </div>
-            <div class="grid-item-title">オリンピック島（2021）</div>
+            <div class="grid-item-title-container">
+                <div class="grid-item-title">オリンピック島（2021）</div>
+                <div class="view-count">
+                    <img src="images/eye-icon.png" alt="views" class="eye-icon">
+                    <span class="view-number">0</span>
+                </div>
+            </div>
             <div class="grid-item-hashtag">#オリンピック #2021 #海上建築</div>
         </a>
 
-        <a href="https://www.sabed.jp/wp/wp-content/uploads/2021/12/20412a9f06321592bd5ab9efdd0f27bc.pdf" class="grid-item">
+        <a href="https://www.sabed.jp/wp/wp-content/uploads/2021/12/20412a9f06321592bd5ab9efdd0f27bc.pdf" class="grid-item" data-id="item-2" data-date="2022-10-01">
             <div class="image-wrapper">
                 <img src="images/ワイナリー.jpg" alt="WINE SCAPE IN JAPAN">
             </div>
-            <div class="grid-item-title">WINESCAPE IN JAPAN（2022）</div>
+            <div class="grid-item-title-container">
+                <div class="grid-item-title">WINESCAPE IN JAPAN（2022）</div>
+                <div class="view-count">
+                    <img src="images/eye-icon.png" alt="views" class="eye-icon">
+                    <span class="view-number">0</span>
+                </div>
+            </div>
             <div class="grid-item-hashtag">#2022 #環境 #シミュレーション #ワイナリー</div>
         </a>
 
-        <a href="#" class="grid-item">
+        <a href="#" class="grid-item" data-id="item-3" data-date="2022-04-15">
             <div class="image-wrapper">
                 <img src="images/女性の家.jpg" alt="女性の家">
             </div>
-            <div class="grid-item-title">Rasing and Braiding（2022）</div>
+            <div class="grid-item-title-container">
+                <div class="grid-item-title">Rasing and Braiding（2022）</div>
+                <div class="view-count">
+                    <img src="images/eye-icon.png" alt="views" class="eye-icon">
+                    <span class="view-number">0</span>
+                </div>
+            </div>
             <div class="grid-item-hashtag">#2022 #セネガル #自力建設 #空間工法</div>
         </a>
 
-        <a href="#" class="grid-item">
+        <a href="#" class="grid-item" data-id="item-4" data-date="2025-01-01">
             <div class="image-wrapper">
                 <img src="images/別邸.jpg" alt="別邸">
             </div>
-            <div class="grid-item-title">四分の二国（2025）</div>
+            <div class="grid-item-title-container">
+                <div class="grid-item-title">四分の二国（2025）</div>
+                <div class="view-count">
+                    <img src="images/eye-icon.png" alt="views" class="eye-icon">
+                    <span class="view-number">0</span>
+                </div>
+            </div>
             <div class="grid-item-hashtag">#2025 #グラフィック #展示什器</div>
         </a>
 
-        <a href="#" class="grid-item">
+        <a href="#" class="grid-item" data-id="item-5" data-date="2026-01-01">
             <div class="image-wrapper">
                 <img src="images/ダミー画像.jpg" alt="その他のプロジェクト">
             </div>
-            <div class="grid-item-title">Coming Soon</div>
+            <div class="grid-item-title-container">
+                <div class="grid-item-title">Coming Soon</div>
+                <div class="view-count">
+                    <img src="images/eye-icon.png" alt="views" class="eye-icon">
+                    <span class="view-number">0</span>
+                </div>
+            </div>
             <div class="grid-item-hashtag">#未分類</div>
         </a>
     </div>
@@ -406,7 +510,7 @@
         document.addEventListener('DOMContentLoaded', () => {
             const navItems = document.querySelectorAll('.nav-item.has-dropdown');
 
-            // SP版：ドロップダウンメニューの開閉（ハンバーガーメニュー廃止後もタップ対応として維持）
+            // SP版：ドロップダウンメニューの開閉
             navItems.forEach(item => {
                 item.addEventListener('click', (e) => {
                     if (window.innerWidth <= 768) {
@@ -415,23 +519,47 @@
                 });
             });
 
-            // 【要求④⑤⑥】再定義したハッシュタグ検索機能
             const searchInput = document.getElementById('search-input');
             const tagsContainer = document.getElementById('tags-container');
             const searchBtn = document.getElementById('search-btn');
             const hotSearchContainer = document.getElementById('hot-search');
+            const gridContainer = document.getElementById('grid-container');
             const gridItems = document.querySelectorAll('.grid-item');
+            
+            // DOMの要素を配列として保持（並び替え・再描画用）
+            const itemsArray = Array.from(gridItems);
+
+            // 【追加・要求②】閲覧数の初期化とクリック時のカウントアップ（LocalStorageによる簡易DB化）
+            const DB_KEY_PREFIX = 'kim_diehl_views_';
+            itemsArray.forEach(item => {
+                const id = item.dataset.id;
+                let views = parseInt(localStorage.getItem(DB_KEY_PREFIX + id) || '0');
+                item.dataset.views = views;
+                item.querySelector('.view-number').textContent = views;
+
+                item.addEventListener('click', () => {
+                    views++;
+                    localStorage.setItem(DB_KEY_PREFIX + id, views);
+                    item.dataset.views = views;
+                    item.querySelector('.view-number').textContent = views;
+                });
+            });
             
             let availableTags = [];
             let selectedTags = [];
             const tagCounts = {};
 
-            // ページ内のハッシュタグを抽出し、検索可能タグと出現頻度を集計
-            gridItems.forEach(item => {
+            // ページ内のハッシュタグと「年」を抽出し、検索可能タグと出現頻度を集計
+            itemsArray.forEach(item => {
                 const hashtagElem = item.querySelector('.grid-item-hashtag');
+                // 【追加・要求①】data-date から年を抽出し、検索可能タグに追加（頻度集計からは除外）
+                const year = item.dataset.date ? item.dataset.date.split('-')[0] : '';
+                if (year && !availableTags.includes(year)) {
+                    availableTags.push(year);
+                }
+
                 if (hashtagElem) {
                     const text = hashtagElem.textContent;
-                    // #で分割して前後の空白を除去
                     const tags = text.split('#').map(t => t.trim()).filter(t => t !== '');
                     tags.forEach(t => {
                         if(!availableTags.includes(t)) {
@@ -462,15 +590,14 @@
                 selectedTags.forEach(t => {
                     const tagEl = document.createElement('div');
                     tagEl.className = 'search-tag';
-                    // 語頭に「#」、語尾に「×」を付与
                     tagEl.innerHTML = `<span>#${t}</span> <span class="remove-tag">×</span>`;
                     tagEl.querySelector('.remove-tag').addEventListener('click', (e) => {
-                        e.stopPropagation(); // 親へのイベント伝播を防ぐ
+                        e.stopPropagation(); 
                         removeTag(t);
                     });
                     tagsContainer.appendChild(tagEl);
                 });
-                updateSearchState(); // タグ増減時にヒット数を再計算
+                updateSearchState(); 
             }
 
             function addTag(tag) {
@@ -483,57 +610,155 @@
                 renderTags();
             }
 
-            // 【要求⑤】検索ボタン押下前のヒット数表示とボタンのスタイリング変更
+            // 検索ボタン押下前のヒット数表示
             function updateSearchState() {
                 if (selectedTags.length === 0) {
                     searchBtn.textContent = 'search';
                     searchBtn.className = 'search-btn';
                 } else {
                     let hits = 0;
-                    gridItems.forEach(item => {
+                    itemsArray.forEach(item => {
                         const hashtagElem = item.querySelector('.grid-item-hashtag');
-                        if (hashtagElem) {
-                            const itemTags = hashtagElem.textContent;
-                            // 複数タグでの絞り込み(AND検索)
-                            const isMatch = selectedTags.every(st => itemTags.includes('#' + st));
-                            if (isMatch) hits++;
-                        }
+                        const itemTags = hashtagElem ? hashtagElem.textContent : '';
+                        const itemYear = item.dataset.date ? item.dataset.date.split('-')[0] : '';
+                        // 【追加・要求①】選択タグがハッシュタグに含まれるか、年に一致する場合にヒット判定
+                        const isMatch = selectedTags.every(st => itemTags.includes('#' + st) || itemYear === st);
+                        if (isMatch) hits++;
                     });
                     searchBtn.textContent = hits + ' hit';
                     searchBtn.className = 'search-btn active';
                 }
             }
 
-            // 【要求④】文字入力時に検索可能タグであれば自動でタグに変換して充填
+            // 文字入力時に検索可能タグであれば自動でタグに変換して充填
             searchInput.addEventListener('input', (e) => {
                 let val = e.target.value.trim();
-                // ユーザーが手動で#を入力した場合は除去して判定
                 if(val.startsWith('#')) val = val.substring(1);
                 
-                // 完全一致かつまだ選択されていないタグの場合に充填
                 if (availableTags.includes(val) && !selectedTags.includes(val)) {
                     addTag(val);
-                    e.target.value = ''; // 入力窓をクリア
+                    e.target.value = ''; 
                 }
             });
 
-            // 検索ボタン押下時に表示の絞り込みを実行
-            searchBtn.addEventListener('click', () => {
-                gridItems.forEach(item => {
-                    if (selectedTags.length === 0) {
-                        item.style.display = 'block';
-                    } else {
-                        const hashtagElem = item.querySelector('.grid-item-hashtag');
-                        if (hashtagElem) {
-                            const itemTags = hashtagElem.textContent;
-                            const isMatch = selectedTags.every(st => itemTags.includes('#' + st));
-                            item.style.display = isMatch ? 'block' : 'none';
-                        } else {
-                            item.style.display = 'none';
-                        }
+
+            // 【追加・要求③,④】表示の絞り込み、ソート、年区切りの描画を行う統合関数
+            function updateGrid() {
+                const sortValue = document.getElementById('sort-select').value;
+                
+                // 1. 指定順序で配列をソート
+                itemsArray.sort((a, b) => {
+                    if (sortValue === 'date-desc') {
+                        return new Date(b.dataset.date) - new Date(a.dataset.date);
+                    } else if (sortValue === 'date-asc') {
+                        return new Date(a.dataset.date) - new Date(b.dataset.date);
+                    } else if (sortValue === 'view-desc') {
+                        return parseInt(b.dataset.views) - parseInt(a.dataset.views);
+                    } else if (sortValue === 'view-asc') {
+                        return parseInt(a.dataset.views) - parseInt(b.dataset.views);
                     }
                 });
+
+                // 2. DOMをクリア
+                gridContainer.innerHTML = '';
+                let currentYear = '';
+
+                // 3. フィルタ適用と再配置
+                itemsArray.forEach(item => {
+                    const hashtagElem = item.querySelector('.grid-item-hashtag');
+                    const itemTags = hashtagElem ? hashtagElem.textContent : '';
+                    const itemYear = item.dataset.date ? item.dataset.date.split('-')[0] : '';
+                    
+                    let isMatch = true;
+                    if (selectedTags.length > 0) {
+                        isMatch = selectedTags.every(st => itemTags.includes('#' + st) || itemYear === st);
+                    }
+                    item.style.display = isMatch ? 'block' : 'none';
+
+                    // 表示対象であり、かつ時系列ソートが選ばれている場合のみ年区切りヘッダーを挿入
+                    if (isMatch) {
+                        if (sortValue.startsWith('date')) {
+                            if (itemYear !== currentYear) {
+                                const divider = document.createElement('div');
+                                divider.className = 'year-divider';
+                                divider.textContent = itemYear + '年';
+                                gridContainer.appendChild(divider);
+                                currentYear = itemYear;
+                            }
+                        }
+                    }
+                    gridContainer.appendChild(item);
+                });
+            }
+
+            // ソート順変更時、検索ボタン押下時に再描画を実行
+            document.getElementById('sort-select').addEventListener('change', updateGrid);
+            searchBtn.addEventListener('click', updateGrid);
+
+
+            // --------------------------------------------------
+            // 【追加・要求⑤】SP版のピンチイン/ピンチアウト実装
+            // --------------------------------------------------
+            // 0: 横1個 (最小), 1: 横3個, 2: 横5個, 3: 横11個 (最大)
+            let currentZoom = 1; 
+            let initialDistance = null;
+            let isZooming = false;
+            const zoomThreshold = 40; // スワイプ（ピンチ）の判定感度
+
+            if (window.innerWidth <= 768) {
+                // 初期状態を横3列にセット（iPhone写真アプリ風の標準的な見た目）
+                gridContainer.className = 'grid-container zoom-' + currentZoom;
+            }
+
+            document.addEventListener('touchstart', (e) => {
+                if (e.touches.length === 2 && window.innerWidth <= 768) {
+                    initialDistance = Math.hypot(
+                        e.touches[0].pageX - e.touches[1].pageX,
+                        e.touches[0].pageY - e.touches[1].pageY
+                    );
+                    isZooming = true;
+                }
+            }, {passive: false});
+
+            document.addEventListener('touchmove', (e) => {
+                if (isZooming && e.touches.length === 2 && window.innerWidth <= 768) {
+                    e.preventDefault(); // デフォルトのピンチズーム挙動を抑制
+                    const currentDistance = Math.hypot(
+                        e.touches[0].pageX - e.touches[1].pageX,
+                        e.touches[0].pageY - e.touches[1].pageY
+                    );
+
+                    if (initialDistance) {
+                        const diff = currentDistance - initialDistance;
+                        if (diff > zoomThreshold) {
+                            // ピンチアウト (指を広げる = 拡大して列数を減らす)
+                            changeZoom(-1);
+                            initialDistance = currentDistance;
+                        } else if (diff < -zoomThreshold) {
+                            // ピンチイン (指を狭める = 縮小して列数を増やす)
+                            changeZoom(1);
+                            initialDistance = currentDistance;
+                        }
+                    }
+                }
+            }, {passive: false});
+
+            document.addEventListener('touchend', (e) => {
+                if (e.touches.length < 2) {
+                    isZooming = false;
+                    initialDistance = null;
+                }
             });
+
+            function changeZoom(dir) {
+                currentZoom += dir;
+                if (currentZoom < 0) currentZoom = 0; // 最小 (横1個)
+                if (currentZoom > 3) currentZoom = 3; // 最大 (横11個)
+                gridContainer.className = 'grid-container zoom-' + currentZoom;
+            }
+
+            // 初期ロード時のリスト表示実行
+            updateGrid();
         });
     </script>
 </body>
