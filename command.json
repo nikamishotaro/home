@@ -1,0 +1,12 @@
+{
+  "name": "post",
+  "description": "HPに記事を投稿します",
+  "options": [
+    {
+      "name": "content",
+      "description": "投稿するテキストを入力",
+      "type": 3,
+      "required": true
+    }
+  ]
+}
