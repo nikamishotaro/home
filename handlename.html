@@ -1,889 +1,435 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kim Diehl - nikamishotaro computer</title>
-    <style>
-        /* 【追加】共通の変数を:rootで定義し、どこからでも参照できるように修正 */
-        :root {
-            --header-gap-x: 40px; 
-            --header-gap-x-sp: 15px; 
-        }
-
-        /* デフォルトの余白をリセット */
-        /* 【要求①】見切れ防止のため、header要素もbox-sizing: border-boxの対象に追加。inputやbuttonも追加。 */
-        body, h1, p, a, div, header, input, button {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        
-        /* 【要求⑤】スムーズなスクロールのための設定 */
-        html {
-            scroll-behavior: smooth;
-        }
-
-        body {
-            font-family: "Helvetica Neue", Arial, "Hiragino Kaku Gothic ProN", "Hiragino Sans", Meiryo, sans-serif;
-            background-color: #ffffff;
-        }
-
-        /* -----------------------------------
-            ヘッダー
-        ----------------------------------- */
-        .site-header {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            background-color: rgba(255, 255, 255, 0.85); 
-            backdrop-filter: blur(5px);
-            z-index: 1000;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            /* 定義した変数を使用して左右のパディングを設定 */
-            padding: 20px var(--header-gap-x);
-        }
-
-        .site-header a {
-            text-decoration: none;
-            color: #111;
-            font-size: 0.9rem;
-            transition: color 0.3s;
-        }
-
-        .site-header a:hover {
-            color: #888;
-        }
-
-        .header-left a {
-            font-weight: bold;
-            font-size: 1.1rem;
-        }
-
-        .header-right {
-            display: flex;
-            align-items: center;
-        }
-
-        /* 【要求②③】アイコン用のスタイル */
-        .header-icon {
-            width: 24px;
-            height: 24px;
-            object-fit: contain;
-            display: block;
-        }
-
-        .nav-item {
-            position: relative;
-            margin-left: 20px; /* アイコン配置に合わせて調整 */
-            padding-bottom: 10px;
-            margin-bottom: -10px;
-        }
-
-        .nav-item > a {
-            font-weight: bold;
-            display: block;
-        }
-
-        .dropdown {
-            display: none;
-            position: absolute;
-            top: 100%;
-            left: auto;
-            right: 0; /* アイコンから見切れないように右揃え */
-            background-color: rgba(255, 255, 255, 0.95);
-            min-width: 150px;
-            box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.05);
-            flex-direction: column;
-            border-top: 2px solid #111;
-        }
-
-        .nav-item.has-dropdown:hover .dropdown {
-            display: flex;
-        }
-
-        .dropdown a {
-            padding: 12px 15px;
-            font-size: 0.85rem;
-            font-weight: normal;
-            border-bottom: 1px solid #eee;
-        }
-
-        /* -----------------------------------
-            【要求④⑤⑥】検索窓とHot Search (PC/SP共通)
-        ----------------------------------- */
-        .search-area-wrapper {
-            margin: 100px auto 30px;
-            width: 100%;
-            max-width: 600px;
-            padding: 0 var(--header-gap-x);
-        }
-
-        /* 【追加・要求③】ソートUI用スタイル */
-        .sort-container {
-            display: flex;
-            justify-content: flex-end;
-            margin-bottom: 10px;
-        }
-
-        .sort-select {
-            padding: 5px;
-            border-radius: 5px;
-            border: 1px solid #ccc;
-            font-size: 0.85rem;
-            outline: none;
-        }
-
-        .search-container {
-            display: flex;
-            gap: 10px;
-            width: 100%;
-            align-items: stretch;
-        }
-
-        .search-box {
-            flex: 1;
-            display: flex;
-            align-items: center;
-            border: 1px solid #ccc;
-            border-radius: 20px;
-            padding: 5px 15px;
-            background: #fff;
-            overflow-x: auto;
-        }
-
-        .tags-container {
-            display: flex;
-            gap: 5px;
-        }
-
-        .search-tag {
-            background-color: #ffcc99;
-            color: #333;
-            padding: 2px 8px;
-            border-radius: 10px;
-            font-size: 0.85rem;
-            display: flex;
-            align-items: center;
-            gap: 5px;
-            white-space: nowrap;
-        }
-
-        .search-tag .remove-tag {
-            cursor: pointer;
-            font-weight: bold;
-        }
-
-        .search-input {
-            flex: 1;
-            border: none;
-            outline: none;
-            min-width: 120px;
-            padding: 5px;
-            font-size: 0.9rem;
-        }
-
-        /* 検索ボタン */
-        .search-btn {
-            padding: 0 20px;
-            border-radius: 20px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: 0.3s;
-            border: 1px solid #ff6600;
-            background-color: #ffffff;
-            color: #ff6600;
-            white-space: nowrap;
-        }
-
-        .search-btn.active {
-            background-color: #ff6600;
-            color: #ffffff;
-            border: 1px solid #ffffff;
-        }
-
-        /* Hot Search */
-        .hot-search {
-            display: flex;
-            gap: 12px;
-            margin-top: 10px;
-            flex-wrap: wrap;
-            padding: 0 5px;
-        }
-
-        .hot-search-item {
-            font-size: 0.85rem;
-            color: #1da1f2;
-            cursor: pointer;
-            text-decoration: none;
-        }
-        .hot-search-item:hover {
-            text-decoration: underline;
-        }
-
-        /* -----------------------------------
-            画像グリッドレイアウト
-        ----------------------------------- */
-        .grid-container {
-            display: grid;
-            grid-template-columns: repeat(6, 1fr);
-            gap: 30px;
-            padding: 0 40px 60px;
-            margin-top: 20px;
-        }
-
-        /* 【追加・要求④】年区切りヘッダー用スタイル */
-        .year-divider {
-            grid-column: 1 / -1;
-            font-size: 1.5rem;
-            font-weight: bold;
-            border-bottom: 2px solid #eee;
-            padding-bottom: 5px;
-            margin-top: 15px;
-            margin-bottom: 10px;
-        }
-
-        /* レスポンシブで最大列数を調整 */
-        @media (max-width: 1200px) {
-            .grid-container { grid-template-columns: repeat(4, 1fr); }
-        }
-        @media (max-width: 992px) {
-            .grid-container { grid-template-columns: repeat(3, 1fr); }
-        }
-
-        .grid-item {
-            text-decoration: none;
-            display: block;
-            color: inherit;
-        }
-
-        .grid-item:hover .image-wrapper img {
-            transform: scale(1.05);
-        }
-
-        .image-wrapper {
-            width: 100%;
-            aspect-ratio: 1 / 1; 
-            overflow: hidden;
-            background-color: #f0f0f0;
-            margin-bottom: 15px;
-        }
-
-        .image-wrapper img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            display: block;
-            transition: transform 0.3s ease;
-        }
-
-        /* 【追加・要求②】タイトルと閲覧数を横並びにするためのコンテナスタイル */
-        .grid-item-title-container {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 5px;
-        }
-
-        .grid-item-title {
-            font-weight: bold;
-            font-size: 1.1rem;
-            color: #111;
-        }
-
-        /* 【追加・要求②】閲覧数表示のスタイル */
-        .view-count {
-            display: flex;
-            align-items: center;
-            font-size: 0.85rem;
-            color: #666;
-        }
-
-        .view-count img.eye-icon {
-            width: 16px;
-            height: auto;
-            margin-right: 4px;
-        }
-        
-        .grid-item-hashtag {
-            font-size: 0.85rem;
-            color: #1da1f2;
-            line-height: 1.4;
-        }
-
-        /* -----------------------------------
-            SP版（スマホ）でのレスポンシブ対応
-        ----------------------------------- */
-        @media (max-width: 768px) {
-            .site-header {
-                padding: 15px var(--header-gap-x-sp);
-            }
-
-            /* 【要求②】ハンバーガーメニューに伴う全体覆うスライドメニューを解除し、ヘッダー右上に固定 */
-            .header-right {
-                position: static;
-                width: auto;
-                height: auto;
-                background-color: transparent;
-                flex-direction: row;
-                padding: 0;
-                box-shadow: none;
-                overflow: visible;
-            }
-
-            .nav-item {
-                margin: 0 0 0 15px;
-                width: auto;
-            }
-
-            .nav-item > a {
-                border-bottom: none;
-                padding-bottom: 0;
-            }
-
-            .dropdown {
-                position: absolute;
-                top: 100%;
-                left: auto;
-                right: 0;
-                background-color: rgba(255, 255, 255, 0.95);
-                box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.05);
-                border-top: 2px solid #111;
-                padding-left: 0;
-            }
-
-            .nav-item.active .dropdown {
-                display: flex;
-            }
-
-            /* 【要求①】SP版：検索窓の見切れ防止の余白適用 */
-            .search-area-wrapper {
-                margin-top: 80px;
-                padding: 0 var(--header-gap-x-sp);
-            }
-
-            .grid-container {
-                /* デフォルト設定は維持しつつ、JS付与のクラスで上書きします */
-                grid-template-columns: repeat(2, 1fr);
-                padding: 0 15px 30px;
-                gap: 15px;
-                margin-top: 0;
-            }
-
-            /* 【追加・要求⑤】SP版ピンチズーム状態ごとのレイアウト設定 */
-            .grid-container.zoom-0 { grid-template-columns: 1fr; gap: 20px; }
-            .grid-container.zoom-1 { grid-template-columns: repeat(3, 1fr); gap: 10px; }
-            .grid-container.zoom-2 { grid-template-columns: repeat(5, 1fr); gap: 5px; }
-            .grid-container.zoom-3 { grid-template-columns: repeat(11, 1fr); gap: 2px; }
-
-            /* 要素の表示非表示制御 */
-            .grid-container.zoom-3 .grid-item-title-container,
-            .grid-container.zoom-3 .grid-item-hashtag { display: none !important; }
-
-            .grid-container.zoom-2 .grid-item-hashtag,
-            .grid-container.zoom-2 .view-count { display: none !important; }
-            .grid-container.zoom-2 .grid-item-title { font-size: 0.7rem; }
-
-            .grid-container.zoom-1 .grid-item-hashtag { display: none !important; }
-            .grid-container.zoom-1 .grid-item-title { font-size: 0.8rem; }
-            .grid-container.zoom-1 .view-count { font-size: 0.7rem; }
-        }
-
-        /* -----------------------------------
-            【追加】モーダル用スタイル
-        ----------------------------------- */
-        .modal {
-            display: none;
-            position: fixed;
-            z-index: 2000;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.8);
-            justify-content: center;
-            align-items: center;
-            flex-direction: column; /* 【追加】画像とテキストを縦並びにするため */
-        }
-
-        .modal-content {
-            max-width: 90%;
-            max-height: 80%; /* 【変更】90%から80%に変更（テキスト用のスペース確保） */
-            object-fit: contain;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.5);
-        }
-
-        /* 【追加】モーダル内テキストのスタイル */
-        .modal-text {
-            color: #fff;
-            margin-top: 15px;
-            font-size: 1rem;
-            max-width: 90%;
-            text-align: center;
-            white-space: pre-wrap;
-            line-height: 1.5;
-        }
-
-        .modal-close {
-            position: absolute;
-            top: 20px;
-            right: 30px;
-            color: #fff;
-            font-size: 40px;
-            font-weight: bold;
-            cursor: pointer;
-            z-index: 2001;
-            transition: color 0.3s;
-        }
-
-        .modal-close:hover {
-            color: #ccc;
-        }
-    </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kim Diehl - nikamishotaro computer</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-    <header class="site-header">
-        <div class="header-left">
-            <a href="#" onclick="window.scrollTo({top: 0, behavior: 'smooth'}); return false;">Kim Diehl</a>
-        </div>
+    <header class="site-header">
+        <div class="header-left">
+            <a href="#" onclick="window.scrollTo({top: 0, behavior: 'smooth'}); return false;">Kim Diehl</a>
+        </div>
 
-        <div id="post-list">
-            <p>記事を読み込んでいます...</p>
-        </div>
+        <div id="post-list">
+            <p>記事を読み込んでいます...</p>
+        </div>
 
-        <div class="header-right" id="nav-menu">
-            <div class="nav-item has-dropdown">
-                <a href="javascript:void(0)"><img src="images/sns-icon.png" alt="SNS" class="header-icon"></a>
-                <div class="dropdown">
-                    <a href="#">Twitter</a>
-                    <a href="#">Instagram</a>
-                    <a href="#">note</a>
-                </div>
-            </div>
-            <div class="nav-item">
-                <a href="https://nikamishotaro.github.io/home/index.html"><img src="images/home-icon.png" alt="Back to Home" class="header-icon"></a>
-            </div>
-        </div>
-    </header>
+        <div class="header-right" id="nav-menu">
+            <div class="nav-item has-dropdown">
+                <a href="javascript:void(0)"><img src="images/sns-icon.png" alt="SNS" class="header-icon"></a>
+                <div class="dropdown">
+                    <a href="#">Twitter</a>
+                    <a href="#">Instagram</a>
+                    <a href="#">note</a>
+                </div>
+            </div>
+            <div class="nav-item">
+                <a href="https://nikamishotaro.github.io/home/index.html"><img src="images/home-icon.png" alt="Back to Home" class="header-icon"></a>
+            </div>
+        </div>
+    </header>
 
-    <div class="search-area-wrapper">
-        <div class="sort-container">
-            <select id="sort-select" class="sort-select">
-                <option value="date-desc">新しい順</option>
-                <option value="date-asc">古い順</option>
-                <option value="view-desc">閲覧が多い順</option>
-                <option value="view-asc">閲覧が少ない順</option>
-            </select>
-        </div>
-        <div class="search-container">
-            <div class="search-box">
-                <div id="tags-container" class="tags-container"></div>
-                <input type="text" id="search-input" class="search-input" placeholder="ハッシュタグ・年を検索 (例: 2021)">
-            </div>
-            <button id="search-btn" class="search-btn">search</button>
-        </div>
-        <div class="hot-search" id="hot-search"></div>
-    </div>
+    <div class="search-area-wrapper">
+        <div class="sort-container">
+            <select id="sort-select" class="sort-select">
+                <option value="date-desc">新しい順</option>
+                <option value="date-asc">古い順</option>
+                <option value="view-desc">閲覧が多い順</option>
+                <option value="view-asc">閲覧が少ない順</option>
+            </select>
+        </div>
+        <div class="search-container">
+            <div class="search-box">
+                <div id="tags-container" class="tags-container"></div>
+                <input type="text" id="search-input" class="search-input" placeholder="ハッシュタグ・年を検索 (例: 2021)">
+            </div>
+            <button id="search-btn" class="search-btn">search</button>
+        </div>
+        <div class="hot-search" id="hot-search"></div>
+    </div>
 
-    <div class="grid-container" id="grid-container">
-        <a href="#" class="grid-item" data-id="item-1" data-date="2021-08-01">
-            <div class="image-wrapper">
-                <img src="images/俯瞰パース.png" alt="オリンピック島">
-            </div>
-            <div class="grid-item-title-container">
-                <div class="grid-item-title">オリンピック島</div>
-                <div class="view-count">
-                    <img src="images/eye-icon.png" alt="views" class="eye-icon">
-                    <span class="view-number">0</span>
-                </div>
-            </div>
-            <div class="grid-item-hashtag">#オリンピック #海上建築</div>
-        </a>
-    </div>
+    <div id="image-modal" class="modal">
+        <span class="modal-close" id="modal-close">&times;</span>
+        <img class="modal-content" id="modal-image" src="" alt="Detail Image">
+        <div id="modal-text" class="modal-text"></div> </div>
 
-    <div id="image-modal" class="modal">
-        <span class="modal-close" id="modal-close">&times;</span>
-        <img class="modal-content" id="modal-image" src="" alt="Detail Image">
-        <div id="modal-text" class="modal-text"></div> </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+            const postListElement = document.getElementById('post-list');
+            const gridContainer = document.getElementById('grid-container');
 
-    <script>
-        document.addEventListener('DOMContentLoaded', async () => {
-            const postListElement = document.getElementById('post-list');
-            const gridContainer = document.getElementById('grid-container');
+            // --- 【要求①・②】GitHub（Discord経由）の投稿データを自動取得してグリッドに完全反映 ---
+            const owner = "nikamishotaro";
+            const repo = "home";
+            const path = "posts";
+            
+            try {
+                const response = await fetch(`https://api.github.com/repos/${owner}/${repo}/contents/${path}`);
+                if (response.ok) {
+                    const files = await response.json();
+                    if (postListElement) postListElement.innerHTML = "";
+                    
+                    // 各ファイルの中身を取得してグリッドアイテムを動的追加
+                    for (const file of files) {
+                        if (file.name.endsWith(".md")) {
+                            const contentRes = await fetch(file.download_url);
+                            const text = await contentRes.text();
+                            
+                            // フロントマターから画像、タイトル、タグを抽出
+                            const titleMatch = text.match(/title:\s*"(.*?)"/);
+                            const tagsMatch = text.match(/tags:\s*"(.*?)"/);
+                            // 【修正・追加】iconUrlを抽出（旧データの互換性維持のためimageのフォールバックも残す）
+                            const iconUrlMatch = text.match(/iconUrl:\s*"(.*?)"/);
+                            const imageMatch = text.match(/image:\s*"(.*?)"/);
+                            const detailUrlMatch = text.match(/detailUrl:\s*"(.*?)"/);
+                            // 【追加】detailtextを抽出（複数行に対応するため [\s\S]*? を使用）
+                            const detailtextMatch = text.match(/detailtext:\s*"([\s\S]*?)"/);
+                            
+                            const title = titleMatch ? titleMatch[1] : "無題";
+                            const tags = tagsMatch ? tagsMatch[1] : "";
+                            const imageUrl = iconUrlMatch ? iconUrlMatch[1] : (imageMatch ? imageMatch[1] : "");
+                            // 【追加】detailUrlとdetailtextの定義
+                            const detailUrl = detailUrlMatch ? detailUrlMatch[1] : "";
+                            const detailtext = detailtextMatch ? detailtextMatch[1] : "";
+                            
+                            // ファイル名 (例: 20260528-144940.md) から投稿年月日 (YYYY-MM-DD) を抽出
+                            const dateMatch = file.name.match(/^(\d{4})(\d{2})(\d{2})/);
+                            const dateStr = dateMatch ? `${dateMatch[1]}-${dateMatch[2]}-${dateMatch[3]}` : "2026-05-28";
+                            
+                            const fileId = file.name.replace('.md', '');
+                            
+                            // グリッド要素を生成して挿入
+                            const itemA = document.createElement('a');
+                            itemA.href = "#";
+                            itemA.className = "grid-item";
+                            itemA.dataset.id = "item-" + fileId;
+                            itemA.dataset.date = dateStr; // 年検索機能、VSコード上の年月日データ仕様に対応
+                            
+                            // 【追加】モーダル表示用のURLやテキストをデータ属性として保持
+                            if (detailUrl) {
+                                itemA.dataset.detailUrl = detailUrl;
+                            }
+                            if (detailtext) {
+                                itemA.dataset.detailtext = detailtext;
+                            }
+                            
+                            itemA.innerHTML = `
+                                <div class="image-wrapper">
+                                    <img src="${imageUrl}" alt="${title}">
+                                </div>
+                                <div class="grid-item-title-container">
+                                    <div class="grid-item-title">${title}</div>
+                                    <div class="view-count">
+                                        <img src="images/eye-icon.png" alt="views" class="eye-icon">
+                                        <span class="view-number">0</span>
+                                    </div>
+                                </div>
+                                <div class="grid-item-hashtag">${tags}</div>
+                            `;
+                            gridContainer.appendChild(itemA);
+                        }
+                    }
+                }
+            } catch (error) {
+                if (postListElement) postListElement.innerHTML = "記事の読み込みに失敗しました。";
+                console.error(error);
+            }
+            // ----------------------------------------------------------------------------------
 
-            // --- 【要求①・②】GitHub（Discord経由）の投稿データを自動取得してグリッドに完全反映 ---
-            const owner = "nikamishotaro";
-            const repo = "home";
-            const path = "posts";
-            
-            try {
-                const response = await fetch(`https://api.github.com/repos/${owner}/${repo}/contents/${path}`);
-                if (response.ok) {
-                    const files = await response.json();
-                    if (postListElement) postListElement.innerHTML = "";
-                    
-                    // 各ファイルの中身を取得してグリッドアイテムを動的追加
-                    for (const file of files) {
-                        if (file.name.endsWith(".md")) {
-                            const contentRes = await fetch(file.download_url);
-                            const text = await contentRes.text();
-                            
-                            // フロントマターから画像、タイトル、タグを抽出
-                            const titleMatch = text.match(/title:\s*"(.*?)"/);
-                            const tagsMatch = text.match(/tags:\s*"(.*?)"/);
-                            // 【修正・追加】iconUrlを抽出（旧データの互換性維持のためimageのフォールバックも残す）
-                            const iconUrlMatch = text.match(/iconUrl:\s*"(.*?)"/);
-                            const imageMatch = text.match(/image:\s*"(.*?)"/);
-                            const detailUrlMatch = text.match(/detailUrl:\s*"(.*?)"/);
-                            // 【追加】detailtextを抽出（複数行に対応するため [\s\S]*? を使用）
-                            const detailtextMatch = text.match(/detailtext:\s*"([\s\S]*?)"/);
-                            
-                            const title = titleMatch ? titleMatch[1] : "無題";
-                            const tags = tagsMatch ? tagsMatch[1] : "";
-                            const imageUrl = iconUrlMatch ? iconUrlMatch[1] : (imageMatch ? imageMatch[1] : "");
-                            // 【追加】detailUrlとdetailtextの定義
-                            const detailUrl = detailUrlMatch ? detailUrlMatch[1] : "";
-                            const detailtext = detailtextMatch ? detailtextMatch[1] : "";
-                            
-                            // ファイル名 (例: 20260528-144940.md) から投稿年月日 (YYYY-MM-DD) を抽出
-                            const dateMatch = file.name.match(/^(\d{4})(\d{2})(\d{2})/);
-                            const dateStr = dateMatch ? `${dateMatch[1]}-${dateMatch[2]}-${dateMatch[3]}` : "2026-05-28";
-                            
-                            const fileId = file.name.replace('.md', '');
-                            
-                            // グリッド要素を生成して挿入
-                            const itemA = document.createElement('a');
-                            itemA.href = "#";
-                            itemA.className = "grid-item";
-                            itemA.dataset.id = "item-" + fileId;
-                            itemA.dataset.date = dateStr; // 年検索機能、VSコード上の年月日データ仕様に対応
-                            
-                            // 【追加】モーダル表示用のURLやテキストをデータ属性として保持
-                            if (detailUrl) {
-                                itemA.dataset.detailUrl = detailUrl;
-                            }
-                            if (detailtext) {
-                                itemA.dataset.detailtext = detailtext;
-                            }
-                            
-                            itemA.innerHTML = `
-                                <div class="image-wrapper">
-                                    <img src="${imageUrl}" alt="${title}">
-                                </div>
-                                <div class="grid-item-title-container">
-                                    <div class="grid-item-title">${title}</div>
-                                    <div class="view-count">
-                                        <img src="images/eye-icon.png" alt="views" class="eye-icon">
-                                        <span class="view-number">0</span>
-                                    </div>
-                                </div>
-                                <div class="grid-item-hashtag">${tags}</div>
-                            `;
-                            gridContainer.appendChild(itemA);
-                        }
-                    }
-                }
-            } catch (error) {
-                if (postListElement) postListElement.innerHTML = "記事の読み込みに失敗しました。";
-                console.error(error);
-            }
-            // ----------------------------------------------------------------------------------
+            const navItems = document.querySelectorAll('.nav-item.has-dropdown');
 
-            const navItems = document.querySelectorAll('.nav-item.has-dropdown');
+            // SP版：ドロップダウンメニューの開閉
+            navItems.forEach(item => {
+                item.addEventListener('click', (e) => {
+                    if (window.innerWidth <= 768) {
+                        item.classList.toggle('active');
+                    }
+                });
+            });
 
-            // SP版：ドロップダウンメニューの開閉
-            navItems.forEach(item => {
-                item.addEventListener('click', (e) => {
-                    if (window.innerWidth <= 768) {
-                        item.classList.toggle('active');
-                    }
-                });
-            });
+            const searchInput = document.getElementById('search-input');
+            const tagsContainer = document.getElementById('tags-container');
+            const searchBtn = document.getElementById('search-btn');
+            const hotSearchContainer = document.getElementById('hot-search');
+            
+            const gridItems = document.querySelectorAll('.grid-item');
+            
+            // DOMの要素を配列として保持（並び替え・再描画用）
+            const itemsArray = Array.from(gridItems);
 
-            const searchInput = document.getElementById('search-input');
-            const tagsContainer = document.getElementById('tags-container');
-            const searchBtn = document.getElementById('search-btn');
-            const hotSearchContainer = document.getElementById('hot-search');
-            
-            const gridItems = document.querySelectorAll('.grid-item');
-            
-            // DOMの要素を配列として保持（並び替え・再描画用）
-            const itemsArray = Array.from(gridItems);
+            // 【追加・要求②】閲覧数の初期化とクリック時のカウントアップ（LocalStorageによる簡易DB化）
+            const DB_KEY_PREFIX = 'kim_diehl_views_';
+            itemsArray.forEach(item => {
+                const id = item.dataset.id;
+                let views = parseInt(localStorage.getItem(DB_KEY_PREFIX + id) || '0');
+                item.dataset.views = views;
+                item.querySelector('.view-number').textContent = views;
 
-            // 【追加・要求②】閲覧数の初期化とクリック時のカウントアップ（LocalStorageによる簡易DB化）
-            const DB_KEY_PREFIX = 'kim_diehl_views_';
-            itemsArray.forEach(item => {
-                const id = item.dataset.id;
-                let views = parseInt(localStorage.getItem(DB_KEY_PREFIX + id) || '0');
-                item.dataset.views = views;
-                item.querySelector('.view-number').textContent = views;
+                item.addEventListener('click', (e) => {
+                    e.preventDefault(); // 【追加】クリック時の意図しないページ遷移を防止
 
-                item.addEventListener('click', (e) => {
-                    e.preventDefault(); // 【追加】クリック時の意図しないページ遷移を防止
+                    views++;
+                    localStorage.setItem(DB_KEY_PREFIX + id, views);
+                    item.dataset.views = views;
+                    item.querySelector('.view-number').textContent = views;
 
-                    views++;
-                    localStorage.setItem(DB_KEY_PREFIX + id, views);
-                    item.dataset.views = views;
-                    item.querySelector('.view-number').textContent = views;
+                    // 【追加】クリック時にモーダルを表示する処理
+                    const modal = document.getElementById('image-modal');
+                    const modalImg = document.getElementById('modal-image');
+                    const modalText = document.getElementById('modal-text'); // 【追加】
+                    
+                    const detailUrl = item.dataset.detailUrl;
+                    const detailtext = item.dataset.detailtext; // 【追加】
+                    
+                    // detailUrlがあればそれを使用、なければサムネイル画像をフォールバックとして使用
+                    modalImg.src = detailUrl ? detailUrl : item.querySelector('.image-wrapper img').src;
+                    
+                    // 【追加】モーダル内本文の反映（改行コードが文字列として入ってきた場合のエスケープ処理含む）
+                    if (modalText) {
+                        modalText.textContent = detailtext ? detailtext.replace(/\\n/g, '\n') : "";
+                    }
+                    
+                    modal.style.display = 'flex';
+                });
+            });
+            
+            let availableTags = [];
+            let selectedTags = [];
+            const tagCounts = {};
 
-                    // 【追加】クリック時にモーダルを表示する処理
-                    const modal = document.getElementById('image-modal');
-                    const modalImg = document.getElementById('modal-image');
-                    const modalText = document.getElementById('modal-text'); // 【追加】
-                    
-                    const detailUrl = item.dataset.detailUrl;
-                    const detailtext = item.dataset.detailtext; // 【追加】
-                    
-                    // detailUrlがあればそれを使用、なければサムネイル画像をフォールバックとして使用
-                    modalImg.src = detailUrl ? detailUrl : item.querySelector('.image-wrapper img').src;
-                    
-                    // 【追加】モーダル内本文の反映（改行コードが文字列として入ってきた場合のエスケープ処理含む）
-                    if (modalText) {
-                        modalText.textContent = detailtext ? detailtext.replace(/\\n/g, '\n') : "";
-                    }
-                    
-                    modal.style.display = 'flex';
-                });
-            });
-            
-            let availableTags = [];
-            let selectedTags = [];
-            const tagCounts = {};
+            // ページ内のハッシュタグと「年」を抽出し、検索可能タグと出現頻度を集計
+            itemsArray.forEach(item => {
+                const hashtagElem = item.querySelector('.grid-item-hashtag');
+                // 【追加・要求①】data-date から年を抽出し、検索可能タグに追加（頻度集計からは除外）
+                const year = item.dataset.date ? item.dataset.date.split('-')[0] : '';
+                if (year && !availableTags.includes(year)) {
+                    availableTags.push(year);
+                }
 
-            // ページ内のハッシュタグと「年」を抽出し、検索可能タグと出現頻度を集計
-            itemsArray.forEach(item => {
-                const hashtagElem = item.querySelector('.grid-item-hashtag');
-                // 【追加・要求①】data-date から年を抽出し、検索可能タグに追加（頻度集計からは除外）
-                const year = item.dataset.date ? item.dataset.date.split('-')[0] : '';
-                if (year && !availableTags.includes(year)) {
-                    availableTags.push(year);
-                }
+                if (hashtagElem) {
+                    const text = hashtagElem.textContent;
+                    const tags = text.split('#').map(t => t.trim()).filter(t => t !== '');
+                    tags.forEach(t => {
+                        if(!availableTags.includes(t)) {
+                            availableTags.push(t);
+                        }
+                        tagCounts[t] = (tagCounts[t] || 0) + 1;
+                    });
+                }
+            });
 
-                if (hashtagElem) {
-                    const text = hashtagElem.textContent;
-                    const tags = text.split('#').map(t => t.trim()).filter(t => t !== '');
-                    tags.forEach(t => {
-                        if(!availableTags.includes(t)) {
-                            availableTags.push(t);
-                        }
-                        tagCounts[t] = (tagCounts[t] || 0) + 1;
-                    });
-                }
-            });
+            // 【要求⑥】Hot Search (出現頻度上位5つを配置)
+            const sortedTags = Object.keys(tagCounts).sort((a, b) => tagCounts[b] - tagCounts[a]).slice(0, 5);
+            sortedTags.forEach(t => {
+                const span = document.createElement('span');
+                span.className = 'hot-search-item';
+                span.textContent = '#' + t;
+                span.addEventListener('click', () => {
+                    if (!selectedTags.includes(t)) {
+                        addTag(t);
+                    }
+                });
+                hotSearchContainer.appendChild(span);
+            });
 
-            // 【要求⑥】Hot Search (出現頻度上位5つを配置)
-            const sortedTags = Object.keys(tagCounts).sort((a, b) => tagCounts[b] - tagCounts[a]).slice(0, 5);
-            sortedTags.forEach(t => {
-                const span = document.createElement('span');
-                span.className = 'hot-search-item';
-                span.textContent = '#' + t;
-                span.addEventListener('click', () => {
-                    if (!selectedTags.includes(t)) {
-                        addTag(t);
-                    }
-                });
-                hotSearchContainer.appendChild(span);
-            });
+            // 検索window内にハッシュタグを描画
+            function renderTags() {
+                tagsContainer.innerHTML = '';
+                selectedTags.forEach(t => {
+                    const tagEl = document.createElement('div');
+                    tagEl.className = 'search-tag';
+                    tagEl.innerHTML = `<span>#${t}</span> <span class="remove-tag">×</span>`;
+                    tagEl.querySelector('.remove-tag').addEventListener('click', (e) => {
+                        e.stopPropagation(); 
+                        removeTag(t);
+                    });
+                    tagsContainer.appendChild(tagEl);
+                });
+                updateSearchState(); 
+            }
 
-            // 検索window内にハッシュタグを描画
-            function renderTags() {
-                tagsContainer.innerHTML = '';
-                selectedTags.forEach(t => {
-                    const tagEl = document.createElement('div');
-                    tagEl.className = 'search-tag';
-                    tagEl.innerHTML = `<span>#${t}</span> <span class="remove-tag">×</span>`;
-                    tagEl.querySelector('.remove-tag').addEventListener('click', (e) => {
-                        e.stopPropagation(); 
-                        removeTag(t);
-                    });
-                    tagsContainer.appendChild(tagEl);
-                });
-                updateSearchState(); 
-            }
+            function addTag(tag) {
+                selectedTags.push(tag);
+                renderTags();
+            }
 
-            function addTag(tag) {
-                selectedTags.push(tag);
-                renderTags();
-            }
+            function removeTag(tag) {
+                selectedTags = selectedTags.filter(t => t !== tag);
+                renderTags();
+            }
 
-            function removeTag(tag) {
-                selectedTags = selectedTags.filter(t => t !== tag);
-                renderTags();
-            }
+            // 検索ボタン押下前のヒット数表示
+            function updateSearchState() {
+                if (selectedTags.length === 0) {
+                    searchBtn.textContent = 'search';
+                    searchBtn.className = 'search-btn';
+                } else {
+                    let hits = 0;
+                    itemsArray.forEach(item => {
+                        const hashtagElem = item.querySelector('.grid-item-hashtag');
+                        const itemTags = hashtagElem ? hashtagElem.textContent : '';
+                        const itemYear = item.dataset.date ? item.dataset.date.split('-')[0] : '';
+                        // 【追加・要求①】選択タグがハッシュタグに含まれるか、年に一致する場合にヒット判定
+                        const isMatch = selectedTags.every(st => itemTags.includes('#' + st) || itemYear === st);
+                        if (isMatch) hits++;
+                    });
+                    searchBtn.textContent = hits + ' hit';
+                    searchBtn.className = 'search-btn active';
+                }
+            }
 
-            // 検索ボタン押下前のヒット数表示
-            function updateSearchState() {
-                if (selectedTags.length === 0) {
-                    searchBtn.textContent = 'search';
-                    searchBtn.className = 'search-btn';
-                } else {
-                    let hits = 0;
-                    itemsArray.forEach(item => {
-                        const hashtagElem = item.querySelector('.grid-item-hashtag');
-                        const itemTags = hashtagElem ? hashtagElem.textContent : '';
-                        const itemYear = item.dataset.date ? item.dataset.date.split('-')[0] : '';
-                        // 【追加・要求①】選択タグがハッシュタグに含まれるか、年に一致する場合にヒット判定
-                        const isMatch = selectedTags.every(st => itemTags.includes('#' + st) || itemYear === st);
-                        if (isMatch) hits++;
-                    });
-                    searchBtn.textContent = hits + ' hit';
-                    searchBtn.className = 'search-btn active';
-                }
-            }
-
-            // 文字入力時に検索可能タグであれば自動でタグに変換して充填
-            searchInput.addEventListener('input', (e) => {
-                let val = e.target.value.trim();
-                if(val.startsWith('#')) val = val.substring(1);
-                
-                if (availableTags.includes(val) && !selectedTags.includes(val)) {
-                    addTag(val);
-                    e.target.value = ''; 
-                }
-            });
+            // 文字入力時に検索可能タグであれば自動でタグに変換して充填
+            searchInput.addEventListener('input', (e) => {
+                let val = e.target.value.trim();
+                if(val.startsWith('#')) val = val.substring(1);
+                
+                if (availableTags.includes(val) && !selectedTags.includes(val)) {
+                    addTag(val);
+                    e.target.value = ''; 
+                }
+            });
 
 
-            // 【追加・要求③,④】表示の絞り込み、ソート、年区切りの描画を行う統合関数
-            function updateGrid() {
-                const sortValue = document.getElementById('sort-select').value;
-                
-                // 1. 指定順序で配列をソート
-                itemsArray.sort((a, b) => {
-                    if (sortValue === 'date-desc') {
-                        return new Date(b.dataset.date) - new Date(a.dataset.date);
-                    } else if (sortValue === 'date-asc') {
-                        return new Date(a.dataset.date) - new Date(b.dataset.date);
-                    } else if (sortValue === 'view-desc') {
-                        return parseInt(b.dataset.views) - parseInt(a.dataset.views);
-                    } else if (sortValue === 'view-asc') {
-                        return parseInt(a.dataset.views) - parseInt(b.dataset.views);
-                    }
-                });
+            // 【追加・要求③,④】表示の絞り込み、ソート、年区切りの描画を行う統合関数
+            function updateGrid() {
+                const sortValue = document.getElementById('sort-select').value;
+                
+                // 1. 指定順序で配列をソート
+                itemsArray.sort((a, b) => {
+                    if (sortValue === 'date-desc') {
+                        return new Date(b.dataset.date) - new Date(a.dataset.date);
+                    } else if (sortValue === 'date-asc') {
+                        return new Date(a.dataset.date) - new Date(b.dataset.date);
+                    } else if (sortValue === 'view-desc') {
+                        return parseInt(b.dataset.views) - parseInt(a.dataset.views);
+                    } else if (sortValue === 'view-asc') {
+                        return parseInt(a.dataset.views) - parseInt(b.dataset.views);
+                    }
+                });
 
-                // 2. DOMをクリア
-                gridContainer.innerHTML = '';
-                let currentYear = '';
+                // 2. DOMをクリア
+                gridContainer.innerHTML = '';
+                let currentYear = '';
 
-                // 3. フィルタ適用と再配置
-                itemsArray.forEach(item => {
-                    const hashtagElem = item.querySelector('.grid-item-hashtag');
-                    const itemTags = hashtagElem ? hashtagElem.textContent : '';
-                    const itemYear = item.dataset.date ? item.dataset.date.split('-')[0] : '';
-                    
-                    let isMatch = true;
-                    if (selectedTags.length > 0) {
-                        isMatch = selectedTags.every(st => itemTags.includes('#' + st) || itemYear === st);
-                    }
-                    item.style.display = isMatch ? 'block' : 'none';
+                // 3. フィルタ適用と再配置
+                itemsArray.forEach(item => {
+                    const hashtagElem = item.querySelector('.grid-item-hashtag');
+                    const itemTags = hashtagElem ? hashtagElem.textContent : '';
+                    const itemYear = item.dataset.date ? item.dataset.date.split('-')[0] : '';
+                    
+                    let isMatch = true;
+                    if (selectedTags.length > 0) {
+                        isMatch = selectedTags.every(st => itemTags.includes('#' + st) || itemYear === st);
+                    }
+                    item.style.display = isMatch ? 'block' : 'none';
 
-                    // 表示対象であり、かつ時系列ソートが選ばれている場合のみ年区切りヘッダーを挿入
-                    if (isMatch) {
-                        if (sortValue.startsWith('date')) {
-                            if (itemYear !== currentYear) {
-                                const divider = document.createElement('div');
-                                divider.className = 'year-divider';
-                                divider.textContent = itemYear + '年';
-                                gridContainer.appendChild(divider);
-                                currentYear = itemYear;
-                            }
-                        }
-                    }
-                    gridContainer.appendChild(item);
-                });
-            }
+                    // 表示対象であり、かつ時系列ソートが選ばれている場合のみ年区切りヘッダーを挿入
+                    if (isMatch) {
+                        if (sortValue.startsWith('date')) {
+                            if (itemYear !== currentYear) {
+                                const divider = document.createElement('div');
+                                divider.className = 'year-divider';
+                                divider.textContent = itemYear + '年';
+                                gridContainer.appendChild(divider);
+                                currentYear = itemYear;
+                            }
+                        }
+                    }
+                    gridContainer.appendChild(item);
+                });
+            }
 
-            // ソート順変更時、検索ボタン押下時に再描画を実行
-            document.getElementById('sort-select').addEventListener('change', updateGrid);
-            searchBtn.addEventListener('click', updateGrid);
+            // ソート順変更時、検索ボタン押下時に再描画を実行
+            document.getElementById('sort-select').addEventListener('change', updateGrid);
+            searchBtn.addEventListener('click', updateGrid);
 
 
-            // --------------------------------------------------
-            // 【追加・要求⑤】SP版のピンチイン/ピンチアウト実装
-            // --------------------------------------------------
-            // 0: 横1個 (最小), 1: 横3個, 2: 横5個, 3: 横11個 (最大)
-            let currentZoom = 1; 
-            let initialDistance = null;
-            let isZooming = false;
-            const zoomThreshold = 40; // スワイプ（ピンチ）の判定感度
+            // --------------------------------------------------
+            // 【追加・要求⑤】SP版のピンチイン/ピンチアウト実装
+            // --------------------------------------------------
+            // 0: 横1個 (最小), 1: 横3個, 2: 横5個, 3: 横11個 (最大)
+            let currentZoom = 1; 
+            let initialDistance = null;
+            let isZooming = false;
+            const zoomThreshold = 40; // スワイプ（ピンチ）の判定感度
 
-            if (window.innerWidth <= 768) {
-                // 初期状態を横3列にセット（iPhone写真アプリ風の標準的な見た目）
-                gridContainer.className = 'grid-container zoom-' + currentZoom;
-            }
+            if (window.innerWidth <= 768) {
+                // 初期状態を横3列にセット（iPhone写真アプリ風の標準的な見た目）
+                gridContainer.className = 'grid-container zoom-' + currentZoom;
+            }
 
-            document.addEventListener('touchstart', (e) => {
-                if (e.touches.length === 2 && window.innerWidth <= 768) {
-                    initialDistance = Math.hypot(
-                        e.touches[0].pageX - e.touches[1].pageX,
-                        e.touches[0].pageY - e.touches[1].pageY
-                    );
-                    isZooming = true;
-                }
-            }, {passive: false});
+            document.addEventListener('touchstart', (e) => {
+                if (e.touches.length === 2 && window.innerWidth <= 768) {
+                    initialDistance = Math.hypot(
+                        e.touches[0].pageX - e.touches[1].pageX,
+                        e.touches[0].pageY - e.touches[1].pageY
+                    );
+                    isZooming = true;
+                }
+            }, {passive: false});
 
-            document.addEventListener('touchmove', (e) => {
-                if (isZooming && e.touches.length === 2 && window.innerWidth <= 768) {
-                    e.preventDefault(); // デフォルトのピンチズーム挙動を抑制
-                    const currentDistance = Math.hypot(
-                        e.touches[0].pageX - e.touches[1].pageX,
-                        e.touches[0].pageY - e.touches[1].pageY
-                    );
+            document.addEventListener('touchmove', (e) => {
+                if (isZooming && e.touches.length === 2 && window.innerWidth <= 768) {
+                    e.preventDefault(); // デフォルトのピンチズーム挙動を抑制
+                    const currentDistance = Math.hypot(
+                        e.touches[0].pageX - e.touches[1].pageX,
+                        e.touches[0].pageY - e.touches[1].pageY
+                    );
 
-                    if (initialDistance) {
-                        const diff = currentDistance - initialDistance;
-                        if (diff > zoomThreshold) {
-                            // ピンチアウト (指を広げる = 拡大して列数を減らす)
-                            changeZoom(-1);
-                            initialDistance = currentDistance;
-                        } else if (diff < -zoomThreshold) {
-                            // ピンチイン (指を狭める = 縮小して列数を増やす)
-                            changeZoom(1);
-                            initialDistance = currentDistance;
-                        }
-                    }
-                }
-            }, {passive: false});
+                    if (initialDistance) {
+                        const diff = currentDistance - initialDistance;
+                        if (diff > zoomThreshold) {
+                            // ピンチアウト (指を広げる = 拡大して列数を減らす)
+                            changeZoom(-1);
+                            initialDistance = currentDistance;
+                        } else if (diff < -zoomThreshold) {
+                            // ピンチイン (指を狭める = 縮小して列数を増やす)
+                            changeZoom(1);
+                            initialDistance = currentDistance;
+                        }
+                    }
+                }
+            }, {passive: false});
 
-            document.addEventListener('touchend', (e) => {
-                if (e.touches.length < 2) {
-                    isZooming = false;
-                    initialDistance = null;
-                }
-            });
+            document.addEventListener('touchend', (e) => {
+                if (e.touches.length < 2) {
+                    isZooming = false;
+                    initialDistance = null;
+                }
+            });
 
-            function changeZoom(dir) {
-                currentZoom += dir;
-                if (currentZoom < 0) currentZoom = 0; // 最小 (横1個)
-                if (currentZoom > 3) currentZoom = 3; // 最大 (横11個)
-                gridContainer.className = 'grid-container zoom-' + currentZoom;
-            }
+            function changeZoom(dir) {
+                currentZoom += dir;
+                if (currentZoom < 0) currentZoom = 0; // 最小 (横1個)
+                if (currentZoom > 3) currentZoom = 3; // 最大 (横11個)
+                gridContainer.className = 'grid-container zoom-' + currentZoom;
+            }
 
-            // 初期ロード時のリスト表示実行
-            updateGrid();
+            // 初期ロード時のリスト表示実行
+            updateGrid();
 
-            // --------------------------------------------------
-            // 【追加】モーダルを閉じる処理
-            // --------------------------------------------------
-            const imageModal = document.getElementById('image-modal');
-            const modalClose = document.getElementById('modal-close');
-            
-            // ×ボタンクリックで閉じる
-            modalClose.addEventListener('click', () => {
-                imageModal.style.display = 'none';
-            });
-            
-            // 画像以外の背景部分クリックで閉じる
-            imageModal.addEventListener('click', (e) => {
-                if (e.target === imageModal) {
-                    imageModal.style.display = 'none';
-                }
-            });
+            // --------------------------------------------------
+            // 【追加】モーダルを閉じる処理
+            // --------------------------------------------------
+            const imageModal = document.getElementById('image-modal');
+            const modalClose = document.getElementById('modal-close');
+            
+            // ×ボタンクリックで閉じる
+            modalClose.addEventListener('click', () => {
+                imageModal.style.display = 'none';
+            });
+            
+            // 画像以外の背景部分クリックで閉じる
+            imageModal.addEventListener('click', (e) => {
+                if (e.target === imageModal) {
+                    imageModal.style.display = 'none';
+                }
+            });
 
-        });
-    </script>
+        });
+    </script>
 </body>
 </html>
