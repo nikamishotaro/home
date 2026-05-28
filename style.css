@@ -59,16 +59,16 @@ body {
 .header-right {
     display: flex;
     align-items: center;
-    position: relative; /* 【要求②】ソートプルダウンの絶対配置の基準にするため追加 */
 }
 
-/* 【追加・要求②】ソートUI用スタイル (ヘッダーのアイコン上に配置・昔のWindows風デザイン) */
+/* 【修正・要求②】ソートUI用スタイル (検索窓とアイコンの間・画面右端に配置) */
 .sort-container {
     position: absolute;
-    top: -25px; /* アイコンの上へ移動 */
-    right: 0;
+    top: 75px; /* PC版ヘッダーと検索窓の間の空白に配置 */
+    right: var(--header-gap-x); /* 画面右端（ヘッダーの余白と揃える） */
     display: flex;
     justify-content: flex-end;
+    z-index: 900;
 }
 
 .sort-select {
@@ -140,7 +140,7 @@ body {
     padding: 0 var(--header-gap-x);
 }
 
-/* 【修正・要求①】検索窓とボタンを隣接させるためのコンテナ設定 */
+/* 検索窓とボタンを隣接させるためのコンテナ設定 */
 .search-container {
     display: flex;
     gap: 0; /* 隙間をなくす */
@@ -148,7 +148,7 @@ body {
     align-items: stretch;
 }
 
-/* 【修正・要求①】昔のWindows風の四角い検索ボックス */
+/* 昔のWindows風の四角い検索ボックス */
 .search-box {
     flex: 1;
     display: flex;
@@ -164,9 +164,12 @@ body {
     overflow-x: auto;
 }
 
+/* 【修正・要求①】ハッシュタグを右側に配置し、右から詰める設定 */
 .tags-container {
     display: flex;
     gap: 5px;
+    order: 2; /* 検索入力部分より右側に配置 */
+    flex-direction: row-reverse; /* 右から左へ詰めていく */
 }
 
 .search-tag {
@@ -187,6 +190,7 @@ body {
     font-weight: bold;
 }
 
+/* 【修正・要求①】検索入力を左側に固定 */
 .search-input {
     flex: 1;
     border: none;
@@ -194,9 +198,10 @@ body {
     min-width: 120px;
     padding: 2px 5px;
     font-size: 0.9rem;
+    order: 1; /* コンテナの左側に配置 */
 }
 
-/* 【修正・要求①】昔のWindows風の四角い検索ボタン */
+/* 昔のWindows風の四角い検索ボタン */
 .search-btn {
     padding: 0 15px;
     border-radius: 0; /* 四角くする */
@@ -387,6 +392,12 @@ body {
 
     .nav-item.active .dropdown {
         display: flex;
+    }
+
+    /* 【修正・要求②】SP版のソートUI位置調整 */
+    .sort-container {
+        top: 55px; /* SP版ヘッダーと検索窓の間の空白に配置 */
+        right: var(--header-gap-x-sp);
     }
 
     /* 【要求①】SP版：検索窓の見切れ防止の余白適用 */
