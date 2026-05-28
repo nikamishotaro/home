@@ -59,6 +59,31 @@ body {
 .header-right {
     display: flex;
     align-items: center;
+    position: relative; /* 【要求②】ソートプルダウンの絶対配置の基準にするため追加 */
+}
+
+/* 【追加・要求②】ソートUI用スタイル (ヘッダーのアイコン上に配置・昔のWindows風デザイン) */
+.sort-container {
+    position: absolute;
+    top: -25px; /* アイコンの上へ移動 */
+    right: 0;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.sort-select {
+    padding: 2px 4px;
+    border-radius: 0; /* 四角くする */
+    border: 2px solid #ccc; /* 立体感を出すためのボーダー下地 */
+    border-top-color: #999;
+    border-left-color: #999;
+    border-bottom-color: #fff;
+    border-right-color: #fff;
+    background-color: #c0c0c0; /* 昔のWindows風のグレー */
+    font-size: 0.75rem;
+    outline: none;
+    cursor: pointer;
+    box-shadow: 1px 1px 0 #000; /* レトロな影 */
 }
 
 /* 【要求②③】アイコン用のスタイル */
@@ -115,35 +140,26 @@ body {
     padding: 0 var(--header-gap-x);
 }
 
-/* 【追加・要求③】ソートUI用スタイル */
-.sort-container {
-    display: flex;
-    justify-content: flex-end;
-    margin-bottom: 10px;
-}
-
-.sort-select {
-    padding: 5px;
-    border-radius: 5px;
-    border: 1px solid #ccc;
-    font-size: 0.85rem;
-    outline: none;
-}
-
+/* 【修正・要求①】検索窓とボタンを隣接させるためのコンテナ設定 */
 .search-container {
     display: flex;
-    gap: 10px;
+    gap: 0; /* 隙間をなくす */
     width: 100%;
     align-items: stretch;
 }
 
+/* 【修正・要求①】昔のWindows風の四角い検索ボックス */
 .search-box {
     flex: 1;
     display: flex;
     align-items: center;
-    border: 1px solid #ccc;
-    border-radius: 20px;
-    padding: 5px 15px;
+    border: 2px solid #ccc;
+    border-top-color: #666;
+    border-left-color: #666;
+    border-bottom-color: #fff;
+    border-right-color: #fff;
+    border-radius: 0; /* 四角くする */
+    padding: 3px 8px;
     background: #fff;
     overflow-x: auto;
 }
@@ -157,12 +173,13 @@ body {
     background-color: #ffcc99;
     color: #333;
     padding: 2px 8px;
-    border-radius: 10px;
+    border-radius: 0; /* 四角くする */
     font-size: 0.85rem;
     display: flex;
     align-items: center;
     gap: 5px;
     white-space: nowrap;
+    border: 1px solid #999;
 }
 
 .search-tag .remove-tag {
@@ -175,27 +192,47 @@ body {
     border: none;
     outline: none;
     min-width: 120px;
-    padding: 5px;
+    padding: 2px 5px;
     font-size: 0.9rem;
 }
 
-/* 検索ボタン */
+/* 【修正・要求①】昔のWindows風の四角い検索ボタン */
 .search-btn {
-    padding: 0 20px;
-    border-radius: 20px;
+    padding: 0 15px;
+    border-radius: 0; /* 四角くする */
     font-weight: bold;
     cursor: pointer;
-    transition: 0.3s;
-    border: 1px solid #ff6600;
-    background-color: #ffffff;
-    color: #ff6600;
+    transition: none; /* レトロ感を出すためアニメーションを消す */
+    border: 2px solid #ccc;
+    border-top-color: #fff;
+    border-left-color: #fff;
+    border-bottom-color: #666;
+    border-right-color: #666;
+    background-color: #c0c0c0; /* 昔のWindows風のグレー */
+    color: #000;
     white-space: nowrap;
+    box-shadow: 1px 1px 0 #000; /* レトロな影 */
 }
 
+/* クリックしたときの凹む表現 */
+.search-btn:active {
+    border-top-color: #666;
+    border-left-color: #666;
+    border-bottom-color: #fff;
+    border-right-color: #fff;
+    box-shadow: none;
+    padding-top: 1px;
+    padding-left: 1px;
+}
+
+/* hit数表示時の状態 */
 .search-btn.active {
     background-color: #ff6600;
     color: #ffffff;
-    border: 1px solid #ffffff;
+    border-top-color: #ff9966;
+    border-left-color: #ff9966;
+    border-bottom-color: #993300;
+    border-right-color: #993300;
 }
 
 /* Hot Search */
