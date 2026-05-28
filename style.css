@@ -1,3 +1,4 @@
+/* 【追加】共通の変数を:rootで定義し、どこからでも参照できるように修正 */
 :root {
     --header-gap-x: 40px; 
     --header-gap-x-sp: 15px; 
@@ -10,7 +11,7 @@ body, h1, p, a, div, header, input, button {
     padding: 0;
     box-sizing: border-box;
 }
-        
+
 /* 【要求⑤】スムーズなスクロールのための設定 */
 html {
     scroll-behavior: smooth;
@@ -21,7 +22,9 @@ body {
     background-color: #ffffff;
 }
 
-/* -----------------------------------ヘッダー----------------------------------- */
+/* -----------------------------------
+    ヘッダー
+----------------------------------- */
 .site-header {
     position: fixed;
     top: 0;
@@ -73,362 +76,362 @@ body {
     margin-bottom: -10px;
 }
 
-        .nav-item > a {
-            font-weight: bold;
-            display: block;
-        }
+.nav-item > a {
+    font-weight: bold;
+    display: block;
+}
 
-        .dropdown {
-            display: none;
-            position: absolute;
-            top: 100%;
-            left: auto;
-            right: 0; /* アイコンから見切れないように右揃え */
-            background-color: rgba(255, 255, 255, 0.95);
-            min-width: 150px;
-            box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.05);
-            flex-direction: column;
-            border-top: 2px solid #111;
-        }
+.dropdown {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: auto;
+    right: 0; /* アイコンから見切れないように右揃え */
+    background-color: rgba(255, 255, 255, 0.95);
+    min-width: 150px;
+    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.05);
+    flex-direction: column;
+    border-top: 2px solid #111;
+}
 
-        .nav-item.has-dropdown:hover .dropdown {
-            display: flex;
-        }
+.nav-item.has-dropdown:hover .dropdown {
+    display: flex;
+}
 
-        .dropdown a {
-            padding: 12px 15px;
-            font-size: 0.85rem;
-            font-weight: normal;
-            border-bottom: 1px solid #eee;
-        }
+.dropdown a {
+    padding: 12px 15px;
+    font-size: 0.85rem;
+    font-weight: normal;
+    border-bottom: 1px solid #eee;
+}
 
-        /* -----------------------------------
-            【要求④⑤⑥】検索窓とHot Search (PC/SP共通)
-        ----------------------------------- */
-        .search-area-wrapper {
-            margin: 100px auto 30px;
-            width: 100%;
-            max-width: 600px;
-            padding: 0 var(--header-gap-x);
-        }
+/* -----------------------------------
+    【要求④⑤⑥】検索窓とHot Search (PC/SP共通)
+----------------------------------- */
+.search-area-wrapper {
+    margin: 100px auto 30px;
+    width: 100%;
+    max-width: 600px;
+    padding: 0 var(--header-gap-x);
+}
 
-        /* 【追加・要求③】ソートUI用スタイル */
-        .sort-container {
-            display: flex;
-            justify-content: flex-end;
-            margin-bottom: 10px;
-        }
+/* 【追加・要求③】ソートUI用スタイル */
+.sort-container {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 10px;
+}
 
-        .sort-select {
-            padding: 5px;
-            border-radius: 5px;
-            border: 1px solid #ccc;
-            font-size: 0.85rem;
-            outline: none;
-        }
+.sort-select {
+    padding: 5px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    font-size: 0.85rem;
+    outline: none;
+}
 
-        .search-container {
-            display: flex;
-            gap: 10px;
-            width: 100%;
-            align-items: stretch;
-        }
+.search-container {
+    display: flex;
+    gap: 10px;
+    width: 100%;
+    align-items: stretch;
+}
 
-        .search-box {
-            flex: 1;
-            display: flex;
-            align-items: center;
-            border: 1px solid #ccc;
-            border-radius: 20px;
-            padding: 5px 15px;
-            background: #fff;
-            overflow-x: auto;
-        }
+.search-box {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    border: 1px solid #ccc;
+    border-radius: 20px;
+    padding: 5px 15px;
+    background: #fff;
+    overflow-x: auto;
+}
 
-        .tags-container {
-            display: flex;
-            gap: 5px;
-        }
+.tags-container {
+    display: flex;
+    gap: 5px;
+}
 
-        .search-tag {
-            background-color: #ffcc99;
-            color: #333;
-            padding: 2px 8px;
-            border-radius: 10px;
-            font-size: 0.85rem;
-            display: flex;
-            align-items: center;
-            gap: 5px;
-            white-space: nowrap;
-        }
+.search-tag {
+    background-color: #ffcc99;
+    color: #333;
+    padding: 2px 8px;
+    border-radius: 10px;
+    font-size: 0.85rem;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    white-space: nowrap;
+}
 
-        .search-tag .remove-tag {
-            cursor: pointer;
-            font-weight: bold;
-        }
+.search-tag .remove-tag {
+    cursor: pointer;
+    font-weight: bold;
+}
 
-        .search-input {
-            flex: 1;
-            border: none;
-            outline: none;
-            min-width: 120px;
-            padding: 5px;
-            font-size: 0.9rem;
-        }
+.search-input {
+    flex: 1;
+    border: none;
+    outline: none;
+    min-width: 120px;
+    padding: 5px;
+    font-size: 0.9rem;
+}
 
-        /* 検索ボタン */
-        .search-btn {
-            padding: 0 20px;
-            border-radius: 20px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: 0.3s;
-            border: 1px solid #ff6600;
-            background-color: #ffffff;
-            color: #ff6600;
-            white-space: nowrap;
-        }
+/* 検索ボタン */
+.search-btn {
+    padding: 0 20px;
+    border-radius: 20px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.3s;
+    border: 1px solid #ff6600;
+    background-color: #ffffff;
+    color: #ff6600;
+    white-space: nowrap;
+}
 
-        .search-btn.active {
-            background-color: #ff6600;
-            color: #ffffff;
-            border: 1px solid #ffffff;
-        }
+.search-btn.active {
+    background-color: #ff6600;
+    color: #ffffff;
+    border: 1px solid #ffffff;
+}
 
-        /* Hot Search */
-        .hot-search {
-            display: flex;
-            gap: 12px;
-            margin-top: 10px;
-            flex-wrap: wrap;
-            padding: 0 5px;
-        }
+/* Hot Search */
+.hot-search {
+    display: flex;
+    gap: 12px;
+    margin-top: 10px;
+    flex-wrap: wrap;
+    padding: 0 5px;
+}
 
-        .hot-search-item {
-            font-size: 0.85rem;
-            color: #1da1f2;
-            cursor: pointer;
-            text-decoration: none;
-        }
-        .hot-search-item:hover {
-            text-decoration: underline;
-        }
+.hot-search-item {
+    font-size: 0.85rem;
+    color: #1da1f2;
+    cursor: pointer;
+    text-decoration: none;
+}
+.hot-search-item:hover {
+    text-decoration: underline;
+}
 
-        /* -----------------------------------
-            画像グリッドレイアウト
-        ----------------------------------- */
-        .grid-container {
-            display: grid;
-            grid-template-columns: repeat(6, 1fr);
-            gap: 30px;
-            padding: 0 40px 60px;
-            margin-top: 20px;
-        }
+/* -----------------------------------
+    画像グリッドレイアウト
+----------------------------------- */
+.grid-container {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 30px;
+    padding: 0 40px 60px;
+    margin-top: 20px;
+}
 
-        /* 【追加・要求④】年区切りヘッダー用スタイル */
-        .year-divider {
-            grid-column: 1 / -1;
-            font-size: 1.5rem;
-            font-weight: bold;
-            border-bottom: 2px solid #eee;
-            padding-bottom: 5px;
-            margin-top: 15px;
-            margin-bottom: 10px;
-        }
+/* 【追加・要求④】年区切りヘッダー用スタイル */
+.year-divider {
+    grid-column: 1 / -1;
+    font-size: 1.5rem;
+    font-weight: bold;
+    border-bottom: 2px solid #eee;
+    padding-bottom: 5px;
+    margin-top: 15px;
+    margin-bottom: 10px;
+}
 
-        /* レスポンシブで最大列数を調整 */
-        @media (max-width: 1200px) {
-            .grid-container { grid-template-columns: repeat(4, 1fr); }
-        }
-        @media (max-width: 992px) {
-            .grid-container { grid-template-columns: repeat(3, 1fr); }
-        }
+/* レスポンシブで最大列数を調整 */
+@media (max-width: 1200px) {
+    .grid-container { grid-template-columns: repeat(4, 1fr); }
+}
+@media (max-width: 992px) {
+    .grid-container { grid-template-columns: repeat(3, 1fr); }
+}
 
-        .grid-item {
-            text-decoration: none;
-            display: block;
-            color: inherit;
-        }
+.grid-item {
+    text-decoration: none;
+    display: block;
+    color: inherit;
+}
 
-        .grid-item:hover .image-wrapper img {
-            transform: scale(1.05);
-        }
+.grid-item:hover .image-wrapper img {
+    transform: scale(1.05);
+}
 
-        .image-wrapper {
-            width: 100%;
-            aspect-ratio: 1 / 1; 
-            overflow: hidden;
-            background-color: #f0f0f0;
-            margin-bottom: 15px;
-        }
+.image-wrapper {
+    width: 100%;
+    aspect-ratio: 1 / 1; 
+    overflow: hidden;
+    background-color: #f0f0f0;
+    margin-bottom: 15px;
+}
 
-        .image-wrapper img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            display: block;
-            transition: transform 0.3s ease;
-        }
+.image-wrapper img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.3s ease;
+}
 
-        /* 【追加・要求②】タイトルと閲覧数を横並びにするためのコンテナスタイル */
-        .grid-item-title-container {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 5px;
-        }
+/* 【追加・要求②】タイトルと閲覧数を横並びにするためのコンテナスタイル */
+.grid-item-title-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 5px;
+}
 
-        .grid-item-title {
-            font-weight: bold;
-            font-size: 1.1rem;
-            color: #111;
-        }
+.grid-item-title {
+    font-weight: bold;
+    font-size: 1.1rem;
+    color: #111;
+}
 
-        /* 【追加・要求②】閲覧数表示のスタイル */
-        .view-count {
-            display: flex;
-            align-items: center;
-            font-size: 0.85rem;
-            color: #666;
-        }
+/* 【追加・要求②】閲覧数表示のスタイル */
+.view-count {
+    display: flex;
+    align-items: center;
+    font-size: 0.85rem;
+    color: #666;
+}
 
-        .view-count img.eye-icon {
-            width: 16px;
-            height: auto;
-            margin-right: 4px;
-        }
-        
-        .grid-item-hashtag {
-            font-size: 0.85rem;
-            color: #1da1f2;
-            line-height: 1.4;
-        }
+.view-count img.eye-icon {
+    width: 16px;
+    height: auto;
+    margin-right: 4px;
+}
 
-        /* -----------------------------------
-            SP版（スマホ）でのレスポンシブ対応
-        ----------------------------------- */
-        @media (max-width: 768px) {
-            .site-header {
-                padding: 15px var(--header-gap-x-sp);
-            }
+.grid-item-hashtag {
+    font-size: 0.85rem;
+    color: #1da1f2;
+    line-height: 1.4;
+}
 
-            /* 【要求②】ハンバーガーメニューに伴う全体覆うスライドメニューを解除し、ヘッダー右上に固定 */
-            .header-right {
-                position: static;
-                width: auto;
-                height: auto;
-                background-color: transparent;
-                flex-direction: row;
-                padding: 0;
-                box-shadow: none;
-                overflow: visible;
-            }
+/* -----------------------------------
+    SP版（スマホ）でのレスポンシブ対応
+----------------------------------- */
+@media (max-width: 768px) {
+    .site-header {
+        padding: 15px var(--header-gap-x-sp);
+    }
 
-            .nav-item {
-                margin: 0 0 0 15px;
-                width: auto;
-            }
+    /* 【要求②】ハンバーガーメニューに伴う全体覆うスライドメニューを解除し、ヘッダー右上に固定 */
+    .header-right {
+        position: static;
+        width: auto;
+        height: auto;
+        background-color: transparent;
+        flex-direction: row;
+        padding: 0;
+        box-shadow: none;
+        overflow: visible;
+    }
 
-            .nav-item > a {
-                border-bottom: none;
-                padding-bottom: 0;
-            }
+    .nav-item {
+        margin: 0 0 0 15px;
+        width: auto;
+    }
 
-            .dropdown {
-                position: absolute;
-                top: 100%;
-                left: auto;
-                right: 0;
-                background-color: rgba(255, 255, 255, 0.95);
-                box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.05);
-                border-top: 2px solid #111;
-                padding-left: 0;
-            }
+    .nav-item > a {
+        border-bottom: none;
+        padding-bottom: 0;
+    }
 
-            .nav-item.active .dropdown {
-                display: flex;
-            }
+    .dropdown {
+        position: absolute;
+        top: 100%;
+        left: auto;
+        right: 0;
+        background-color: rgba(255, 255, 255, 0.95);
+        box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.05);
+        border-top: 2px solid #111;
+        padding-left: 0;
+    }
 
-            /* 【要求①】SP版：検索窓の見切れ防止の余白適用 */
-            .search-area-wrapper {
-                margin-top: 80px;
-                padding: 0 var(--header-gap-x-sp);
-            }
+    .nav-item.active .dropdown {
+        display: flex;
+    }
 
-            .grid-container {
-                /* デフォルト設定は維持しつつ、JS付与のクラスで上書きします */
-                grid-template-columns: repeat(2, 1fr);
-                padding: 0 15px 30px;
-                gap: 15px;
-                margin-top: 0;
-            }
+    /* 【要求①】SP版：検索窓の見切れ防止の余白適用 */
+    .search-area-wrapper {
+        margin-top: 80px;
+        padding: 0 var(--header-gap-x-sp);
+    }
 
-            /* 【追加・要求⑤】SP版ピンチズーム状態ごとのレイアウト設定 */
-            .grid-container.zoom-0 { grid-template-columns: 1fr; gap: 20px; }
-            .grid-container.zoom-1 { grid-template-columns: repeat(3, 1fr); gap: 10px; }
-            .grid-container.zoom-2 { grid-template-columns: repeat(5, 1fr); gap: 5px; }
-            .grid-container.zoom-3 { grid-template-columns: repeat(11, 1fr); gap: 2px; }
+    .grid-container {
+        /* デフォルト設定は維持しつつ、JS付与のクラスで上書きします */
+        grid-template-columns: repeat(2, 1fr);
+        padding: 0 15px 30px;
+        gap: 15px;
+        margin-top: 0;
+    }
 
-            /* 要素の表示非表示制御 */
-            .grid-container.zoom-3 .grid-item-title-container,
-            .grid-container.zoom-3 .grid-item-hashtag { display: none !important; }
+    /* 【追加・要求⑤】SP版ピンチズーム状態ごとのレイアウト設定 */
+    .grid-container.zoom-0 { grid-template-columns: 1fr; gap: 20px; }
+    .grid-container.zoom-1 { grid-template-columns: repeat(3, 1fr); gap: 10px; }
+    .grid-container.zoom-2 { grid-template-columns: repeat(5, 1fr); gap: 5px; }
+    .grid-container.zoom-3 { grid-template-columns: repeat(11, 1fr); gap: 2px; }
 
-            .grid-container.zoom-2 .grid-item-hashtag,
-            .grid-container.zoom-2 .view-count { display: none !important; }
-            .grid-container.zoom-2 .grid-item-title { font-size: 0.7rem; }
+    /* 要素の表示非表示制御 */
+    .grid-container.zoom-3 .grid-item-title-container,
+    .grid-container.zoom-3 .grid-item-hashtag { display: none !important; }
 
-            .grid-container.zoom-1 .grid-item-hashtag { display: none !important; }
-            .grid-container.zoom-1 .grid-item-title { font-size: 0.8rem; }
-            .grid-container.zoom-1 .view-count { font-size: 0.7rem; }
-        }
+    .grid-container.zoom-2 .grid-item-hashtag,
+    .grid-container.zoom-2 .view-count { display: none !important; }
+    .grid-container.zoom-2 .grid-item-title { font-size: 0.7rem; }
 
-        /* -----------------------------------
-            【追加】モーダル用スタイル
-        ----------------------------------- */
-        .modal {
-            display: none;
-            position: fixed;
-            z-index: 2000;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.8);
-            justify-content: center;
-            align-items: center;
-            flex-direction: column; /* 【追加】画像とテキストを縦並びにするため */
-        }
+    .grid-container.zoom-1 .grid-item-hashtag { display: none !important; }
+    .grid-container.zoom-1 .grid-item-title { font-size: 0.8rem; }
+    .grid-container.zoom-1 .view-count { font-size: 0.7rem; }
+}
 
-        .modal-content {
-            max-width: 90%;
-            max-height: 80%; /* 【変更】90%から80%に変更（テキスト用のスペース確保） */
-            object-fit: contain;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.5);
-        }
+/* -----------------------------------
+    【追加】モーダル用スタイル
+----------------------------------- */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 2000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.8);
+    justify-content: center;
+    align-items: center;
+    flex-direction: column; /* 【追加】画像とテキストを縦並びにするため */
+}
 
-        /* 【追加】モーダル内テキストのスタイル */
-        .modal-text {
-            color: #fff;
-            margin-top: 15px;
-            font-size: 1rem;
-            max-width: 90%;
-            text-align: center;
-            white-space: pre-wrap;
-            line-height: 1.5;
-        }
+.modal-content {
+    max-width: 90%;
+    max-height: 80%; /* 【変更】90%から80%に変更（テキスト用のスペース確保） */
+    object-fit: contain;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+}
 
-        .modal-close {
-            position: absolute;
-            top: 20px;
-            right: 30px;
-            color: #fff;
-            font-size: 40px;
-            font-weight: bold;
-            cursor: pointer;
-            z-index: 2001;
-            transition: color 0.3s;
-        }
+/* 【追加】モーダル内テキストのスタイル */
+.modal-text {
+    color: #fff;
+    margin-top: 15px;
+    font-size: 1rem;
+    max-width: 90%;
+    text-align: center;
+    white-space: pre-wrap;
+    line-height: 1.5;
+}
 
-        .modal-close:hover {
-            color: #ccc;
-        }
+.modal-close {
+    position: absolute;
+    top: 20px;
+    right: 30px;
+    color: #fff;
+    font-size: 40px;
+    font-weight: bold;
+    cursor: pointer;
+    z-index: 2001;
+    transition: color 0.3s;
+}
+
+.modal-close:hover {
+    color: #ccc;
+}
