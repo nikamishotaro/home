@@ -396,32 +396,46 @@ body {
     top: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.8);
+    background-color: rgba(0, 0, 0, 0.9); /* 少し暗く調整 */
     justify-content: center;
     align-items: center;
-    flex-direction: column; /* 【追加】画像とテキストを縦並びにするため */
+    flex-direction: column;
+    overflow-y: auto; /* 複数画像で縦に長くなる場合にスクロール可能に */
+    padding: 40px 0;
+}
+
+/* 【重要・追加】複数画像とテキストを包むコンテナ */
+.modal-container {
+    width: 90%;
+    max-width: 800px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 .modal-content {
-    max-width: 90%;
-    max-height: 80%; /* 【変更】90%から80%に変更（テキスト用のスペース確保） */
+    max-width: 100%;
+    height: auto;
     object-fit: contain;
+    margin-bottom: 20px; /* 複数画像同士のスキマ */
     box-shadow: 0 4px 12px rgba(0,0,0,0.5);
 }
 
-/* 【追加】モーダル内テキストのスタイル */
+/* モーダル内テキストのスタイル（左詰め対応） */
 .modal-text {
     color: #fff;
     margin-top: 15px;
     font-size: 1rem;
-    max-width: 90%;
-    text-align: center;
+    width: 100%; /* 幅いっぱいに広げて左詰めを有効にする */
+    text-align: left; /* 左詰め */
     white-space: pre-wrap;
-    line-height: 1.5;
+    line-height: 1.6;
+    background: rgba(255,255,255,0.1); /* 読みやすく背景を少し敷く */
+    padding: 20px;
 }
 
 .modal-close {
-    position: absolute;
+    position: fixed; /* absoluteからfixedに変更し、スクロールしても右上に固定 */
     top: 20px;
     right: 30px;
     color: #fff;
