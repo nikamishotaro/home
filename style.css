@@ -61,11 +61,13 @@ body {
     align-items: center;
 }
 
-/* 【修正・要求②】ソートUI用スタイル (検索窓とアイコンの間・画面右端に配置) */
+/* 【修正・要求①】ソートUI用スタイル (PC版)
+  ▼▼▼ Y軸（高さ）を調整する場合は、以下の「top」の数値を変更してください ▼▼▼
+*/
 .sort-container {
     position: absolute;
-    top: 75px; /* PC版ヘッダーと検索窓の間の空白に配置 */
-    right: var(--header-gap-x); /* 画面右端（ヘッダーの余白と揃える） */
+    top: 85px; /* ここを変更（数値を大きくすると下に、小さくすると上に移動します） */
+    right: var(--header-gap-x);
     display: flex;
     justify-content: flex-end;
     z-index: 900;
@@ -73,17 +75,17 @@ body {
 
 .sort-select {
     padding: 2px 4px;
-    border-radius: 0; /* 四角くする */
-    border: 2px solid #ccc; /* 立体感を出すためのボーダー下地 */
+    border-radius: 0;
+    border: 2px solid #ccc;
     border-top-color: #999;
     border-left-color: #999;
     border-bottom-color: #fff;
     border-right-color: #fff;
-    background-color: #c0c0c0; /* 昔のWindows風のグレー */
+    background-color: #c0c0c0;
     font-size: 0.75rem;
     outline: none;
     cursor: pointer;
-    box-shadow: 1px 1px 0 #000; /* レトロな影 */
+    box-shadow: 1px 1px 0 #000;
 }
 
 /* 【要求②③】アイコン用のスタイル */
@@ -96,7 +98,7 @@ body {
 
 .nav-item {
     position: relative;
-    margin-left: 20px; /* アイコン配置に合わせて調整 */
+    margin-left: 20px;
     padding-bottom: 10px;
     margin-bottom: -10px;
 }
@@ -111,7 +113,7 @@ body {
     position: absolute;
     top: 100%;
     left: auto;
-    right: 0; /* アイコンから見切れないように右揃え */
+    right: 0;
     background-color: rgba(255, 255, 255, 0.95);
     min-width: 150px;
     box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.05);
@@ -131,7 +133,7 @@ body {
 }
 
 /* -----------------------------------
-    【要求④⑤⑥】検索窓とHot Search (PC/SP共通)
+    検索窓とHot Search (PC/SP共通)
 ----------------------------------- */
 .search-area-wrapper {
     margin: 100px auto 30px;
@@ -140,15 +142,13 @@ body {
     padding: 0 var(--header-gap-x);
 }
 
-/* 検索窓とボタンを隣接させるためのコンテナ設定 */
 .search-container {
     display: flex;
-    gap: 0; /* 隙間をなくす */
+    gap: 0;
     width: 100%;
     align-items: stretch;
 }
 
-/* 昔のWindows風の四角い検索ボックス */
 .search-box {
     flex: 1;
     display: flex;
@@ -158,25 +158,24 @@ body {
     border-left-color: #666;
     border-bottom-color: #fff;
     border-right-color: #fff;
-    border-radius: 0; /* 四角くする */
+    border-radius: 0;
     padding: 3px 8px;
     background: #fff;
     overflow-x: auto;
 }
 
-/* 【修正・要求①】ハッシュタグを右側に配置し、右から詰める設定 */
 .tags-container {
     display: flex;
     gap: 5px;
-    order: 2; /* 検索入力部分より右側に配置 */
-    flex-direction: row-reverse; /* 右から左へ詰めていく */
+    order: 2;
+    flex-direction: row-reverse;
 }
 
 .search-tag {
     background-color: #ffcc99;
     color: #333;
     padding: 2px 8px;
-    border-radius: 0; /* 四角くする */
+    border-radius: 0;
     font-size: 0.85rem;
     display: flex;
     align-items: center;
@@ -190,7 +189,6 @@ body {
     font-weight: bold;
 }
 
-/* 【修正・要求①】検索入力を左側に固定 */
 .search-input {
     flex: 1;
     border: none;
@@ -198,28 +196,26 @@ body {
     min-width: 120px;
     padding: 2px 5px;
     font-size: 0.9rem;
-    order: 1; /* コンテナの左側に配置 */
+    order: 1;
 }
 
-/* 昔のWindows風の四角い検索ボタン */
 .search-btn {
     padding: 0 15px;
-    border-radius: 0; /* 四角くする */
+    border-radius: 0;
     font-weight: bold;
     cursor: pointer;
-    transition: none; /* レトロ感を出すためアニメーションを消す */
+    transition: none;
     border: 2px solid #ccc;
     border-top-color: #fff;
     border-left-color: #fff;
     border-bottom-color: #666;
     border-right-color: #666;
-    background-color: #c0c0c0; /* 昔のWindows風のグレー */
+    background-color: #c0c0c0;
     color: #000;
     white-space: nowrap;
-    box-shadow: 1px 1px 0 #000; /* レトロな影 */
+    box-shadow: 1px 1px 0 #000;
 }
 
-/* クリックしたときの凹む表現 */
 .search-btn:active {
     border-top-color: #666;
     border-left-color: #666;
@@ -230,7 +226,6 @@ body {
     padding-left: 1px;
 }
 
-/* hit数表示時の状態 */
 .search-btn.active {
     background-color: #ff6600;
     color: #ffffff;
@@ -240,7 +235,6 @@ body {
     border-right-color: #993300;
 }
 
-/* Hot Search */
 .hot-search {
     display: flex;
     gap: 12px;
@@ -270,7 +264,7 @@ body {
     margin-top: 20px;
 }
 
-/* 【追加・要求④】年区切りヘッダー用スタイル */
+/* 年区切りヘッダー用スタイル (PC版) */
 .year-divider {
     grid-column: 1 / -1;
     font-size: 1.5rem;
@@ -281,7 +275,6 @@ body {
     margin-bottom: 10px;
 }
 
-/* レスポンシブで最大列数を調整 */
 @media (max-width: 1200px) {
     .grid-container { grid-template-columns: repeat(4, 1fr); }
 }
@@ -299,12 +292,15 @@ body {
     transform: scale(1.05);
 }
 
+/* 【修正・要求④】アイコン画像と下部テキストの距離 (PC版)
+  ▼▼▼ 画像とテキストの隙間を調整する場合は、以下の「margin-bottom」の数値を変更してください ▼▼▼
+*/
 .image-wrapper {
     width: 100%;
     aspect-ratio: 1 / 1; 
     overflow: hidden;
     background-color: #f0f0f0;
-    margin-bottom: 15px;
+    margin-bottom: 15px; /* ここを変更（PC版の画像とテキストの隙間） */
 }
 
 .image-wrapper img {
@@ -315,7 +311,6 @@ body {
     transition: transform 0.3s ease;
 }
 
-/* 【追加・要求②】タイトルと閲覧数を横並びにするためのコンテナスタイル */
 .grid-item-title-container {
     display: flex;
     justify-content: space-between;
@@ -323,13 +318,15 @@ body {
     margin-bottom: 5px;
 }
 
+/* 【修正・要求③】タイトルのフォントサイズ (PC版)
+  ▼▼▼ タイトルの文字サイズを調整する場合は、以下の「font-size」の数値を変更してください ▼▼▼
+*/
 .grid-item-title {
     font-weight: bold;
-    font-size: 1.1rem;
+    font-size: 1.1rem; /* ここを変更（PC版のタイトル文字サイズ） */
     color: #111;
 }
 
-/* 【追加・要求②】閲覧数表示のスタイル */
 .view-count {
     display: flex;
     align-items: center;
@@ -343,8 +340,11 @@ body {
     margin-right: 4px;
 }
 
+/* 【修正・要求③】タグのフォントサイズ (PC版)
+  ▼▼▼ タグの文字サイズを調整する場合は、以下の「font-size」の数値を変更してください ▼▼▼
+*/
 .grid-item-hashtag {
-    font-size: 0.85rem;
+    font-size: 0.85rem; /* ここを変更（PC版のタグ文字サイズ） */
     color: #1da1f2;
     line-height: 1.4;
 }
@@ -357,7 +357,6 @@ body {
         padding: 15px var(--header-gap-x-sp);
     }
 
-    /* 【要求②】ハンバーガーメニューに伴う全体覆うスライドメニューを解除し、ヘッダー右上に固定 */
     .header-right {
         position: static;
         width: auto;
@@ -394,47 +393,76 @@ body {
         display: flex;
     }
 
-    /* 【修正・要求②】SP版のソートUI位置調整 */
+    /* 【修正・要求①】ソートUI用スタイル (SP版)
+      ▼▼▼ SP版でY軸（高さ）を調整する場合は、以下の「top」の数値を変更してください ▼▼▼
+    */
     .sort-container {
-        top: 55px; /* SP版ヘッダーと検索窓の間の空白に配置 */
+        top: 65px; /* ここを変更（数値を大きくすると下に、小さくすると上に移動します） */
         right: var(--header-gap-x-sp);
     }
 
-    /* 【要求①】SP版：検索窓の見切れ防止の余白適用 */
     .search-area-wrapper {
         margin-top: 80px;
         padding: 0 var(--header-gap-x-sp);
     }
 
+    /* 【追加・要求②】年区切りヘッダーのフォントサイズ (SP版)
+      ▼▼▼ SP版での年区切りの文字サイズを調整する場合は、以下の「font-size」の数値を変更してください ▼▼▼
+    */
+    .year-divider {
+        font-size: 0.75rem; /* PC版(1.5rem)の半分のサイズに設定。ここを変更で調整可 */
+    }
+
+    /* 【追加・要求④】アイコン画像と下部テキストの距離 (SP版)
+      ▼▼▼ SP版で画像とテキストの隙間を調整する場合は、以下の「margin-bottom」の数値を変更してください ▼▼▼
+    */
+    .image-wrapper {
+        margin-bottom: 10px; /* ここを変更（SP版の画像とテキストの隙間） */
+    }
+
+    /* 【追加・要求③】タイトルのフォントサイズ (SP版の基本サイズ)
+      ▼▼▼ SP版のタイトルの基本文字サイズを調整する場合は、以下の「font-size」の数値を変更してください ▼▼▼
+    */
+    .grid-item-title {
+        font-size: 1rem; /* ここを変更（SP版のタイトル文字サイズ） */
+    }
+
+    /* 【追加・要求③】タグのフォントサイズ (SP版の基本サイズ)
+      ▼▼▼ SP版のタグの基本文字サイズを調整する場合は、以下の「font-size」の数値を変更してください ▼▼▼
+    */
+    .grid-item-hashtag {
+        font-size: 0.8rem; /* ここを変更（SP版のタグ文字サイズ） */
+    }
+
     .grid-container {
-        /* デフォルト設定は維持しつつ、JS付与のクラスで上書きします */
         grid-template-columns: repeat(2, 1fr);
         padding: 0 15px 30px;
         gap: 15px;
         margin-top: 0;
     }
 
-    /* 【追加・要求⑤】SP版ピンチズーム状態ごとのレイアウト設定 */
+    /* SP版ピンチズーム状態ごとのレイアウト設定 */
     .grid-container.zoom-0 { grid-template-columns: 1fr; gap: 20px; }
     .grid-container.zoom-1 { grid-template-columns: repeat(3, 1fr); gap: 10px; }
     .grid-container.zoom-2 { grid-template-columns: repeat(5, 1fr); gap: 5px; }
     .grid-container.zoom-3 { grid-template-columns: repeat(11, 1fr); gap: 2px; }
 
-    /* 要素の表示非表示制御 */
+    /* ▼▼▼ ズーム時の文字サイズ等も、必要に応じてここから変更可能です ▼▼▼
+    */
     .grid-container.zoom-3 .grid-item-title-container,
     .grid-container.zoom-3 .grid-item-hashtag { display: none !important; }
 
     .grid-container.zoom-2 .grid-item-hashtag,
     .grid-container.zoom-2 .view-count { display: none !important; }
-    .grid-container.zoom-2 .grid-item-title { font-size: 0.7rem; }
+    .grid-container.zoom-2 .grid-item-title { font-size: 0.7rem; } /* ズーム2のタイトルサイズ */
 
     .grid-container.zoom-1 .grid-item-hashtag { display: none !important; }
-    .grid-container.zoom-1 .grid-item-title { font-size: 0.8rem; }
+    .grid-container.zoom-1 .grid-item-title { font-size: 0.8rem; } /* ズーム1のタイトルサイズ */
     .grid-container.zoom-1 .view-count { font-size: 0.7rem; }
 }
 
 /* -----------------------------------
-    【追加】モーダル用スタイル
+    モーダル用スタイル
 ----------------------------------- */
 .modal {
     display: none;
@@ -444,15 +472,14 @@ body {
     top: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.9); /* 少し暗く調整 */
+    background-color: rgba(0, 0, 0, 0.9);
     justify-content: center;
     align-items: center;
     flex-direction: column;
-    overflow-y: auto; /* 複数画像で縦に長くなる場合にスクロール可能に */
+    overflow-y: auto;
     padding: 40px 0;
 }
 
-/* 【重要・追加】複数画像とテキストを包むコンテナ */
 .modal-container {
     width: 90%;
     max-width: 800px;
@@ -465,25 +492,24 @@ body {
     max-width: 100%;
     height: auto;
     object-fit: contain;
-    margin-bottom: 20px; /* 複数画像同士のスキマ */
+    margin-bottom: 20px;
     box-shadow: 0 4px 12px rgba(0,0,0,0.5);
 }
 
-/* モーダル内テキストのスタイル（左詰め対応） */
 .modal-text {
     color: #fff;
     margin-top: 15px;
     font-size: 1rem;
-    width: 100%; /* 幅いっぱいに広げて左詰めを有効にする */
-    text-align: left; /* 左詰め */
+    width: 100%;
+    text-align: left;
     white-space: pre-wrap;
     line-height: 1.6;
-    background: rgba(255,255,255,0.1); /* 読みやすく背景を少し敷く */
+    background: rgba(255,255,255,0.1);
     padding: 20px;
 }
 
 .modal-close {
-    position: fixed; /* absoluteからfixedに変更し、スクロールしても右上に固定 */
+    position: fixed;
     top: 20px;
     right: 30px;
     color: #fff;
