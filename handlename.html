@@ -44,7 +44,7 @@
         <div class="search-container">
             <div class="search-box">
                 <div id="tags-container" class="tags-container"></div>
-                <input type="text" id="search-input" class="search-input" placeholder="ハッシュタグ・年を検索 (例: 2021)">
+                <input type="text" id="search-input" class="search-input" placeholder="#を検索 (例: #小屋)">
             </div>
             <button id="search-btn" class="search-btn">search</button>
         </div>
@@ -342,13 +342,16 @@
 
                 // 2. DOMをクリア
                 gridContainer.innerHTML = '';
-                let currentYear = '';
+                let currentYearMonth = ''; // 【修正】年だけでなく年月を記録する変数に変更
 
                 // 3. フィルタ適用と再配置
                 itemsArray.forEach(item => {
                     const hashtagElem = item.querySelector('.grid-item-hashtag');
                     const itemTags = hashtagElem ? hashtagElem.textContent : '';
-                    const itemYear = item.dataset.date ? item.dataset.date.split('-')[0] : '';
+                    const dateParts = item.dataset.date ? item.dataset.date.split('-') : [];
+                    const itemYear = dateParts.length > 0 ? dateParts[0] : '';
+                    // 【追加・要求①】表示用の年月を作成 (例: 2026年5月)
+                    const itemYearMonth = dateParts.length > 1 ? `${dateParts[0]}年${parseInt(dateParts[1], 10)}月` : '';
                     
                     let isMatch = true;
                     if (selectedTags.length > 0) {
@@ -359,12 +362,13 @@
                     // 表示対象であり、かつ時系列ソートが選ばれている場合のみ年区切りヘッダーを挿入
                     if (isMatch) {
                         if (sortValue.startsWith('date')) {
-                            if (itemYear !== currentYear) {
+                            // 【修正・要求①】年月ベースで区切りを判定し、描画する
+                            if (itemYearMonth && itemYearMonth !== currentYearMonth) {
                                 const divider = document.createElement('div');
                                 divider.className = 'year-divider';
-                                divider.textContent = itemYear + '年';
+                                divider.textContent = itemYearMonth;
                                 gridContainer.appendChild(divider);
-                                currentYear = itemYear;
+                                currentYearMonth = itemYearMonth;
                             }
                         }
                     }
