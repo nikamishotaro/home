@@ -51,6 +51,8 @@
         <div class="hot-search" id="hot-search"></div>
     </div>
 
+    <div class="grid-container" id="grid-container"></div>
+
     <div id="image-modal" class="modal">
         <span class="modal-close" id="modal-close">&times;</span>
         <img class="modal-content" id="modal-image" src="" alt="Detail Image">
@@ -177,23 +179,50 @@
                     item.dataset.views = views;
                     item.querySelector('.view-number').textContent = views;
 
-                    // 【追加】クリック時にモーダルを表示する処理
+                    // 【追加・要求②】クリック時にモーダルを表示する処理（複数画像に対応）
                     const modal = document.getElementById('image-modal');
-                    const modalImg = document.getElementById('modal-image');
-                    const modalText = document.getElementById('modal-text'); // 【追加】
                     
+                    // コンテナの中身を一度リセット
+                    modal.innerHTML = `
+                        <span class="modal-close" id="modal-close">&times;</span>
+                        <div class="modal-container" id="modal-inner-container"></div>
+                    `;
+                    
+                    const innerContainer = document.getElementById('modal-inner-container');
                     const detailUrl = item.dataset.detailUrl;
-                    const detailtext = item.dataset.detailtext; // 【追加】
+                    const detailtext = item.dataset.detailtext;
                     
-                    // detailUrlがあればそれを使用、なければサムネイル画像をフォールバックとして使用
-                    modalImg.src = detailUrl ? detailUrl : item.querySelector('.image-wrapper img').src;
+                    // 複数画像の展開
+                    if (detailUrl) {
+                        const detailUrls = detailUrl.split(',');
+                        detailUrls.forEach(url => {
+                            if (url.trim()) {
+                                const img = document.createElement('img');
+                                img.src = url.trim();
+                                img.className = 'modal-content';
+                                innerContainer.appendChild(img);
+                            }
+                        });
+                    } else {
+                        // detailUrlがない場合はサムネイル画像をフォールバックとして使用
+                        const img = document.createElement('img');
+                        img.src = item.querySelector('.image-wrapper img').src;
+                        img.className = 'modal-content';
+                        innerContainer.appendChild(img);
+                    }
                     
-                    // 【追加】モーダル内本文の反映（改行コードが文字列として入ってきた場合のエスケープ処理含む）
-                    if (modalText) {
-                        modalText.textContent = detailtext ? detailtext.replace(/\\n/g, '\n') : "";
+                    // モーダル内本文の反映
+                    if (detailtext) {
+                        const textDiv = document.createElement('div');
+                        textDiv.className = 'modal-text';
+                        textDiv.textContent = detailtext.replace(/\\n/g, '\n');
+                        innerContainer.appendChild(textDiv);
                     }
                     
                     modal.style.display = 'flex';
+
+                    // 閉じるボタンの再バインド（中身を書き換えたため）
+                    document.getElementById('modal-close').onclick = () => modal.style.display = 'none';
                 });
             });
             
@@ -418,10 +447,12 @@
             const imageModal = document.getElementById('image-modal');
             const modalClose = document.getElementById('modal-close');
             
-            // ×ボタンクリックで閉じる
-            modalClose.addEventListener('click', () => {
-                imageModal.style.display = 'none';
-            });
+            // ×ボタンクリックで閉じる（初期配置のボタン用。JSで動的生成したものは上でバインド済み）
+            if (modalClose) {
+                modalClose.addEventListener('click', () => {
+                    imageModal.style.display = 'none';
+                });
+            }
             
             // 画像以外の背景部分クリックで閉じる
             imageModal.addEventListener('click', (e) => {
