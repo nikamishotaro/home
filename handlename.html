@@ -171,52 +171,95 @@
                 item.dataset.views = views;
                 item.querySelector('.view-number').textContent = views;
 
+                // --- 【修正】クリック時にモーダルを表示する処理（タイトル・タグ・スライダー対応） ---
                 item.addEventListener('click', (e) => {
-                    e.preventDefault(); // 【追加】クリック時の意図しないページ遷移を防止
+                    e.preventDefault(); // クリック時の意図しないページ遷移を防止
 
                     views++;
                     localStorage.setItem(DB_KEY_PREFIX + id, views);
                     item.dataset.views = views;
                     item.querySelector('.view-number').textContent = views;
 
-                    // 【追加・要求②】クリック時にモーダルを表示する処理（複数画像に対応）
                     const modal = document.getElementById('image-modal');
                     
-                    // コンテナの中身を一度リセット
+                    // 【要求③】コンテナの中身をリセットし、タイトル、スライダー、タグ、本文の枠を生成
                     modal.innerHTML = `
                         <span class="modal-close" id="modal-close">&times;</span>
-                        <div class="modal-container" id="modal-inner-container"></div>
+                        <div class="modal-container" id="modal-inner-container">
+                            <div id="modal-title" class="modal-title"></div>
+                            <div id="carousel-container" class="carousel-container"></div>
+                            <div id="modal-tags" class="modal-tags"></div>
+                            <div id="modal-text" class="modal-text"></div>
+                        </div>
                     `;
                     
-                    const innerContainer = document.getElementById('modal-inner-container');
+                    const titleEl = document.getElementById('modal-title');
+                    const carouselEl = document.getElementById('carousel-container');
+                    const tagsEl = document.getElementById('modal-tags');
+                    const textEl = document.getElementById('modal-text');
+                    
+                    // 【要求③】タイトルとタグの情報をアイコンから取得して反映
+                    const itemTitle = item.querySelector('.grid-item-title').textContent;
+                    const itemTagsElem = item.querySelector('.grid-item-hashtag');
+                    titleEl.textContent = itemTitle;
+                    if (itemTagsElem) {
+                        tagsEl.textContent = itemTagsElem.textContent;
+                    }
+
                     const detailUrl = item.dataset.detailUrl;
                     const detailtext = item.dataset.detailtext;
                     
-                    // 複数画像の展開
+                    // 画像リストの生成
+                    let images = [];
                     if (detailUrl) {
-                        const detailUrls = detailUrl.split(',');
-                        detailUrls.forEach(url => {
-                            if (url.trim()) {
-                                const img = document.createElement('img');
-                                img.src = url.trim();
-                                img.className = 'modal-content';
-                                innerContainer.appendChild(img);
-                            }
-                        });
+                        images = detailUrl.split(',').map(u => u.trim()).filter(u => u !== '');
                     } else {
                         // detailUrlがない場合はサムネイル画像をフォールバックとして使用
+                        images = [item.querySelector('.image-wrapper img').src];
+                    }
+                    
+                    // 【要求①・②】画像の展開（1枚の場合は自動縦幅で通常表示、複数枚の場合はスライダーに）
+                    if (images.length === 1) {
                         const img = document.createElement('img');
-                        img.src = item.querySelector('.image-wrapper img').src;
+                        img.src = images[0];
                         img.className = 'modal-content';
-                        innerContainer.appendChild(img);
+                        carouselEl.style.height = 'auto'; // 1枚なら高さを解除して縦幅を自動調整
+                        carouselEl.appendChild(img);
+                    } else if (images.length > 1) {
+                        images.forEach((url, idx) => {
+                            const img = document.createElement('img');
+                            img.src = url;
+                            img.className = 'carousel-img';
+                            // 初期状態のクラス付与
+                            if (idx === 0) img.classList.add('active');
+                            else if (idx === 1) img.classList.add('next');
+                            else if (idx === images.length - 1) img.classList.add('prev');
+                            carouselEl.appendChild(img);
+                        });
+
+                        // 【要求②】スライダークリック時の回転処理
+                        let currentIndex = 0;
+                        carouselEl.addEventListener('click', () => {
+                            const imgs = carouselEl.querySelectorAll('.carousel-img');
+                            // 一度すべてのクラスをリセット
+                            imgs.forEach(i => i.className = 'carousel-img');
+                            
+                            // 順番を1つ進める
+                            currentIndex = (currentIndex + 1) % imgs.length;
+                            
+                            // 新しい状態を付与
+                            imgs[currentIndex].classList.add('active');
+                            imgs[(currentIndex - 1 + imgs.length) % imgs.length].classList.add('prev');
+                            imgs[(currentIndex + 1) % imgs.length].classList.add('next');
+                        });
                     }
                     
                     // モーダル内本文の反映
                     if (detailtext) {
-                        const textDiv = document.createElement('div');
-                        textDiv.className = 'modal-text';
-                        textDiv.textContent = detailtext.replace(/\\n/g, '\n');
-                        innerContainer.appendChild(textDiv);
+                        textEl.textContent = detailtext.replace(/\\n/g, '\n');
+                        textEl.style.display = 'block';
+                    } else {
+                        textEl.style.display = 'none'; // 本文がない場合は枠ごと消す
                     }
                     
                     modal.style.display = 'flex';
@@ -342,7 +385,7 @@
 
                 // 2. DOMをクリア
                 gridContainer.innerHTML = '';
-                let currentYearMonth = ''; // 【修正】年だけでなく年月を記録する変数に変更
+                let currentYearMonth = ''; 
 
                 // 3. フィルタ適用と再配置
                 itemsArray.forEach(item => {

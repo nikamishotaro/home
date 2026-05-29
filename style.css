@@ -397,7 +397,7 @@ body {
       ▼▼▼ SP版でY軸（高さ）を調整する場合は、以下の「top」の数値を変更してください ▼▼▼
     */
     .sort-container {
-        top: 300px; /* ここを変更（数値を大きくすると下に、小さくすると上に移動します） */
+        top: 65px; /* ここを変更（数値を大きくすると下に、小さくすると上に移動します） */
         right: var(--header-gap-x-sp);
     }
 
@@ -417,7 +417,7 @@ body {
       ▼▼▼ SP版で画像とテキストの隙間を調整する場合は、以下の「margin-bottom」の数値を変更してください ▼▼▼
     */
     .image-wrapper {
-        margin-bottom: 5px; /* ここを変更（SP版の画像とテキストの隙間） */
+        margin-bottom: 10px; /* ここを変更（SP版の画像とテキストの隙間） */
     }
 
     /* 【追加・要求③】タイトルのフォントサイズ (SP版の基本サイズ)
@@ -462,14 +462,14 @@ body {
 }
 
 /* -----------------------------------
-    モーダル用スタイル
+    【追加・要求①②③】モーダル・スライダー用スタイル
 ----------------------------------- */
 .modal {
     display: none;
     position: fixed;
-    z-index: 2000;
-    left: 0;
+    /* 【要求③-参考】に基づく修正 */
     top: 0;
+    left: 0;
     width: 100%;
     height: 100%;
     background-color: rgba(0, 0, 0, 0.9);
@@ -486,30 +486,97 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
+    margin: auto;
 }
 
+/* モーダル内に画像が1枚だけの時のスタイル */
 .modal-content {
+    /* 【要求①】縦幅サイズが自動調整されるように修正 */
     max-width: 100%;
+    max-height: 60vh; /* 画面高さいっぱいに広がらないよう制限 */
     height: auto;
     object-fit: contain;
     margin-bottom: 20px;
     box-shadow: 0 4px 12px rgba(0,0,0,0.5);
 }
 
+/* 【追加・要求②】画像スライダー（円環構造）のスタイル */
+.carousel-container {
+    position: relative;
+    width: 100%;
+    /* 【要求①】縦幅サイズが自動調整されるようにvw/vhを併用 */
+    height: 50vh; 
+    min-height: 250px;
+    margin: 20px 0;
+    overflow: hidden;
+    cursor: pointer;
+}
+.carousel-img {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    /* 【要求①】縦幅自動調整 */
+    max-height: 100%;
+    height: auto;
+    max-width: 60%; 
+    object-fit: contain;
+    transition: all 0.4s ease;
+    opacity: 0;
+    z-index: 0;
+    pointer-events: none; /* コンテナ全体でクリック判定させるため */
+    box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+}
+.carousel-img.active {
+    opacity: 1;
+    z-index: 2;
+    transform: translate(-50%, -50%) scale(1);
+}
+.carousel-img.prev {
+    opacity: 0.3; 
+    z-index: 1;
+    transform: translate(-120%, -50%) scale(0.8); 
+}
+.carousel-img.next {
+    opacity: 0.3;
+    z-index: 1;
+    transform: translate(20%, -50%) scale(0.8); 
+}
+
+/* 【追加・要求③】モーダル内上部のタイトル */
+.modal-title {
+    color: #fff;
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-bottom: 15px;
+    text-align: center;
+    width: 100%;
+}
+
+/* 【追加・要求③】モーダル内のタグ（画像と本文の間） */
+.modal-tags {
+    color: #1da1f2;
+    font-size: 0.9rem;
+    margin-top: 10px;
+    margin-bottom: 15px;
+    text-align: center;
+    width: 100%;
+}
+
+/* モーダル内テキストのスタイル */
 .modal-text {
     color: #fff;
-    margin-top: 15px;
+    margin-top: 0; /* タグとの余白バランス調整 */
     font-size: 1rem;
-    width: 100%;
-    text-align: left;
+    width: 100%; 
+    text-align: left; 
     white-space: pre-wrap;
     line-height: 1.6;
-    background: rgba(255,255,255,0.1);
+    background: rgba(255,255,255,0.1); 
     padding: 20px;
 }
 
 .modal-close {
-    position: fixed;
+    position: fixed; 
     top: 20px;
     right: 30px;
     color: #fff;
