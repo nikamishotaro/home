@@ -521,7 +521,7 @@ body {
 .modal-box {
     background: #000;
     border: 0px solid #ffffff;
-    width: 100%;
+    width: 90%;
     max-width: 800px;
     margin: 100px auto; 
     padding: 40px;
@@ -540,9 +540,9 @@ body {
     }
 }
 
-/* ▼▼▼ 【要求③】モーダル内の「画像(1枚)」位置・サイズ調整 (PC版) ▼▼▼ */
+/* ▼▼▼ 【要求②】モーダル内の「画像が1枚だけ」の時の位置・サイズ調整 (PC版) ▼▼▼ */
 .single-img {
-    width: 100%;
+    width: auto;
     height: auto;
     max-height: 60vh;
     object-fit: contain;
@@ -550,20 +550,27 @@ body {
     margin-top: 0px; 
     /* 画像と下の要素との隙間 */
     margin-bottom: 20px;
+    /* 画像の左の余白 */
+    margin-left: 0px;
+    /* 画像の右の余白 */
+    margin-right: 0px;
     box-shadow: 0 4px 12px rgba(0,0,0,0.5);
 }
 
-/* ▼▼▼ 【要求③】モーダル内の「複数画像（スライダー）」位置調整 (PC版) ▼▼▼ */
+/* ▼▼▼ 【要求②】モーダル内の「複数画像（スライダー）」位置・サイズ調整 (PC版) ▼▼▼ */
 .carousel-container {
     position: relative;
     width: 100%;
-    /* 【修正・要求①】縦幅が画像に合わせて自動調整されるように設定 */
     height: auto; 
-    min-height: 200px;
+    max-height: 60vh;
     /* スライダー全体と上の要素との隙間 */
     margin-top: 20px;
     /* スライダー全体と下の要素との隙間 */
     margin-bottom: 20px;
+    /* スライダー全体の左の余白 */
+    margin-left: 0px;
+    /* スライダー全体の右の余白 */
+    margin-right: 0px;
     overflow: hidden;
     cursor: pointer;
     display: flex;
@@ -572,16 +579,13 @@ body {
 }
 
 .carousel-img {
-    /* 【修正・要求①】横幅の上限を固定し、縦幅を自動調整（アスペクト比維持） */
-    width: 100%;
-    max-width: 500px; /* ここがスライダー画像の上限サイズです */
-    height: auto; 
-    max-height: none;
-    object-fit: contain;
-
     position: absolute;
     top: 50%;
     left: 50%;
+    width: auto;
+    height: auto;
+    max-height: 100%;
+    object-fit: contain;
     transition: all 0.4s ease;
     opacity: 0;
     z-index: 0;
@@ -589,7 +593,6 @@ body {
     box-shadow: 0 4px 12px rgba(0,0,0,0.5);
 }
 
-/* ※ 表示中の画像だけ相対配置にして親枠の高さを決定させる */
 .carousel-img.active {
     position: relative;
     top: auto;
@@ -602,38 +605,46 @@ body {
 .carousel-img.prev {
     opacity: 0.3; 
     z-index: 1;
-    transform: translate(-120%, -50%) scale(0.8); 
+    transform: translate(-150%, -50%) scale(0.8); 
 }
 
 .carousel-img.next {
     opacity: 0.3;
     z-index: 1;
-    transform: translate(20%, -50%) scale(0.8); 
+    transform: translate(50%, -50%) scale(0.8); 
 }
 
-/* ▼▼▼ 【要求②】モーダル内の「タイトル」フォントサイズ・位置調整 (PC版) ▼▼▼ */
+/* ▼▼▼ 【要求①】モーダル内の「タイトル」フォントサイズ・位置調整 (PC版) ▼▼▼ */
 .modal-title {
     color: #fff;
     /* タイトルの文字サイズ */
     font-size: 1.5rem;
     font-weight: bold;
     /* モーダル枠の上辺からの距離（大きくすると下がります） */
-    margin-top: 20px;
+    margin-top: 10px;
     /* タイトルと下の要素（画像等）との隙間 */
-    margin-bottom: 30px;
+    margin-bottom: 15px;
+    /* タイトルの左の余白 */
+    margin-left: 0px;
+    /* タイトルの右の余白 */
+    margin-right: 0px;
     text-align: left;
     width: 100%;
 }
 
-/* ▼▼▼ 【要求②】モーダル内の「本文」フォントサイズ・位置調整 (PC版) ▼▼▼ */
+/* ▼▼▼ 【要求①】モーダル内の「本文」フォントサイズ・位置調整 (PC版) ▼▼▼ */
 .modal-text {
     color: #fff;
-    /* 本文と上の要素（画像等）との隙間 */
-    margin-top: 30px; 
-    /* 本文の下の余白 */
-    margin-bottom: 20px;
     /* 本文の文字サイズ */
     font-size: 1rem;
+    /* 本文と上の要素（画像等）との隙間 */
+    margin-top: 15px; 
+    /* 本文とモーダル枠の下辺との隙間 */
+    margin-bottom: 20px;
+    /* 本文の左の余白 */
+    margin-left: 0px;
+    /* 本文の右の余白 */
+    margin-right: 0px;
     width: 100%; 
     text-align: left; 
     white-space: pre-wrap;
@@ -643,36 +654,58 @@ body {
 }
 
 /* -----------------------------------
-   【要求②③補足】SP版用の微調整が必要な場合はここに追記してください 
+   SP版（スマホ）用の微調整
 ----------------------------------- */
 @media (max-width: 768px) {
-    /* ▼▼▼ 【要求②】モーダル内の「タイトル」フォントサイズ・位置調整 (SP版) ▼▼▼ */
+    /* ▼▼▼ 【要求①】モーダル内の「タイトル」フォントサイズ・位置調整 (SP版) ▼▼▼ */
     .modal-title {
         /* SP版のタイトル文字サイズ */
         font-size: 1.2rem;
         /* SP版のモーダル枠の上辺からの距離 */
-        margin-top: 20px;
+        margin-top: 0px;
         /* SP版のタイトルと下の要素との隙間 */
-        margin-bottom: 30px;
+        margin-bottom: 10px;
+        /* SP版のタイトルの左の余白 */
+        margin-left: 0px;
+        /* SP版のタイトルの右の余白 */
+        margin-right: 0px;
     }
 
-    /* ▼▼▼ 【要求②】モーダル内の「本文」フォントサイズ・位置調整 (SP版) ▼▼▼ */
+    /* ▼▼▼ 【要求①】モーダル内の「本文」フォントサイズ・位置調整 (SP版) ▼▼▼ */
     .modal-text {
         /* SP版の本文文字サイズ */
         font-size: 0.9rem;
         /* SP版の本文と上の要素との隙間 */
-        margin-top: 30px;
-        /* SP版の本文の下の余白 */
-        margin-bottom: 20px;
+        margin-top: 10px;
+        /* SP版の本文とモーダル枠の下辺との隙間 */
+        margin-bottom: 10px;
+        /* SP版の本文の左の余白 */
+        margin-left: 0px;
+        /* SP版の本文の右の余白 */
+        margin-right: 0px;
     }
 
-    /* ▼▼▼ 【要求③】モーダル内の「画像」位置調整 (SP版) ▼▼▼ */
+    /* ▼▼▼ 【要求②】モーダル内の「画像(1枚)」位置調整 (SP版) ▼▼▼ */
     .single-img {
+        /* SP版の画像と上の要素との隙間 */
         margin-top: 0px;
+        /* SP版の画像と下の要素との隙間 */
         margin-bottom: 15px;
+        /* SP版の画像の左の余白 */
+        margin-left: 0px;
+        /* SP版の画像の右の余白 */
+        margin-right: 0px;
     }
+
+    /* ▼▼▼ 【要求②】モーダル内の「複数画像（スライダー）」位置調整 (SP版) ▼▼▼ */
     .carousel-container {
+        /* SP版のスライダー全体と上の要素との隙間 */
         margin-top: 15px;
+        /* SP版のスライダー全体と下の要素との隙間 */
         margin-bottom: 15px;
+        /* SP版のスライダー全体の左の余白 */
+        margin-left: 0px;
+        /* SP版のスライダー全体の右の余白 */
+        margin-right: 0px;
     }
 }
