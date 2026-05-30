@@ -301,7 +301,7 @@ body {
 
 .grid-item-title {
     font-weight: bold;
-    font-size: 1.1rem; 
+    font-size: 0.8rem; 
     color: #111;
     transition: font-size 0.3s ease;
 }
@@ -309,7 +309,7 @@ body {
 .view-count {
     display: flex;
     align-items: center;
-    font-size: 0.85rem;
+    font-size: 0.55rem;
     color: #666;
     transition: all 0.3s ease;
     opacity: 1;
@@ -374,7 +374,7 @@ body {
     }
 
     .sort-container {
-        top: 65px;
+        top: 150px;
         right: var(--header-gap-x-sp);
     }
 
