@@ -54,7 +54,6 @@
     <div class="grid-container" id="grid-container"></div>
 
     <div id="image-modal" class="modal">
-        <span class="modal-close" id="modal-close">&times;</span>
         <div class="modal-box" id="modal-inner-container">
             </div>
     </div>
@@ -90,8 +89,9 @@
                             const tags = tagsMatch ? tagsMatch[1] : "";
                             const rawImageUrl = iconUrlMatch ? iconUrlMatch[1] : (imageMatch ? imageMatch[1] : "");
                             
-                            // 【修正・要求②】iOS実機バグ対策の徹底（既にエンコードされている場合の二重化を防ぐ）
-                            const imageUrl = rawImageUrl ? encodeURI(decodeURI(rawImageUrl.trim())) : "";
+                            // 【修正・要求⑤】見えない改行や制御文字を除去してiOSバグ対策
+                            const cleanIconUrl = rawImageUrl.replace(/[\r\n"]/g, '').trim();
+                            const imageUrl = cleanIconUrl ? encodeURI(decodeURI(cleanIconUrl)) : "";
 
                             const detailUrl = detailUrlMatch ? detailUrlMatch[1] : "";
                             const detailtext = detailtextMatch ? detailtextMatch[1] : "";
@@ -135,7 +135,6 @@
                 if (postListElement) postListElement.innerHTML = "記事の読み込みに失敗しました。";
                 console.error(error);
             }
-            // ----------------------------------------------------------------------------------
 
             const navItems = document.querySelectorAll('.nav-item.has-dropdown');
 
@@ -155,7 +154,6 @@
             const gridItems = document.querySelectorAll('.grid-item');
             const itemsArray = Array.from(gridItems);
 
-            // モーダルを安全に閉じるための共通関数
             function closeImageModal() {
                 const modal = document.getElementById('image-modal');
                 modal.style.display = 'none';
@@ -181,42 +179,35 @@
                     const modal = document.getElementById('image-modal');
                     const innerContainer = document.getElementById('modal-inner-container');
                     
-                    // 【要求③】コンテナの中身をリセットし、タイトル、スライダー、タグ、本文の枠を生成
+                    // 【要求①・②】コンテナの中身をリセットし、タイトル、スライダー、本文の枠を生成
                     innerContainer.innerHTML = `
                         <div id="modal-title" class="modal-title"></div>
                         <div id="carousel-container" class="carousel-container"></div>
-                        <div id="modal-tags" class="modal-tags"></div>
                         <div id="modal-text" class="modal-text"></div>
                     `;
                     
                     const titleEl = document.getElementById('modal-title');
                     const carouselEl = document.getElementById('carousel-container');
-                    const tagsEl = document.getElementById('modal-tags');
                     const textEl = document.getElementById('modal-text');
                     
-                    // タイトルとタグの情報をアイコンから取得して反映
                     const itemTitle = item.querySelector('.grid-item-title').textContent;
-                    const itemTagsElem = item.querySelector('.grid-item-hashtag');
                     titleEl.textContent = itemTitle;
-                    if (itemTagsElem) {
-                        tagsEl.textContent = itemTagsElem.textContent;
-                    }
 
                     const detailUrl = item.dataset.detailUrl;
                     const detailtext = item.dataset.detailtext;
                     
-                    // 画像リストの生成
+                    // 画像リストの生成（クリーンアップ処理追加）
                     let images = [];
                     if (detailUrl) {
-                        images = detailUrl.split(',').map(u => u.trim()).filter(u => u !== '');
+                        images = detailUrl.split(',').map(u => u.replace(/[\r\n"]/g, '').trim()).filter(u => u !== '');
                     } else {
-                        images = [item.querySelector('.image-wrapper img').src];
+                        const fallbackSrc = item.querySelector('.image-wrapper img').src;
+                        images = [fallbackSrc.replace(/[\r\n"]/g, '').trim()];
                     }
                     
                     // 画像の展開
                     if (images.length === 1) {
                         const img = document.createElement('img');
-                        // 【要求②】iOS実機バグ対応：URLをデコードして再エンコード
                         img.src = encodeURI(decodeURI(images[0]));
                         img.className = 'single-img';
                         carouselEl.style.height = 'auto'; 
@@ -242,7 +233,7 @@
                             imgs[currentIndex].classList.add('active');
                             imgs[(currentIndex - 1 + imgs.length) % imgs.length].classList.add('prev');
                             imgs[(currentIndex + 1) % imgs.length].classList.add('next');
-                            ev.stopPropagation(); // 背景クリックを阻止
+                            ev.stopPropagation(); 
                         });
                     }
                     
@@ -254,10 +245,10 @@
                         textEl.style.display = 'none'; 
                     }
                     
-                    modal.style.display = 'block'; // 【要求①】FlexからBlockに変更（スクロール対応）
+                    modal.style.display = 'block'; 
+                    modal.scrollTop = 0; // 【修正・要求④】再度開いたときにスクロール位置をリセット
                     modal.style.opacity = 1; 
 
-                    document.getElementById('modal-close').onclick = () => closeImageModal();
                 });
             });
             
@@ -350,7 +341,6 @@
                 }
             });
 
-
             function updateGrid() {
                 const sortValue = document.getElementById('sort-select').value;
                 
@@ -400,10 +390,6 @@
             document.getElementById('sort-select').addEventListener('change', updateGrid);
             searchBtn.addEventListener('click', updateGrid);
 
-
-            // --------------------------------------------------
-            // 【修正・要求③】SP版のピンチイン/ピンチアウト実装
-            // --------------------------------------------------
             let currentZoom = 1; 
             let initialDistance = null;
             let isZooming = false;
@@ -460,15 +446,7 @@
 
             updateGrid();
 
-            // --------------------------------------------------
-            // 【追加・要求①】モーダルを閉じる処理とスクロール時のフェードアウト
-            // --------------------------------------------------
             const imageModal = document.getElementById('image-modal');
-            const modalCloseBtn = document.getElementById('modal-close');
-            
-            if (modalCloseBtn) {
-                modalCloseBtn.addEventListener('click', () => closeImageModal());
-            }
             
             // 【要求①】画像以外の背景部分（余白）クリックで閉じる（PC版等）
             imageModal.addEventListener('click', (e) => {
@@ -477,8 +455,10 @@
                 }
             });
 
-            // 【要求①】SP版：スクロールの最後の段階で徐々にフェードアウトし、最後は閉じる
+            // 【要求④】SP版：スクロールの最後の段階で徐々にフェードアウトし、最後は閉じる
             imageModal.addEventListener('scroll', () => {
+                if (imageModal.style.display === 'none') return; // 【追加】非表示時は処理しない
+
                 if (window.innerWidth <= 768) {
                     const scrollTop = imageModal.scrollTop;
                     const maxScroll = imageModal.scrollHeight - imageModal.clientHeight;
@@ -487,7 +467,6 @@
                         const remainingScroll = maxScroll - scrollTop;
                         let currentOpacity = 1;
                         
-                        // 【視認性確保】コンテンツを読み終わった後の、最後の下部スクロール到達時だけフェードアウトを開始する
                         const opacityThreshold = 400; 
                         if (remainingScroll < opacityThreshold) {
                             currentOpacity = Math.max(0, remainingScroll / opacityThreshold);
