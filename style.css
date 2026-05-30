@@ -61,12 +61,10 @@ body {
     align-items: center;
 }
 
-/* 【修正・要求①】ソートUI用スタイル (PC版)
-  ▼▼▼ Y軸（高さ）を調整する場合は、以下の「top」の数値を変更してください ▼▼▼
-*/
+/* ソートUI用スタイル */
 .sort-container {
     position: absolute;
-    top: 200px; /* ここを変更（数値を大きくすると下に、小さくすると上に移動します） */
+    top: 85px; 
     right: var(--header-gap-x);
     display: flex;
     justify-content: flex-end;
@@ -88,7 +86,7 @@ body {
     box-shadow: 1px 1px 0 #000;
 }
 
-/* 【要求②③】アイコン用のスタイル */
+/* アイコン用のスタイル */
 .header-icon {
     width: 24px;
     height: 24px;
@@ -262,9 +260,10 @@ body {
     gap: 30px;
     padding: 0 40px 60px;
     margin-top: 20px;
+    /* 【要求③】ズーム時の隙間の変化を滑らかにする */
+    transition: gap 0.3s ease, grid-template-columns 0.3s ease;
 }
 
-/* 年区切りヘッダー用スタイル (PC版) */
 .year-divider {
     grid-column: 1 / -1;
     font-size: 1.5rem;
@@ -286,21 +285,20 @@ body {
     text-decoration: none;
     display: block;
     color: inherit;
+    /* 【要求③】ズーム時の要素の変化を滑らかにする */
+    transition: all 0.3s ease;
 }
 
 .grid-item:hover .image-wrapper img {
     transform: scale(1.05);
 }
 
-/* 【修正・要求④】アイコン画像と下部テキストの距離 (PC版)
-  ▼▼▼ 画像とテキストの隙間を調整する場合は、以下の「margin-bottom」の数値を変更してください ▼▼▼
-*/
 .image-wrapper {
     width: 100%;
     aspect-ratio: 1 / 1; 
     overflow: hidden;
     background-color: #f0f0f0;
-    margin-bottom: 15px; /* ここを変更（PC版の画像とテキストの隙間） */
+    margin-bottom: 15px; 
 }
 
 .image-wrapper img {
@@ -311,6 +309,14 @@ body {
     transition: transform 0.3s ease;
 }
 
+/* 【要求③】非表示になる要素のアニメーション用ベース設定 */
+.grid-item-title-container, .grid-item-hashtag {
+    transition: all 0.3s ease;
+    max-height: 50px;
+    opacity: 1;
+    overflow: hidden;
+}
+
 .grid-item-title-container {
     display: flex;
     justify-content: space-between;
@@ -318,13 +324,11 @@ body {
     margin-bottom: 5px;
 }
 
-/* 【修正・要求③】タイトルのフォントサイズ (PC版)
-  ▼▼▼ タイトルの文字サイズを調整する場合は、以下の「font-size」の数値を変更してください ▼▼▼
-*/
 .grid-item-title {
     font-weight: bold;
-    font-size: 1.1rem; /* ここを変更（PC版のタイトル文字サイズ） */
+    font-size: 1.1rem; 
     color: #111;
+    transition: font-size 0.3s ease;
 }
 
 .view-count {
@@ -332,6 +336,10 @@ body {
     align-items: center;
     font-size: 0.85rem;
     color: #666;
+    transition: all 0.3s ease;
+    opacity: 1;
+    max-height: 20px;
+    overflow: hidden;
 }
 
 .view-count img.eye-icon {
@@ -340,11 +348,8 @@ body {
     margin-right: 4px;
 }
 
-/* 【修正・要求③】タグのフォントサイズ (PC版)
-  ▼▼▼ タグの文字サイズを調整する場合は、以下の「font-size」の数値を変更してください ▼▼▼
-*/
 .grid-item-hashtag {
-    font-size: 0.85rem; /* ここを変更（PC版のタグ文字サイズ） */
+    font-size: 0.85rem; 
     color: #1da1f2;
     line-height: 1.4;
 }
@@ -393,11 +398,8 @@ body {
         display: flex;
     }
 
-    /* 【修正・要求①】ソートUI用スタイル (SP版)
-      ▼▼▼ SP版でY軸（高さ）を調整する場合は、以下の「top」の数値を変更してください ▼▼▼
-    */
     .sort-container {
-        top: 150px; /* ここを変更（数値を大きくすると下に、小さくすると上に移動します） */
+        top: 65px;
         right: var(--header-gap-x-sp);
     }
 
@@ -406,32 +408,20 @@ body {
         padding: 0 var(--header-gap-x-sp);
     }
 
-    /* 【追加・要求②】年区切りヘッダーのフォントサイズ (SP版)
-      ▼▼▼ SP版での年区切りの文字サイズを調整する場合は、以下の「font-size」の数値を変更してください ▼▼▼
-    */
     .year-divider {
-        font-size: 0.75rem; /* PC版(1.5rem)の半分のサイズに設定。ここを変更で調整可 */
+        font-size: 0.75rem;
     }
 
-    /* 【追加・要求④】アイコン画像と下部テキストの距離 (SP版)
-      ▼▼▼ SP版で画像とテキストの隙間を調整する場合は、以下の「margin-bottom」の数値を変更してください ▼▼▼
-    */
     .image-wrapper {
-        margin-bottom: 10px; /* ここを変更（SP版の画像とテキストの隙間） */
+        margin-bottom: 10px;
     }
 
-    /* 【追加・要求③】タイトルのフォントサイズ (SP版の基本サイズ)
-      ▼▼▼ SP版のタイトルの基本文字サイズを調整する場合は、以下の「font-size」の数値を変更してください ▼▼▼
-    */
     .grid-item-title {
-        font-size: 1rem; /* ここを変更（SP版のタイトル文字サイズ） */
+        font-size: 1rem;
     }
 
-    /* 【追加・要求③】タグのフォントサイズ (SP版の基本サイズ)
-      ▼▼▼ SP版のタグの基本文字サイズを調整する場合は、以下の「font-size」の数値を変更してください ▼▼▼
-    */
     .grid-item-hashtag {
-        font-size: 0.8rem; /* ここを変更（SP版のタグ文字サイズ） */
+        font-size: 0.8rem;
     }
 
     .grid-container {
@@ -447,37 +437,52 @@ body {
     .grid-container.zoom-2 { grid-template-columns: repeat(5, 1fr); gap: 5px; }
     .grid-container.zoom-3 { grid-template-columns: repeat(11, 1fr); gap: 2px; }
 
-    /* ▼▼▼ ズーム時の文字サイズ等も、必要に応じてここから変更可能です ▼▼▼
-    */
+    /* 【要求③】display:noneを廃止し、opacityとmax-heightでシームレスに隠す */
     .grid-container.zoom-3 .grid-item-title-container,
-    .grid-container.zoom-3 .grid-item-hashtag { display: none !important; }
+    .grid-container.zoom-3 .grid-item-hashtag { 
+        opacity: 0 !important; 
+        max-height: 0 !important; 
+        margin: 0 !important; 
+        padding: 0 !important; 
+    }
 
     .grid-container.zoom-2 .grid-item-hashtag,
-    .grid-container.zoom-2 .view-count { display: none !important; }
-    .grid-container.zoom-2 .grid-item-title { font-size: 0.7rem; } /* ズーム2のタイトルサイズ */
+    .grid-container.zoom-2 .view-count { 
+        opacity: 0 !important; 
+        max-height: 0 !important; 
+        margin: 0 !important; 
+        padding: 0 !important; 
+    }
+    .grid-container.zoom-2 .grid-item-title { font-size: 0.7rem; }
 
-    .grid-container.zoom-1 .grid-item-hashtag { display: none !important; }
-    .grid-container.zoom-1 .grid-item-title { font-size: 0.8rem; } /* ズーム1のタイトルサイズ */
+    .grid-container.zoom-1 .grid-item-hashtag { 
+        opacity: 0 !important; 
+        max-height: 0 !important; 
+        margin: 0 !important; 
+        padding: 0 !important; 
+    }
+    .grid-container.zoom-1 .grid-item-title { font-size: 0.8rem; }
     .grid-container.zoom-1 .view-count { font-size: 0.7rem; }
 }
 
 /* -----------------------------------
-    【追加・要求①②③】モーダル・スライダー用スタイル
+    モーダル・スライダー用スタイル
 ----------------------------------- */
 .modal {
     display: none;
     position: fixed;
-    /* 【要求③-参考】に基づく修正 */
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.9);
+    /* 【要求①】デフォルトの透明度（背景色）は透明にし、フェードアウトに対応 */
+    background-color: transparent; 
     justify-content: center;
-    align-items: center;
+    align-items: flex-start; /* 上端から配置し、marginで調整 */
     flex-direction: column;
     overflow-y: auto;
-    padding: 40px 0;
+    /* 【要求①】レイヤーを最上部に（sort-uiの900より上の9999に設定） */
+    z-index: 9999;
 }
 
 .modal-container {
@@ -486,25 +491,26 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin: auto;
+    /* 【要求①】モーダル枠を白線で囲う。背景を敷き、画面上下に隙間を持たせる */
+    border: 1px solid #fff;
+    background-color: #111; /* 背景が透明なため、要素自体の背景を暗くする */
+    margin: 60px auto; 
+    padding: 20px;
+    box-sizing: border-box;
 }
 
-/* モーダル内に画像が1枚だけの時のスタイル */
 .modal-content {
-    /* 【要求①】縦幅サイズが自動調整されるように修正 */
     max-width: 100%;
-    max-height: 60vh; /* 画面高さいっぱいに広がらないよう制限 */
+    max-height: 60vh;
     height: auto;
     object-fit: contain;
     margin-bottom: 20px;
     box-shadow: 0 4px 12px rgba(0,0,0,0.5);
 }
 
-/* 【追加・要求②】画像スライダー（円環構造）のスタイル */
 .carousel-container {
     position: relative;
     width: 100%;
-    /* 【要求①】縦幅サイズが自動調整されるようにvw/vhを併用 */
     height: 50vh; 
     min-height: 250px;
     margin: 20px 0;
@@ -515,7 +521,6 @@ body {
     position: absolute;
     top: 50%;
     left: 50%;
-    /* 【要求①】縦幅自動調整 */
     max-height: 100%;
     height: auto;
     max-width: 60%; 
@@ -523,7 +528,7 @@ body {
     transition: all 0.4s ease;
     opacity: 0;
     z-index: 0;
-    pointer-events: none; /* コンテナ全体でクリック判定させるため */
+    pointer-events: none; 
     box-shadow: 0 4px 12px rgba(0,0,0,0.5);
 }
 .carousel-img.active {
@@ -542,7 +547,6 @@ body {
     transform: translate(20%, -50%) scale(0.8); 
 }
 
-/* 【追加・要求③】モーダル内上部のタイトル */
 .modal-title {
     color: #fff;
     font-size: 1.5rem;
@@ -552,7 +556,6 @@ body {
     width: 100%;
 }
 
-/* 【追加・要求③】モーダル内のタグ（画像と本文の間） */
 .modal-tags {
     color: #1da1f2;
     font-size: 0.9rem;
@@ -562,10 +565,9 @@ body {
     width: 100%;
 }
 
-/* モーダル内テキストのスタイル */
 .modal-text {
     color: #fff;
-    margin-top: 0; /* タグとの余白バランス調整 */
+    margin-top: 0; 
     font-size: 1rem;
     width: 100%; 
     text-align: left; 

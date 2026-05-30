@@ -93,7 +93,10 @@
                             
                             const title = titleMatch ? titleMatch[1] : "無題";
                             const tags = tagsMatch ? tagsMatch[1] : "";
-                            const imageUrl = iconUrlMatch ? iconUrlMatch[1] : (imageMatch ? imageMatch[1] : "");
+                            const rawImageUrl = iconUrlMatch ? iconUrlMatch[1] : (imageMatch ? imageMatch[1] : "");
+                            // 【要求②】iOS(実機)の日本語URLバグ対策のためエンコード処理を追加
+                            const imageUrl = rawImageUrl ? encodeURI(rawImageUrl.trim()) : "";
+
                             // 【追加】detailUrlとdetailtextの定義
                             const detailUrl = detailUrlMatch ? detailUrlMatch[1] : "";
                             const detailtext = detailtextMatch ? detailtextMatch[1] : "";
@@ -163,7 +166,15 @@
             // DOMの要素を配列として保持（並び替え・再描画用）
             const itemsArray = Array.from(gridItems);
 
-            // 【追加・要求②】閲覧数の初期化とクリック時のカウントアップ（LocalStorageによる簡易DB化）
+            // 【要求①】モーダルを安全に閉じるための共通関数を作成
+            function closeImageModal() {
+                const modal = document.getElementById('image-modal');
+                modal.style.display = 'none';
+                modal.style.opacity = 1; // フェード用の透明度をリセット
+                modal.scrollTop = 0; // スクロール位置をリセット
+            }
+
+            // 【追加・要求②】閲覧数の初期化とクリック時のカウントアップ
             const DB_KEY_PREFIX = 'kim_diehl_views_';
             itemsArray.forEach(item => {
                 const id = item.dataset.id;
@@ -171,9 +182,9 @@
                 item.dataset.views = views;
                 item.querySelector('.view-number').textContent = views;
 
-                // --- 【修正】クリック時にモーダルを表示する処理（タイトル・タグ・スライダー対応） ---
+                // --- 【修正】クリック時にモーダルを表示する処理 ---
                 item.addEventListener('click', (e) => {
-                    e.preventDefault(); // クリック時の意図しないページ遷移を防止
+                    e.preventDefault(); 
 
                     views++;
                     localStorage.setItem(DB_KEY_PREFIX + id, views);
@@ -218,36 +229,33 @@
                         images = [item.querySelector('.image-wrapper img').src];
                     }
                     
-                    // 【要求①・②】画像の展開（1枚の場合は自動縦幅で通常表示、複数枚の場合はスライダーに）
+                    // 【要求①・②】画像の展開
                     if (images.length === 1) {
                         const img = document.createElement('img');
-                        img.src = images[0];
+                        // 【要求②】iOS実機バグ対応：URLをエンコード
+                        img.src = encodeURI(images[0]);
                         img.className = 'modal-content';
                         carouselEl.style.height = 'auto'; // 1枚なら高さを解除して縦幅を自動調整
                         carouselEl.appendChild(img);
                     } else if (images.length > 1) {
                         images.forEach((url, idx) => {
                             const img = document.createElement('img');
-                            img.src = url;
+                            // 【要求②】iOS実機バグ対応：URLをエンコード
+                            img.src = encodeURI(url);
                             img.className = 'carousel-img';
-                            // 初期状態のクラス付与
                             if (idx === 0) img.classList.add('active');
                             else if (idx === 1) img.classList.add('next');
                             else if (idx === images.length - 1) img.classList.add('prev');
                             carouselEl.appendChild(img);
                         });
 
-                        // 【要求②】スライダークリック時の回転処理
                         let currentIndex = 0;
                         carouselEl.addEventListener('click', () => {
                             const imgs = carouselEl.querySelectorAll('.carousel-img');
-                            // 一度すべてのクラスをリセット
                             imgs.forEach(i => i.className = 'carousel-img');
                             
-                            // 順番を1つ進める
                             currentIndex = (currentIndex + 1) % imgs.length;
                             
-                            // 新しい状態を付与
                             imgs[currentIndex].classList.add('active');
                             imgs[(currentIndex - 1 + imgs.length) % imgs.length].classList.add('prev');
                             imgs[(currentIndex + 1) % imgs.length].classList.add('next');
@@ -263,9 +271,10 @@
                     }
                     
                     modal.style.display = 'flex';
+                    modal.style.opacity = 1; // 表示時に不透明度リセット
 
-                    // 閉じるボタンの再バインド（中身を書き換えたため）
-                    document.getElementById('modal-close').onclick = () => modal.style.display = 'none';
+                    // 閉じるボタンの再バインド
+                    document.getElementById('modal-close').onclick = () => closeImageModal();
                 });
             });
             
@@ -273,10 +282,8 @@
             let selectedTags = [];
             const tagCounts = {};
 
-            // ページ内のハッシュタグと「年」を抽出し、検索可能タグと出現頻度を集計
             itemsArray.forEach(item => {
                 const hashtagElem = item.querySelector('.grid-item-hashtag');
-                // 【追加・要求①】data-date から年を抽出し、検索可能タグに追加（頻度集計からは除外）
                 const year = item.dataset.date ? item.dataset.date.split('-')[0] : '';
                 if (year && !availableTags.includes(year)) {
                     availableTags.push(year);
@@ -294,7 +301,6 @@
                 }
             });
 
-            // 【要求⑥】Hot Search (出現頻度上位5つを配置)
             const sortedTags = Object.keys(tagCounts).sort((a, b) => tagCounts[b] - tagCounts[a]).slice(0, 5);
             sortedTags.forEach(t => {
                 const span = document.createElement('span');
@@ -308,7 +314,6 @@
                 hotSearchContainer.appendChild(span);
             });
 
-            // 検索window内にハッシュタグを描画
             function renderTags() {
                 tagsContainer.innerHTML = '';
                 selectedTags.forEach(t => {
@@ -334,7 +339,6 @@
                 renderTags();
             }
 
-            // 検索ボタン押下前のヒット数表示
             function updateSearchState() {
                 if (selectedTags.length === 0) {
                     searchBtn.textContent = 'search';
@@ -345,7 +349,6 @@
                         const hashtagElem = item.querySelector('.grid-item-hashtag');
                         const itemTags = hashtagElem ? hashtagElem.textContent : '';
                         const itemYear = item.dataset.date ? item.dataset.date.split('-')[0] : '';
-                        // 【追加・要求①】選択タグがハッシュタグに含まれるか、年に一致する場合にヒット判定
                         const isMatch = selectedTags.every(st => itemTags.includes('#' + st) || itemYear === st);
                         if (isMatch) hits++;
                     });
@@ -354,7 +357,6 @@
                 }
             }
 
-            // 文字入力時に検索可能タグであれば自動でタグに変換して充填
             searchInput.addEventListener('input', (e) => {
                 let val = e.target.value.trim();
                 if(val.startsWith('#')) val = val.substring(1);
@@ -366,11 +368,9 @@
             });
 
 
-            // 【追加・要求③,④】表示の絞り込み、ソート、年区切りの描画を行う統合関数
             function updateGrid() {
                 const sortValue = document.getElementById('sort-select').value;
                 
-                // 1. 指定順序で配列をソート
                 itemsArray.sort((a, b) => {
                     if (sortValue === 'date-desc') {
                         return new Date(b.dataset.date) - new Date(a.dataset.date);
@@ -383,17 +383,14 @@
                     }
                 });
 
-                // 2. DOMをクリア
                 gridContainer.innerHTML = '';
                 let currentYearMonth = ''; 
 
-                // 3. フィルタ適用と再配置
                 itemsArray.forEach(item => {
                     const hashtagElem = item.querySelector('.grid-item-hashtag');
                     const itemTags = hashtagElem ? hashtagElem.textContent : '';
                     const dateParts = item.dataset.date ? item.dataset.date.split('-') : [];
                     const itemYear = dateParts.length > 0 ? dateParts[0] : '';
-                    // 【追加・要求①】表示用の年月を作成 (例: 2026年5月)
                     const itemYearMonth = dateParts.length > 1 ? `${dateParts[0]}年${parseInt(dateParts[1], 10)}月` : '';
                     
                     let isMatch = true;
@@ -402,10 +399,8 @@
                     }
                     item.style.display = isMatch ? 'block' : 'none';
 
-                    // 表示対象であり、かつ時系列ソートが選ばれている場合のみ年区切りヘッダーを挿入
                     if (isMatch) {
                         if (sortValue.startsWith('date')) {
-                            // 【修正・要求①】年月ベースで区切りを判定し、描画する
                             if (itemYearMonth && itemYearMonth !== currentYearMonth) {
                                 const divider = document.createElement('div');
                                 divider.className = 'year-divider';
@@ -419,7 +414,6 @@
                 });
             }
 
-            // ソート順変更時、検索ボタン押下時に再描画を実行
             document.getElementById('sort-select').addEventListener('change', updateGrid);
             searchBtn.addEventListener('click', updateGrid);
 
@@ -427,14 +421,12 @@
             // --------------------------------------------------
             // 【追加・要求⑤】SP版のピンチイン/ピンチアウト実装
             // --------------------------------------------------
-            // 0: 横1個 (最小), 1: 横3個, 2: 横5個, 3: 横11個 (最大)
             let currentZoom = 1; 
             let initialDistance = null;
             let isZooming = false;
-            const zoomThreshold = 40; // スワイプ（ピンチ）の判定感度
+            const zoomThreshold = 40; 
 
             if (window.innerWidth <= 768) {
-                // 初期状態を横3列にセット（iPhone写真アプリ風の標準的な見た目）
                 gridContainer.className = 'grid-container zoom-' + currentZoom;
             }
 
@@ -450,7 +442,7 @@
 
             document.addEventListener('touchmove', (e) => {
                 if (isZooming && e.touches.length === 2 && window.innerWidth <= 768) {
-                    e.preventDefault(); // デフォルトのピンチズーム挙動を抑制
+                    e.preventDefault(); 
                     const currentDistance = Math.hypot(
                         e.touches[0].pageX - e.touches[1].pageX,
                         e.touches[0].pageY - e.touches[1].pageY
@@ -459,11 +451,9 @@
                     if (initialDistance) {
                         const diff = currentDistance - initialDistance;
                         if (diff > zoomThreshold) {
-                            // ピンチアウト (指を広げる = 拡大して列数を減らす)
                             changeZoom(-1);
                             initialDistance = currentDistance;
                         } else if (diff < -zoomThreshold) {
-                            // ピンチイン (指を狭める = 縮小して列数を増やす)
                             changeZoom(1);
                             initialDistance = currentDistance;
                         }
@@ -480,31 +470,53 @@
 
             function changeZoom(dir) {
                 currentZoom += dir;
-                if (currentZoom < 0) currentZoom = 0; // 最小 (横1個)
-                if (currentZoom > 3) currentZoom = 3; // 最大 (横11個)
+                if (currentZoom < 0) currentZoom = 0; 
+                if (currentZoom > 3) currentZoom = 3; 
                 gridContainer.className = 'grid-container zoom-' + currentZoom;
             }
 
-            // 初期ロード時のリスト表示実行
             updateGrid();
 
             // --------------------------------------------------
-            // 【追加】モーダルを閉じる処理
+            // 【追加・要求①】モーダルを閉じる処理とスクロール時のフェードアウト
             // --------------------------------------------------
             const imageModal = document.getElementById('image-modal');
-            const modalClose = document.getElementById('modal-close');
+            const modalCloseBtn = document.getElementById('modal-close');
             
-            // ×ボタンクリックで閉じる（初期配置のボタン用。JSで動的生成したものは上でバインド済み）
-            if (modalClose) {
-                modalClose.addEventListener('click', () => {
-                    imageModal.style.display = 'none';
-                });
+            if (modalCloseBtn) {
+                modalCloseBtn.addEventListener('click', () => closeImageModal());
             }
             
-            // 画像以外の背景部分クリックで閉じる
+            // 【要求①】画像以外の背景部分（余白）クリックで閉じる（PC版等）
             imageModal.addEventListener('click', (e) => {
                 if (e.target === imageModal) {
-                    imageModal.style.display = 'none';
+                    closeImageModal();
+                }
+            });
+
+            // 【要求①】SP版：スクロールの最後の段階で徐々にフェードアウトし、最後は閉じる
+            imageModal.addEventListener('scroll', () => {
+                if (window.innerWidth <= 768) {
+                    const scrollTop = imageModal.scrollTop;
+                    const maxScroll = imageModal.scrollHeight - imageModal.clientHeight;
+                    
+                    // スクロール可能な場合のみ処理（テキストが長くてスクロールが発生する時のみ）
+                    if (maxScroll > 50) {
+                        const remainingScroll = maxScroll - scrollTop;
+                        let currentOpacity = 1;
+                        
+                        // 【視認性確保】最後の下から100pxに到達したときだけフェードアウトを開始する
+                        if (remainingScroll <= 100) {
+                            currentOpacity = Math.max(0, remainingScroll / 100);
+                        }
+                        
+                        imageModal.style.opacity = currentOpacity;
+
+                        // スクロールしきった（残り1px以下）ら閉じる
+                        if (remainingScroll <= 1) {
+                            closeImageModal();
+                        }
+                    }
                 }
             });
 
