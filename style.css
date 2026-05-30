@@ -521,7 +521,7 @@ body {
 .modal-box {
     background: #000;
     border: 0px solid #ffffff;
-    width: 90%;
+    width: 100%;
     max-width: 800px;
     margin: 100px auto; 
     padding: 40px;
@@ -574,7 +574,7 @@ body {
 .carousel-img {
     /* 【修正・要求①】横幅の上限を固定し、縦幅を自動調整（アスペクト比維持） */
     width: 100%;
-    max-width: 600px; /* ここがスライダー画像の上限サイズです */
+    max-width: 450px; /* ここがスライダー画像の上限サイズです */
     height: auto; 
     max-height: none;
     object-fit: contain;
@@ -618,9 +618,9 @@ body {
     font-size: 1.5rem;
     font-weight: bold;
     /* モーダル枠の上辺からの距離（大きくすると下がります） */
-    margin-top: 10px;
+    margin-top: 20px;
     /* タイトルと下の要素（画像等）との隙間 */
-    margin-bottom: 15px;
+    margin-bottom: 30px;
     text-align: left;
     width: 100%;
 }
@@ -629,7 +629,7 @@ body {
 .modal-text {
     color: #fff;
     /* 本文と上の要素（画像等）との隙間 */
-    margin-top: 15px; 
+    margin-top: 30px; 
     /* 本文の下の余白 */
     margin-bottom: 20px;
     /* 本文の文字サイズ */
