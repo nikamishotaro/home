@@ -669,7 +669,7 @@ body {
         /* SP版のモーダル枠の上辺からの距離 */
         margin-top: 30px;
         /* SP版のタイトルと下の要素との隙間 */
-        margin-bottom: 10px;
+        margin-bottom: 30px;
         /* SP版のタイトルの左の余白 */
         margin-left: 30px;
         /* SP版のタイトルの右の余白 */
@@ -685,9 +685,9 @@ body {
         /* SP版の本文とモーダル枠の下辺との隙間 */
         margin-bottom: 10px;
         /* SP版の本文の左の余白 */
-        margin-left: 10px;
+        margin-left: 30px;
         /* SP版の本文の右の余白 */
-        margin-right: 10px;
+        margin-right: 30px;
     }
 
     /* ▼▼▼ 【要求②】モーダル内の「画像(1枚)」位置調整 (SP版) ▼▼▼ */
