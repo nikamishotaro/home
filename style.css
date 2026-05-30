@@ -207,30 +207,30 @@ body {
     border: 1px solid #ff6600; 
 }
 
-/* 【修正・要求②】Hot Searchラッパーとテキストの設定 */
+/* 【修正・要求②】Hot Searchラッパーとテキストの設定 (左寄せに変更) */
 .hot-search-wrapper {
     display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
+    flex-direction: row; /* 横並びに */
+    justify-content: flex-start; /* 左寄せに変更 */
+    align-items: center; /* 縦方向の中央揃え */
     width: 100%;
-}
-
-.hot-search {
-    display: flex;
-    gap: 12px;
-    margin-top: 10px;
-    flex-wrap: wrap;
-    padding: 0 5px;
-    flex: 1;
+    margin-top: 10px; /* 余白調整 */
 }
 
 .trending-label {
     font-size: 0.85rem;
     font-weight: bold;
     color: #999;
-    margin-top: 10px;
     padding: 0 5px;
     white-space: nowrap;
+}
+
+.hot-search {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    padding: 0 5px;
+    /* flex: 1 を削除し、自然な幅にする */
 }
 
 .hot-search-item {
@@ -503,7 +503,7 @@ body {
 .modal-box {
     background: #000;
     border: 0px solid #ffffff;
-    width: 100%;
+    width: 90%;
     max-width: 800px;
     margin: 100px auto; 
     padding: 40px;
