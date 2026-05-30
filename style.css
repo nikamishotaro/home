@@ -61,11 +61,11 @@ body {
 /* ソートUI用スタイル */
 .sort-container {
     position: absolute;
-    top: 100px; 
+    top: 85px; 
     right: var(--header-gap-x);
     display: flex;
     justify-content: flex-end;
-    align-items: stretch; /* 追加: 高さを揃えるため */
+    align-items: stretch;
     z-index: 900;
 }
 
@@ -79,7 +79,7 @@ body {
     outline: none;
     cursor: pointer;
     box-shadow: none; 
-    height: 100%; /* 追加: 親要素の高さに合わせる */
+    height: 100%; 
 }
 
 /* アイコン用のスタイル */
@@ -209,7 +209,6 @@ body {
     border: 1px solid #ff6600; 
 }
 
-/* Hot Searchラッパーとテキストの設定 */
 .hot-search-wrapper {
     display: flex;
     flex-direction: row; 
@@ -219,12 +218,11 @@ body {
     margin-top: 10px; 
 }
 
-/* 【修正・要求③】hotテキストのスタイル・余白調整 */
 .trending-label {
     font-size: 0.85rem;
     font-weight: bold;
     color: #999;
-    padding: 0 10px 0 0; /* 左の余白を削り、右側にのみ余白を設ける */
+    padding: 0 10px 0 0;
     white-space: nowrap;
 }
 
@@ -232,8 +230,8 @@ body {
     display: flex;
     gap: 12px;
     flex-wrap: wrap;
-    padding: 0; /* 余白を削除して左詰めを綺麗にする */
-    margin-top: 0; /* 中央揃えのためmargin-topをリセット */
+    padding: 0;
+    margin-top: 0;
 }
 
 .hot-search-item {
@@ -391,16 +389,15 @@ body {
         display: flex;
     }
 
-    /* 【修正・要求①】SP版におけるソート・検索ボタンの配置変更 */
     .sort-container {
-        position: static; /* 絶対配置を解除し、検索ボタンの隣に配置 */
+        position: static; 
         display: flex;
         align-items: stretch;
     }
 
     .sort-select {
-        border-top: none; /* 上辺を繋げる */
-        border-left: none; /* 検索ボタンと繋げる */
+        border-top: none; 
+        border-left: none; 
     }
 
     .search-area-wrapper {
@@ -410,19 +407,19 @@ body {
 
     .search-box {
         border-right: 1px solid #000;
-        flex: 0 0 100%; /* 横幅いっぱいにする */
+        flex: 0 0 100%; 
     }
 
     .search-container {
         flex-direction: row;
-        flex-wrap: wrap; /* ボックスとボタン群を折り返す */
+        flex-wrap: wrap; 
     }
 
     .search-btn {
-        flex: 1; /* 余った横幅をすべて埋める（ソートの分を引いた幅になる） */
-        border-top: none; /* 上の検索ボックスと繋げる */
+        flex: 1; 
+        border-top: none; 
         display: flex;
-        justify-content: center; /* センター寄せ */
+        justify-content: center; 
         align-items: center;
         text-align: center;
     }
@@ -543,30 +540,46 @@ body {
     }
 }
 
+/* ▼▼▼ 【要求③】モーダル内の「画像」位置・サイズ調整 ▼▼▼ */
+/* 画像が1枚だけの場合 */
 .single-img {
     width: 100%;
-    height: 60vh;
+    /* 高さを自動調整（縦横比維持） */
+    height: auto;
+    /* 画面高さいっぱいに広がらないよう最大値を制限 */
+    max-height: 60vh;
     object-fit: contain;
+    /* 画像と下の要素（本文等）との隙間 */
     margin-bottom: 20px;
     box-shadow: 0 4px 12px rgba(0,0,0,0.5);
 }
 
+/* ▼▼▼ 【要求③】モーダル内の「複数画像（スライダー）」位置・サイズ調整 ▼▼▼ */
+/* 複数画像が入る枠（コンテナ） */
 .carousel-container {
     position: relative;
     width: 100%;
-    height: 50vh; 
-    min-height: 250px;
+    /* 【修正・要求①】枠自体の高さを自動調整 */
+    height: auto;
+    /* 画面高さいっぱいに広がらないよう最大値を制限 */
+    max-height: 60vh;
+    /* 枠と上下の要素との隙間（上・下） */
     margin: 20px 0;
     overflow: hidden;
     cursor: pointer;
+    /* 子要素の高さを維持させるための設定 */
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
+/* スライダー内の各画像 */
 .carousel-img {
+    /* 【修正・要求①】縦横比を維持して自動伸縮 */
     position: absolute;
-    top: 50%;
-    left: 50%;
     width: 60%;
-    height: 100%;
+    height: auto;
+    max-height: 100%;
     object-fit: contain;
     transition: all 0.4s ease;
     opacity: 0;
@@ -575,41 +588,68 @@ body {
     box-shadow: 0 4px 12px rgba(0,0,0,0.5);
 }
 
+/* ※ .active 以外の画像は絶対配置で重ねるため、コンテナの基準となる高さを確保するためのダミー要素として機能させる画像 */
 .carousel-img.active {
+    position: relative; /* 中央の画像だけ相対配置にして親枠の高さを決定させる */
     opacity: 1;
     z-index: 2;
-    transform: translate(-50%, -50%) scale(1);
+    transform: scale(1);
 }
 
 .carousel-img.prev {
     opacity: 0.3; 
     z-index: 1;
-    transform: translate(-120%, -50%) scale(0.8); 
+    /* 左側の待機位置 */
+    transform: translateX(-100%) scale(0.8); 
 }
 
 .carousel-img.next {
     opacity: 0.3;
     z-index: 1;
-    transform: translate(20%, -50%) scale(0.8); 
+    /* 右側の待機位置 */
+    transform: translateX(100%) scale(0.8); 
 }
 
+/* ▼▼▼ 【要求②】モーダル内の「タイトル」フォントサイズ・位置調整 ▼▼▼ */
 .modal-title {
     color: #fff;
+    /* タイトルの文字サイズ */
     font-size: 1.5rem;
     font-weight: bold;
-    margin-bottom: 15px;
+    /* タイトルと下の要素（画像等）との隙間 */
+    margin-bottom: 10px;
+    /* 左寄せ(left)か中央寄せ(center)か */
     text-align: left;
     width: 100%;
 }
 
+/* ▼▼▼ 【要求②】モーダル内の「本文」フォントサイズ・位置調整 ▼▼▼ */
 .modal-text {
     color: #fff;
+    /* 本文と上の要素（画像等）との隙間 */
     margin-top: 0; 
+    /* 本文の文字サイズ */
     font-size: 1rem;
     width: 100%; 
+    /* 左寄せ(left)か中央寄せ(center)か */
     text-align: left; 
     white-space: pre-wrap;
+    /* 行間（行の高さ） */
     line-height: 1.6;
     padding: 0;
     box-sizing: border-box;
+}
+
+/* -----------------------------------
+   【要求②③補足】SP版用の微調整が必要な場合はここに追記してください 
+----------------------------------- */
+@media (max-width: 768px) {
+    .modal-title {
+        /* SP版のタイトル文字サイズ */
+        font-size: 1.2rem;
+    }
+    .modal-text {
+        /* SP版の本文文字サイズ */
+        font-size: 0.9rem;
+    }
 }
