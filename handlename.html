@@ -44,11 +44,14 @@
         <div class="search-container">
             <div class="search-box">
                 <div id="tags-container" class="tags-container"></div>
-                <input type="text" id="search-input" class="search-input" placeholder="#を検索 (例: #小屋)">
+                <input type="text" id="search-input" class="search-input" placeholder="What are you interested in?">
             </div>
             <button id="search-btn" class="search-btn">search</button>
         </div>
-        <div class="hot-search" id="hot-search"></div>
+        <div class="hot-search-wrapper">
+            <div class="hot-search" id="hot-search"></div>
+            <div class="trending-label">Trending tags</div>
+        </div>
     </div>
 
     <div class="grid-container" id="grid-container"></div>
@@ -89,7 +92,6 @@
                             const tags = tagsMatch ? tagsMatch[1] : "";
                             const rawImageUrl = iconUrlMatch ? iconUrlMatch[1] : (imageMatch ? imageMatch[1] : "");
                             
-                            // 【修正・要求⑤】見えない改行や制御文字を除去してiOSバグ対策
                             const cleanIconUrl = rawImageUrl.replace(/[\r\n"]/g, '').trim();
                             const imageUrl = cleanIconUrl ? encodeURI(decodeURI(cleanIconUrl)) : "";
 
@@ -179,7 +181,6 @@
                     const modal = document.getElementById('image-modal');
                     const innerContainer = document.getElementById('modal-inner-container');
                     
-                    // 【要求①・②】コンテナの中身をリセットし、タイトル、スライダー、本文の枠を生成
                     innerContainer.innerHTML = `
                         <div id="modal-title" class="modal-title"></div>
                         <div id="carousel-container" class="carousel-container"></div>
@@ -196,7 +197,6 @@
                     const detailUrl = item.dataset.detailUrl;
                     const detailtext = item.dataset.detailtext;
                     
-                    // 画像リストの生成（クリーンアップ処理追加）
                     let images = [];
                     if (detailUrl) {
                         images = detailUrl.split(',').map(u => u.replace(/[\r\n"]/g, '').trim()).filter(u => u !== '');
@@ -205,7 +205,6 @@
                         images = [fallbackSrc.replace(/[\r\n"]/g, '').trim()];
                     }
                     
-                    // 画像の展開
                     if (images.length === 1) {
                         const img = document.createElement('img');
                         img.src = encodeURI(decodeURI(images[0]));
@@ -237,7 +236,6 @@
                         });
                     }
                     
-                    // モーダル内本文の反映
                     if (detailtext) {
                         textEl.textContent = detailtext.replace(/\\n/g, '\n');
                         textEl.style.display = 'block';
@@ -246,7 +244,7 @@
                     }
                     
                     modal.style.display = 'block'; 
-                    modal.scrollTop = 0; // 【修正・要求④】再度開いたときにスクロール位置をリセット
+                    modal.scrollTop = 0; 
                     modal.style.opacity = 1; 
 
                 });
@@ -448,16 +446,14 @@
 
             const imageModal = document.getElementById('image-modal');
             
-            // 【要求①】画像以外の背景部分（余白）クリックで閉じる（PC版等）
             imageModal.addEventListener('click', (e) => {
                 if (e.target === imageModal) {
                     closeImageModal();
                 }
             });
 
-            // 【要求④】SP版：スクロールの最後の段階で徐々にフェードアウトし、最後は閉じる
             imageModal.addEventListener('scroll', () => {
-                if (imageModal.style.display === 'none') return; // 【追加】非表示時は処理しない
+                if (imageModal.style.display === 'none') return; 
 
                 if (window.innerWidth <= 768) {
                     const scrollTop = imageModal.scrollTop;
