@@ -666,9 +666,9 @@ body {
         /* SP版のタイトルと下の要素との隙間 */
         margin-bottom: 10px;
         /* SP版のタイトルの左の余白 */
-        margin-left: 0px;
+        margin-left: 10px;
         /* SP版のタイトルの右の余白 */
-        margin-right: 0px;
+        margin-right: 10px;
     }
 
     /* ▼▼▼ 【要求①】モーダル内の「本文」フォントサイズ・位置調整 (SP版) ▼▼▼ */
@@ -680,21 +680,21 @@ body {
         /* SP版の本文とモーダル枠の下辺との隙間 */
         margin-bottom: 10px;
         /* SP版の本文の左の余白 */
-        margin-left: 0px;
+        margin-left: 10px;
         /* SP版の本文の右の余白 */
-        margin-right: 0px;
+        margin-right: 10px;
     }
 
     /* ▼▼▼ 【要求②】モーダル内の「画像(1枚)」位置調整 (SP版) ▼▼▼ */
     .single-img {
         /* SP版の画像と上の要素との隙間 */
-        margin-top: 0px;
+        margin-top: 10px;
         /* SP版の画像と下の要素との隙間 */
         margin-bottom: 15px;
         /* SP版の画像の左の余白 */
-        margin-left: 0px;
+        margin-left: 10px;
         /* SP版の画像の右の余白 */
-        margin-right: 0px;
+        margin-right: 10px;
     }
 
     /* ▼▼▼ 【要求②】モーダル内の「複数画像（スライダー）」位置調整 (SP版) ▼▼▼ */
