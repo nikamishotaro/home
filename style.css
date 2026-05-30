@@ -61,7 +61,7 @@ body {
 /* ソートUI用スタイル */
 .sort-container {
     position: absolute;
-    top: 85px; 
+    top: 100px; 
     right: var(--header-gap-x);
     display: flex;
     justify-content: flex-end;
