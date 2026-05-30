@@ -61,7 +61,7 @@ body {
 /* 【修正・要求①】ソートUI用スタイル (無骨な黒枠フラットデザイン) */
 .sort-container {
     position: absolute;
-    top: 85px; 
+    top: 100px; 
     right: var(--header-gap-x);
     display: flex;
     justify-content: flex-end;
