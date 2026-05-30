@@ -540,10 +540,12 @@ body {
     }
 }
 
-/* ▼▼▼ 【要求②】モーダル内の「画像が1枚だけ」の時の位置・サイズ調整 (PC版) ▼▼▼ */
+/* ▼▼▼ 【要求①②】モーダル内の「画像(1枚)」位置・サイズ調整 (PC版) ▼▼▼ */
 .single-img {
     width: auto;
     height: auto;
+    /* 【要求①】画像が枠をはみ出さないよう、親枠の幅から左右のpaddingを引いた値(40px+40px=80px)で制限 */
+    max-width: calc(100% - 80px);
     max-height: 60vh;
     object-fit: contain;
     /* 画像と上の要素との隙間 */
@@ -557,9 +559,10 @@ body {
     box-shadow: 0 4px 12px rgba(0,0,0,0.5);
 }
 
-/* ▼▼▼ 【要求②】モーダル内の「複数画像（スライダー）」位置・サイズ調整 (PC版) ▼▼▼ */
+/* ▼▼▼ 【要求①②】モーダル内の「複数画像（スライダー）」位置・サイズ調整 (PC版) ▼▼▼ */
 .carousel-container {
     position: relative;
+    /* スライダー領域の横幅。はみ出し防止のため100%に固定 */
     width: 100%;
     height: auto; 
     max-height: 60vh;
@@ -585,6 +588,8 @@ body {
     width: auto;
     height: auto;
     max-height: 100%;
+    /* 【要求①】画像の横幅の最大値。はみ出しを防ぐため親枠（100%）に収める */
+    max-width: 100%;
     object-fit: contain;
     transition: all 0.4s ease;
     opacity: 0;
@@ -654,7 +659,7 @@ body {
 }
 
 /* -----------------------------------
-   SP版（スマホ）用の微調整
+   【要求①②補足】SP版用の微調整が必要な場合はここに追記してください 
 ----------------------------------- */
 @media (max-width: 768px) {
     /* ▼▼▼ 【要求①】モーダル内の「タイトル」フォントサイズ・位置調整 (SP版) ▼▼▼ */
@@ -688,13 +693,15 @@ body {
     /* ▼▼▼ 【要求②】モーダル内の「画像(1枚)」位置調整 (SP版) ▼▼▼ */
     .single-img {
         /* SP版の画像と上の要素との隙間 */
-        margin-top: 10px;
+        margin-top: 0px;
         /* SP版の画像と下の要素との隙間 */
         margin-bottom: 15px;
         /* SP版の画像の左の余白 */
         margin-left: 10px;
         /* SP版の画像の右の余白 */
         margin-right: 10px;
+        /* SP版で画像が枠をはみ出さないよう、親枠の幅から左右のpaddingを引いた値(20px+20px=40px)で制限 */
+        max-width: calc(100% - 40px);
     }
 
     /* ▼▼▼ 【要求②】モーダル内の「複数画像（スライダー）」位置調整 (SP版) ▼▼▼ */
