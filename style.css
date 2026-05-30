@@ -318,13 +318,13 @@ body {
 }
 
 .view-count img.eye-icon {
-    width: 16px;
+    width: 14px;
     height: auto;
     margin-right: 4px;
 }
 
 .grid-item-hashtag {
-    font-size: 0.85rem; 
+    font-size: 0.55rem; 
     color: #1da1f2;
     line-height: 1.4;
 }
