@@ -651,9 +651,9 @@ body {
         /* SP版のタイトル文字サイズ */
         font-size: 1.2rem;
         /* SP版のモーダル枠の上辺からの距離 */
-        margin-top: 0px;
+        margin-top: 20px;
         /* SP版のタイトルと下の要素との隙間 */
-        margin-bottom: 10px;
+        margin-bottom: 30px;
     }
 
     /* ▼▼▼ 【要求②】モーダル内の「本文」フォントサイズ・位置調整 (SP版) ▼▼▼ */
@@ -661,9 +661,9 @@ body {
         /* SP版の本文文字サイズ */
         font-size: 0.9rem;
         /* SP版の本文と上の要素との隙間 */
-        margin-top: 0px;
+        margin-top: 30px;
         /* SP版の本文の下の余白 */
-        margin-bottom: 0px;
+        margin-bottom: 20px;
     }
 
     /* ▼▼▼ 【要求③】モーダル内の「画像」位置調整 (SP版) ▼▼▼ */
