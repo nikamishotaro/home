@@ -374,7 +374,7 @@ body {
     }
 
     .sort-container {
-        top: 150px;
+        top: 160px;
         right: var(--header-gap-x-sp);
     }
 
@@ -404,7 +404,7 @@ body {
     }
 
     .grid-item-hashtag {
-        font-size: 0.8rem;
+        font-size: 0.5rem;
     }
 
     .grid-container {
