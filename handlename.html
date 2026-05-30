@@ -21,9 +21,9 @@
             <div class="nav-item has-dropdown">
                 <a href="javascript:void(0)"><img src="images/sns-icon.png" alt="SNS" class="header-icon"></a>
                 <div class="dropdown">
-                    <a href="#">Twitter</a>
-                    <a href="#">Instagram</a>
-                    <a href="#">note</a>
+                    <a href="https://twitter.com/" target="_blank">Twitter</a>
+                    <a href="https://instagram.com/" target="_blank">Instagram</a>
+                    <a href="https://note.com/" target="_blank">note</a>
                 </div>
             </div>
             <div class="nav-item">
@@ -301,7 +301,6 @@
                 updateSearchState(); 
             }
 
-            // 【修正・要求②】タグが追加・削除された瞬間にリアルタイムで絞り込む
             function addTag(tag) {
                 selectedTags.push(tag);
                 renderTags();
@@ -365,7 +364,8 @@
                     const itemTags = hashtagElem ? hashtagElem.textContent : '';
                     const dateParts = item.dataset.date ? item.dataset.date.split('-') : [];
                     const itemYear = dateParts.length > 0 ? dateParts[0] : '';
-                    const itemYearMonth = dateParts.length > 1 ? `${dateParts[0]}年${parseInt(dateParts[1], 10)}月` : '';
+                    // 【修正・要求②】表示用の年月を「YYYY.M」形式に変更 (例: 2026.5)
+                    const itemYearMonth = dateParts.length > 1 ? `${dateParts[0]}.${parseInt(dateParts[1], 10)}` : '';
                     
                     let isMatch = true;
                     if (selectedTags.length > 0) {
@@ -389,7 +389,6 @@
             }
 
             document.getElementById('sort-select').addEventListener('change', updateGrid);
-            // 【修正・要求②】検索ボタンのクリック処理（機能）を削除
 
             let currentZoom = 1; 
             let initialDistance = null;
