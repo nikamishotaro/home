@@ -55,8 +55,8 @@
 
     <div id="image-modal" class="modal">
         <span class="modal-close" id="modal-close">&times;</span>
-        <img class="modal-content" id="modal-image" src="" alt="Detail Image">
-        <div id="modal-text" class="modal-text"></div>
+        <div class="modal-box" id="modal-inner-container">
+            </div>
     </div>
 
     <script>
@@ -64,7 +64,6 @@
             const postListElement = document.getElementById('post-list');
             const gridContainer = document.getElementById('grid-container');
 
-            // --- 【要求①・②】GitHub（Discord経由）の投稿データを自動取得してグリッドに完全反映 ---
             const owner = "nikamishotaro";
             const repo = "home";
             const path = "posts";
@@ -75,46 +74,39 @@
                     const files = await response.json();
                     if (postListElement) postListElement.innerHTML = "";
                     
-                    // 各ファイルの中身を取得してグリッドアイテムを動的追加
                     for (const file of files) {
                         if (file.name.endsWith(".md")) {
                             const contentRes = await fetch(file.download_url);
                             const text = await contentRes.text();
                             
-                            // フロントマターから画像、タイトル、タグを抽出
                             const titleMatch = text.match(/title:\s*"(.*?)"/);
                             const tagsMatch = text.match(/tags:\s*"(.*?)"/);
-                            // 【修正・追加】iconUrlを抽出（旧データの互換性維持のためimageのフォールバックも残す）
                             const iconUrlMatch = text.match(/iconUrl:\s*"(.*?)"/);
                             const imageMatch = text.match(/image:\s*"(.*?)"/);
                             const detailUrlMatch = text.match(/detailUrl:\s*"(.*?)"/);
-                            // 【追加】detailtextを抽出（複数行に対応するため [\s\S]*? を使用）
                             const detailtextMatch = text.match(/detailtext:\s*"([\s\S]*?)"/);
                             
                             const title = titleMatch ? titleMatch[1] : "無題";
                             const tags = tagsMatch ? tagsMatch[1] : "";
                             const rawImageUrl = iconUrlMatch ? iconUrlMatch[1] : (imageMatch ? imageMatch[1] : "");
-                            // 【要求②】iOS(実機)の日本語URLバグ対策のためエンコード処理を追加
-                            const imageUrl = rawImageUrl ? encodeURI(rawImageUrl.trim()) : "";
+                            
+                            // 【修正・要求②】iOS実機バグ対策の徹底（既にエンコードされている場合の二重化を防ぐ）
+                            const imageUrl = rawImageUrl ? encodeURI(decodeURI(rawImageUrl.trim())) : "";
 
-                            // 【追加】detailUrlとdetailtextの定義
                             const detailUrl = detailUrlMatch ? detailUrlMatch[1] : "";
                             const detailtext = detailtextMatch ? detailtextMatch[1] : "";
                             
-                            // ファイル名 (例: 20260528-144940.md) から投稿年月日 (YYYY-MM-DD) を抽出
                             const dateMatch = file.name.match(/^(\d{4})(\d{2})(\d{2})/);
                             const dateStr = dateMatch ? `${dateMatch[1]}-${dateMatch[2]}-${dateMatch[3]}` : "2026-05-28";
                             
                             const fileId = file.name.replace('.md', '');
                             
-                            // グリッド要素を生成して挿入
                             const itemA = document.createElement('a');
                             itemA.href = "#";
                             itemA.className = "grid-item";
                             itemA.dataset.id = "item-" + fileId;
-                            itemA.dataset.date = dateStr; // 年検索機能、VSコード上の年月日データ仕様に対応
+                            itemA.dataset.date = dateStr; 
                             
-                            // 【追加】モーダル表示用のURLやテキストをデータ属性として保持
                             if (detailUrl) {
                                 itemA.dataset.detailUrl = detailUrl;
                             }
@@ -147,7 +139,6 @@
 
             const navItems = document.querySelectorAll('.nav-item.has-dropdown');
 
-            // SP版：ドロップダウンメニューの開閉
             navItems.forEach(item => {
                 item.addEventListener('click', (e) => {
                     if (window.innerWidth <= 768) {
@@ -162,19 +153,16 @@
             const hotSearchContainer = document.getElementById('hot-search');
             
             const gridItems = document.querySelectorAll('.grid-item');
-            
-            // DOMの要素を配列として保持（並び替え・再描画用）
             const itemsArray = Array.from(gridItems);
 
-            // 【要求①】モーダルを安全に閉じるための共通関数を作成
+            // モーダルを安全に閉じるための共通関数
             function closeImageModal() {
                 const modal = document.getElementById('image-modal');
                 modal.style.display = 'none';
-                modal.style.opacity = 1; // フェード用の透明度をリセット
-                modal.scrollTop = 0; // スクロール位置をリセット
+                modal.style.opacity = 1; 
+                modal.scrollTop = 0; 
             }
 
-            // 【追加・要求②】閲覧数の初期化とクリック時のカウントアップ
             const DB_KEY_PREFIX = 'kim_diehl_views_';
             itemsArray.forEach(item => {
                 const id = item.dataset.id;
@@ -182,7 +170,6 @@
                 item.dataset.views = views;
                 item.querySelector('.view-number').textContent = views;
 
-                // --- 【修正】クリック時にモーダルを表示する処理 ---
                 item.addEventListener('click', (e) => {
                     e.preventDefault(); 
 
@@ -192,16 +179,14 @@
                     item.querySelector('.view-number').textContent = views;
 
                     const modal = document.getElementById('image-modal');
+                    const innerContainer = document.getElementById('modal-inner-container');
                     
                     // 【要求③】コンテナの中身をリセットし、タイトル、スライダー、タグ、本文の枠を生成
-                    modal.innerHTML = `
-                        <span class="modal-close" id="modal-close">&times;</span>
-                        <div class="modal-container" id="modal-inner-container">
-                            <div id="modal-title" class="modal-title"></div>
-                            <div id="carousel-container" class="carousel-container"></div>
-                            <div id="modal-tags" class="modal-tags"></div>
-                            <div id="modal-text" class="modal-text"></div>
-                        </div>
+                    innerContainer.innerHTML = `
+                        <div id="modal-title" class="modal-title"></div>
+                        <div id="carousel-container" class="carousel-container"></div>
+                        <div id="modal-tags" class="modal-tags"></div>
+                        <div id="modal-text" class="modal-text"></div>
                     `;
                     
                     const titleEl = document.getElementById('modal-title');
@@ -209,7 +194,7 @@
                     const tagsEl = document.getElementById('modal-tags');
                     const textEl = document.getElementById('modal-text');
                     
-                    // 【要求③】タイトルとタグの情報をアイコンから取得して反映
+                    // タイトルとタグの情報をアイコンから取得して反映
                     const itemTitle = item.querySelector('.grid-item-title').textContent;
                     const itemTagsElem = item.querySelector('.grid-item-hashtag');
                     titleEl.textContent = itemTitle;
@@ -225,23 +210,21 @@
                     if (detailUrl) {
                         images = detailUrl.split(',').map(u => u.trim()).filter(u => u !== '');
                     } else {
-                        // detailUrlがない場合はサムネイル画像をフォールバックとして使用
                         images = [item.querySelector('.image-wrapper img').src];
                     }
                     
-                    // 【要求①・②】画像の展開
+                    // 画像の展開
                     if (images.length === 1) {
                         const img = document.createElement('img');
-                        // 【要求②】iOS実機バグ対応：URLをエンコード
-                        img.src = encodeURI(images[0]);
-                        img.className = 'modal-content';
-                        carouselEl.style.height = 'auto'; // 1枚なら高さを解除して縦幅を自動調整
+                        // 【要求②】iOS実機バグ対応：URLをデコードして再エンコード
+                        img.src = encodeURI(decodeURI(images[0]));
+                        img.className = 'single-img';
+                        carouselEl.style.height = 'auto'; 
                         carouselEl.appendChild(img);
                     } else if (images.length > 1) {
                         images.forEach((url, idx) => {
                             const img = document.createElement('img');
-                            // 【要求②】iOS実機バグ対応：URLをエンコード
-                            img.src = encodeURI(url);
+                            img.src = encodeURI(decodeURI(url));
                             img.className = 'carousel-img';
                             if (idx === 0) img.classList.add('active');
                             else if (idx === 1) img.classList.add('next');
@@ -250,7 +233,7 @@
                         });
 
                         let currentIndex = 0;
-                        carouselEl.addEventListener('click', () => {
+                        carouselEl.addEventListener('click', (ev) => {
                             const imgs = carouselEl.querySelectorAll('.carousel-img');
                             imgs.forEach(i => i.className = 'carousel-img');
                             
@@ -259,6 +242,7 @@
                             imgs[currentIndex].classList.add('active');
                             imgs[(currentIndex - 1 + imgs.length) % imgs.length].classList.add('prev');
                             imgs[(currentIndex + 1) % imgs.length].classList.add('next');
+                            ev.stopPropagation(); // 背景クリックを阻止
                         });
                     }
                     
@@ -267,13 +251,12 @@
                         textEl.textContent = detailtext.replace(/\\n/g, '\n');
                         textEl.style.display = 'block';
                     } else {
-                        textEl.style.display = 'none'; // 本文がない場合は枠ごと消す
+                        textEl.style.display = 'none'; 
                     }
                     
-                    modal.style.display = 'flex';
-                    modal.style.opacity = 1; // 表示時に不透明度リセット
+                    modal.style.display = 'block'; // 【要求①】FlexからBlockに変更（スクロール対応）
+                    modal.style.opacity = 1; 
 
-                    // 閉じるボタンの再バインド
                     document.getElementById('modal-close').onclick = () => closeImageModal();
                 });
             });
@@ -419,7 +402,7 @@
 
 
             // --------------------------------------------------
-            // 【追加・要求⑤】SP版のピンチイン/ピンチアウト実装
+            // 【修正・要求③】SP版のピンチイン/ピンチアウト実装
             // --------------------------------------------------
             let currentZoom = 1; 
             let initialDistance = null;
@@ -500,19 +483,18 @@
                     const scrollTop = imageModal.scrollTop;
                     const maxScroll = imageModal.scrollHeight - imageModal.clientHeight;
                     
-                    // スクロール可能な場合のみ処理（テキストが長くてスクロールが発生する時のみ）
                     if (maxScroll > 50) {
                         const remainingScroll = maxScroll - scrollTop;
                         let currentOpacity = 1;
                         
-                        // 【視認性確保】最後の下から100pxに到達したときだけフェードアウトを開始する
-                        if (remainingScroll <= 100) {
-                            currentOpacity = Math.max(0, remainingScroll / 100);
+                        // 【視認性確保】コンテンツを読み終わった後の、最後の下部スクロール到達時だけフェードアウトを開始する
+                        const opacityThreshold = 400; 
+                        if (remainingScroll < opacityThreshold) {
+                            currentOpacity = Math.max(0, remainingScroll / opacityThreshold);
                         }
                         
                         imageModal.style.opacity = currentOpacity;
 
-                        // スクロールしきった（残り1px以下）ら閉じる
                         if (remainingScroll <= 1) {
                             closeImageModal();
                         }

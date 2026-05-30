@@ -5,14 +5,12 @@
 }
 
 /* デフォルトの余白をリセット */
-/* 【要求①】見切れ防止のため、header要素もbox-sizing: border-boxの対象に追加。inputやbuttonも追加。 */
 body, h1, p, a, div, header, input, button {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
 
-/* 【要求⑤】スムーズなスクロールのための設定 */
 html {
     scroll-behavior: smooth;
 }
@@ -36,7 +34,6 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    /* 定義した変数を使用して左右のパディングを設定 */
     padding: 20px var(--header-gap-x);
 }
 
@@ -253,19 +250,19 @@ body {
 
 /* -----------------------------------
     画像グリッドレイアウト
+    【修正・要求③】シームレスなアニメーションのためFlexboxに変更
 ----------------------------------- */
 .grid-container {
-    display: grid;
-    grid-template-columns: repeat(6, 1fr);
+    display: flex;
+    flex-wrap: wrap;
     gap: 30px;
     padding: 0 40px 60px;
     margin-top: 20px;
-    /* 【要求③】ズーム時の隙間の変化を滑らかにする */
-    transition: gap 0.3s ease, grid-template-columns 0.3s ease;
+    transition: gap 0.3s ease;
 }
 
 .year-divider {
-    grid-column: 1 / -1;
+    width: 100%;
     font-size: 1.5rem;
     font-weight: bold;
     border-bottom: 2px solid #eee;
@@ -274,19 +271,20 @@ body {
     margin-bottom: 10px;
 }
 
-@media (max-width: 1200px) {
-    .grid-container { grid-template-columns: repeat(4, 1fr); }
-}
-@media (max-width: 992px) {
-    .grid-container { grid-template-columns: repeat(3, 1fr); }
-}
-
 .grid-item {
     text-decoration: none;
     display: block;
     color: inherit;
-    /* 【要求③】ズーム時の要素の変化を滑らかにする */
-    transition: all 0.3s ease;
+    /* デフォルトPC (6列) */
+    width: calc(16.666% - 25px);
+    transition: width 0.3s ease, opacity 0.3s ease, max-height 0.3s ease;
+}
+
+@media (max-width: 1200px) {
+    .grid-item { width: calc(25% - 22.5px); } /* 4列 */
+}
+@media (max-width: 992px) {
+    .grid-item { width: calc(33.333% - 20px); } /* 3列 */
 }
 
 .grid-item:hover .image-wrapper img {
@@ -309,7 +307,7 @@ body {
     transition: transform 0.3s ease;
 }
 
-/* 【要求③】非表示になる要素のアニメーション用ベース設定 */
+/* 非表示になる要素のアニメーション用ベース設定 */
 .grid-item-title-container, .grid-item-hashtag {
     transition: all 0.3s ease;
     max-height: 50px;
@@ -424,20 +422,28 @@ body {
         font-size: 0.8rem;
     }
 
+    /* 【修正・要求③】SP版ズームのシームレス対応 (Flexbox幅指定) */
     .grid-container {
-        grid-template-columns: repeat(2, 1fr);
         padding: 0 15px 30px;
         gap: 15px;
         margin-top: 0;
     }
+    .grid-item {
+        width: calc(50% - 7.5px); /* デフォルト 2列 */
+    }
 
-    /* SP版ピンチズーム状態ごとのレイアウト設定 */
-    .grid-container.zoom-0 { grid-template-columns: 1fr; gap: 20px; }
-    .grid-container.zoom-1 { grid-template-columns: repeat(3, 1fr); gap: 10px; }
-    .grid-container.zoom-2 { grid-template-columns: repeat(5, 1fr); gap: 5px; }
-    .grid-container.zoom-3 { grid-template-columns: repeat(11, 1fr); gap: 2px; }
+    .grid-container.zoom-0 { gap: 20px; }
+    .grid-container.zoom-0 .grid-item { width: 100%; } /* 1列 */
 
-    /* 【要求③】display:noneを廃止し、opacityとmax-heightでシームレスに隠す */
+    .grid-container.zoom-1 { gap: 10px; }
+    .grid-container.zoom-1 .grid-item { width: calc(33.333% - 6.666px); } /* 3列 */
+
+    .grid-container.zoom-2 { gap: 5px; }
+    .grid-container.zoom-2 .grid-item { width: calc(20% - 4px); } /* 5列 */
+
+    .grid-container.zoom-3 { gap: 2px; }
+    .grid-container.zoom-3 .grid-item { width: calc(9.09% - 1.818px); } /* 11列 */
+
     .grid-container.zoom-3 .grid-item-title-container,
     .grid-container.zoom-3 .grid-item-hashtag { 
         opacity: 0 !important; 
@@ -475,31 +481,39 @@ body {
     left: 0;
     width: 100%;
     height: 100%;
-    /* 【要求①】デフォルトの透明度（背景色）は透明にし、フェードアウトに対応 */
-    background-color: transparent; 
-    justify-content: center;
-    align-items: flex-start; /* 上端から配置し、marginで調整 */
-    flex-direction: column;
-    overflow-y: auto;
-    /* 【要求①】レイヤーを最上部に（sort-uiの900より上の9999に設定） */
+    /* 【要求①】背景は半透明の黒、レイヤーは最上部に指定 */
+    background: rgba(0, 0, 0, 0.8);
     z-index: 9999;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
 }
 
-.modal-container {
+/* 【要求①】モーダル内のコンテンツを囲う白枠の箱。中央揃え＆上下の隙間 */
+.modal-box {
+    background: #000;
+    border: 1px solid #ffffff;
     width: 90%;
     max-width: 800px;
+    margin: 100px auto; 
+    padding: 40px;
     display: flex;
     flex-direction: column;
     align-items: center;
-    /* 【要求①】モーダル枠を白線で囲う。背景を敷き、画面上下に隙間を持たせる */
-    border: 1px solid #fff;
-    background-color: #111; /* 背景が透明なため、要素自体の背景を暗くする */
-    margin: 60px auto; 
-    padding: 20px;
     box-sizing: border-box;
+    position: relative;
 }
 
-.modal-content {
+@media (max-width: 768px) {
+    .modal-box {
+        margin-top: 100px;
+        /* 【要求①】SP版スクロールフェードアウト用の余白 */
+        margin-bottom: 100vh; 
+        padding: 20px;
+    }
+}
+
+/* 画像が1枚だけの時のスタイル */
+.single-img {
     max-width: 100%;
     max-height: 60vh;
     height: auto;
@@ -517,6 +531,7 @@ body {
     overflow: hidden;
     cursor: pointer;
 }
+
 .carousel-img {
     position: absolute;
     top: 50%;
@@ -531,26 +546,40 @@ body {
     pointer-events: none; 
     box-shadow: 0 4px 12px rgba(0,0,0,0.5);
 }
+
 .carousel-img.active {
     opacity: 1;
     z-index: 2;
     transform: translate(-50%, -50%) scale(1);
 }
+
 .carousel-img.prev {
     opacity: 0.3; 
     z-index: 1;
     transform: translate(-120%, -50%) scale(0.8); 
 }
+
 .carousel-img.next {
     opacity: 0.3;
     z-index: 1;
     transform: translate(20%, -50%) scale(0.8); 
 }
 
+/* 【要求③】モーダル内上部のタイトル */
 .modal-title {
     color: #fff;
     font-size: 1.5rem;
     font-weight: bold;
+    margin-bottom: 15px;
+    text-align: left;
+    width: 100%;
+}
+
+/* 【要求③】モーダル内のタグ（画像と本文の間） */
+.modal-tags {
+    color: #1da1f2;
+    font-size: 0.9rem;
+    margin-top: 10px;
     margin-bottom: 15px;
     text-align: left;
     width: 100%;
@@ -566,6 +595,19 @@ body {
     line-height: 1.6;
     background: rgba(255,255,255,0.1); 
     padding: 20px;
+    box-sizing: border-box;
+}
+
+.modal-close {
+    position: fixed; 
+    top: 20px;
+    right: 30px;
+    color: #fff;
+    font-size: 40px;
+    font-weight: bold;
+    cursor: pointer;
+    z-index: 2001;
+    transition: color 0.3s;
 }
 
 .modal-close:hover {
