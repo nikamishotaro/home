@@ -574,7 +574,7 @@ body {
 .carousel-img {
     /* 【修正・要求①】横幅の上限を固定し、縦幅を自動調整（アスペクト比維持） */
     width: 100%;
-    max-width: 450px; /* ここがスライダー画像の上限サイズです */
+    max-width: 500px; /* ここがスライダー画像の上限サイズです */
     height: auto; 
     max-height: none;
     object-fit: contain;
