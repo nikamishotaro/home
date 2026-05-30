@@ -98,8 +98,15 @@
                             const detailUrl = detailUrlMatch ? detailUrlMatch[1] : "";
                             const detailtext = detailtextMatch ? detailtextMatch[1] : "";
                             
-                            const dateMatch = file.name.match(/^(\d{4})(\d{2})(\d{2})/);
-                            const dateStr = dateMatch ? `${dateMatch[1]}-${dateMatch[2]}-${dateMatch[3]}` : "2026-05-28";
+                            // 【修正・要求③】ファイル名から時間情報（HHmmss）まで抽出して精緻な日時にパースする
+                            const dateMatch = file.name.match(/^(\d{4})(\d{2})(\d{2})(?:-(\d{2})(\d{2})(\d{2}))?/);
+                            let dateStr = "2026-05-28T00:00:00"; // 万が一取得できなかった場合のフォールバック
+                            if (dateMatch) {
+                                const HH = dateMatch[4] || "00";
+                                const mm = dateMatch[5] || "00";
+                                const ss = dateMatch[6] || "00";
+                                dateStr = `${dateMatch[1]}-${dateMatch[2]}-${dateMatch[3]}T${HH}:${mm}:${ss}`;
+                            }
                             
                             const fileId = file.name.replace('.md', '');
                             
@@ -132,10 +139,6 @@
                             gridContainer.appendChild(itemA);
                         }
                     }
-
-                    // 【修正・要求③】データ取得完了後、初期表示として「最新順」で強制ソートを実行する
-                    updateGrid();
-
                 }
             } catch (error) {
                 if (postListElement) postListElement.innerHTML = "記事の読み込みに失敗しました。";
@@ -260,7 +263,8 @@
 
             itemsArray.forEach(item => {
                 const hashtagElem = item.querySelector('.grid-item-hashtag');
-                const year = item.dataset.date ? item.dataset.date.split('-')[0] : '';
+                // 【修正・要求③】データの日付パース部分（YYYY-MM-DDTHH:mm:ss対応）
+                const year = item.dataset.date ? item.dataset.date.split('T')[0].split('-')[0] : '';
                 if (year && !availableTags.includes(year)) {
                     availableTags.push(year);
                 }
@@ -326,7 +330,8 @@
                     itemsArray.forEach(item => {
                         const hashtagElem = item.querySelector('.grid-item-hashtag');
                         const itemTags = hashtagElem ? hashtagElem.textContent : '';
-                        const itemYear = item.dataset.date ? item.dataset.date.split('-')[0] : '';
+                        // 【修正・要求③】データの日付パース部分（YYYY-MM-DDTHH:mm:ss対応）
+                        const itemYear = item.dataset.date ? item.dataset.date.split('T')[0].split('-')[0] : '';
                         const isMatch = selectedTags.every(st => itemTags.includes('#' + st) || itemYear === st);
                         if (isMatch) hits++;
                     });
@@ -366,7 +371,8 @@
                 itemsArray.forEach(item => {
                     const hashtagElem = item.querySelector('.grid-item-hashtag');
                     const itemTags = hashtagElem ? hashtagElem.textContent : '';
-                    const dateParts = item.dataset.date ? item.dataset.date.split('-') : [];
+                    // 【修正・要求③】データの日付パース部分（YYYY-MM-DDTHH:mm:ss対応）
+                    const dateParts = item.dataset.date ? item.dataset.date.split('T')[0].split('-') : [];
                     const itemYear = dateParts.length > 0 ? dateParts[0] : '';
                     const itemYearMonth = dateParts.length > 1 ? `${dateParts[0]}.${parseInt(dateParts[1], 10)}` : '';
                     
@@ -447,7 +453,7 @@
                 gridContainer.className = 'grid-container zoom-' + currentZoom;
             }
 
-            // 初期化用のupdateGridは、データ取得完了時に実行するためここから削除します
+            updateGrid();
 
             const imageModal = document.getElementById('image-modal');
             
