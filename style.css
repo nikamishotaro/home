@@ -697,11 +697,11 @@ body {
         /* SP版の画像と下の要素との隙間 */
         margin-bottom: 15px;
         /* SP版の画像の左の余白 */
-        margin-left: 10px;
+        margin-left: 30px;
         /* SP版の画像の右の余白 */
-        margin-right: 10px;
+        margin-right: 30px;
         /* SP版で画像が枠をはみ出さないよう、親枠の幅から左右のpaddingを引いた値(20px+20px=40px)で制限 */
-        max-width: calc(100% - 40px);
+        max-width: calc(100% - 60px);
     }
 
     /* ▼▼▼ 【要求②】モーダル内の「複数画像（スライダー）」位置調整 (SP版) ▼▼▼ */
