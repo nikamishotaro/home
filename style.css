@@ -552,16 +552,7 @@ body {
     font-size: 1.5rem;
     font-weight: bold;
     margin-bottom: 15px;
-    text-align: center;
-    width: 100%;
-}
-
-.modal-tags {
-    color: #1da1f2;
-    font-size: 0.9rem;
-    margin-top: 10px;
-    margin-bottom: 15px;
-    text-align: center;
+    text-align: left;
     width: 100%;
 }
 
@@ -575,18 +566,6 @@ body {
     line-height: 1.6;
     background: rgba(255,255,255,0.1); 
     padding: 20px;
-}
-
-.modal-close {
-    position: fixed; 
-    top: 20px;
-    right: 30px;
-    color: #fff;
-    font-size: 40px;
-    font-weight: bold;
-    cursor: pointer;
-    z-index: 2001;
-    transition: color 0.3s;
 }
 
 .modal-close:hover {
