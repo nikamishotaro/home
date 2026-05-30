@@ -521,7 +521,7 @@ body {
 .modal-box {
     background: #000;
     border: 0px solid #ffffff;
-    width: 100%;
+    width: 90%;
     max-width: 800px;
     margin: 100px auto; 
     padding: 40px;
@@ -540,13 +540,13 @@ body {
     }
 }
 
-/* ▼▼▼ 【要求③】モーダル内の「画像」位置・サイズ調整 ▼▼▼ */
-/* 画像が1枚だけの場合 */
+/* ▼▼▼ 【修正・要求①③】モーダル内の「画像が1枚だけ」の時の位置・サイズ調整 ▼▼▼ */
 .single-img {
-    width: 100%;
-    /* 高さを自動調整（縦横比維持） */
+    /* 横幅の制限を解除し、縦幅（高さ）基準で自動調整させる */
+    width: auto;
+    /* 縦幅を自動に（元の縦横比を維持） */
     height: auto;
-    /* 画面高さいっぱいに広がらないよう最大値を制限 */
+    /* 画面高さいっぱいに広がらないよう、最大縦幅を指定（例: 画面の60%） */
     max-height: 60vh;
     object-fit: contain;
     /* 画像と下の要素（本文等）との隙間 */
@@ -554,31 +554,33 @@ body {
     box-shadow: 0 4px 12px rgba(0,0,0,0.5);
 }
 
-/* ▼▼▼ 【要求③】モーダル内の「複数画像（スライダー）」位置・サイズ調整 ▼▼▼ */
-/* 複数画像が入る枠（コンテナ） */
+/* ▼▼▼ 【修正・要求①③】モーダル内の「複数画像（スライダー）」位置・サイズ調整 ▼▼▼ */
 .carousel-container {
     position: relative;
     width: 100%;
-    /* 【修正・要求①】枠自体の高さを自動調整 */
+    /* 枠自体の高さを自動調整（画像に合わせる） */
     height: auto;
-    /* 画面高さいっぱいに広がらないよう最大値を制限 */
+    /* 画面高さいっぱいに広がらないよう最大縦幅を制限 */
     max-height: 60vh;
     /* 枠と上下の要素との隙間（上・下） */
     margin: 20px 0;
     overflow: hidden;
     cursor: pointer;
-    /* 子要素の高さを維持させるための設定 */
+    /* 縦幅を基準に中央に配置させる設定 */
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
-/* スライダー内の各画像 */
 .carousel-img {
-    /* 【修正・要求①】縦横比を維持して自動伸縮 */
     position: absolute;
-    width: 60%;
+    top: 50%;
+    left: 50%;
+    /* 【要求①】横幅の制限を解除し、縦幅基準で自動調整させる */
+    width: auto;
+    /* 縦幅を自動に（元の縦横比を維持） */
     height: auto;
+    /* 親枠（carousel-container）の高さ（max-height: 60vh）に収める */
     max-height: 100%;
     object-fit: contain;
     transition: all 0.4s ease;
@@ -588,26 +590,24 @@ body {
     box-shadow: 0 4px 12px rgba(0,0,0,0.5);
 }
 
-/* ※ .active 以外の画像は絶対配置で重ねるため、コンテナの基準となる高さを確保するためのダミー要素として機能させる画像 */
 .carousel-img.active {
-    position: relative; /* 中央の画像だけ相対配置にして親枠の高さを決定させる */
+    position: relative; /* 中央の画像で親枠の高さを決定させる */
     opacity: 1;
     z-index: 2;
     transform: scale(1);
+    /* ※中央配置の設定はFlexboxで行うためtranslateは不要に */
 }
 
 .carousel-img.prev {
     opacity: 0.3; 
     z-index: 1;
-    /* 左側の待機位置 */
-    transform: translateX(-100%) scale(0.8); 
+    transform: translate(-150%, -50%) scale(0.8); 
 }
 
 .carousel-img.next {
     opacity: 0.3;
     z-index: 1;
-    /* 右側の待機位置 */
-    transform: translateX(100%) scale(0.8); 
+    transform: translate(50%, -50%) scale(0.8); 
 }
 
 /* ▼▼▼ 【要求②】モーダル内の「タイトル」フォントサイズ・位置調整 ▼▼▼ */
@@ -616,8 +616,10 @@ body {
     /* タイトルの文字サイズ */
     font-size: 1.5rem;
     font-weight: bold;
+    /* タイトルとモーダル枠の上辺との隙間 */
+    margin-top: 0;
     /* タイトルと下の要素（画像等）との隙間 */
-    margin-bottom: 10px;
+    margin-bottom: 15px;
     /* 左寄せ(left)か中央寄せ(center)か */
     text-align: left;
     width: 100%;
@@ -626,10 +628,12 @@ body {
 /* ▼▼▼ 【要求②】モーダル内の「本文」フォントサイズ・位置調整 ▼▼▼ */
 .modal-text {
     color: #fff;
-    /* 本文と上の要素（画像等）との隙間 */
-    margin-top: 0; 
     /* 本文の文字サイズ */
     font-size: 1rem;
+    /* 本文と上の要素（画像等）との隙間 */
+    margin-top: 0; 
+    /* 本文とモーダル枠の下辺との隙間 */
+    margin-bottom: 0;
     width: 100%; 
     /* 左寄せ(left)か中央寄せ(center)か */
     text-align: left; 

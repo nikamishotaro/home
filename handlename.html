@@ -41,15 +41,15 @@
             <button id="search-btn" class="search-btn">search</button>
             <div class="sort-container">
                 <select id="sort-select" class="sort-select">
-                    <option value="date-desc">latest posts</option>
-                    <option value="date-asc">earliest posts</option>
+                    <option value="date-desc">latest</option>
+                    <option value="date-asc">earliest</option>
                     <option value="view-desc">most viewed</option>
                     <option value="view-asc">least viewed</option>
                 </select>
             </div>
         </div>
         <div class="hot-search-wrapper">
-            <div class="trending-label">🔥</div>
+            <div class="trending-label">hot</div>
             <div class="hot-search" id="hot-search"></div>
         </div>
     </div>
@@ -132,6 +132,10 @@
                             gridContainer.appendChild(itemA);
                         }
                     }
+
+                    // 【修正・要求③】データ取得完了後、初期表示として「最新順」で強制ソートを実行する
+                    updateGrid();
+
                 }
             } catch (error) {
                 if (postListElement) postListElement.innerHTML = "記事の読み込みに失敗しました。";
@@ -364,7 +368,6 @@
                     const itemTags = hashtagElem ? hashtagElem.textContent : '';
                     const dateParts = item.dataset.date ? item.dataset.date.split('-') : [];
                     const itemYear = dateParts.length > 0 ? dateParts[0] : '';
-                    // 【修正・要求②】表示用の年月を「YYYY.M」形式に変更 (例: 2026.5)
                     const itemYearMonth = dateParts.length > 1 ? `${dateParts[0]}.${parseInt(dateParts[1], 10)}` : '';
                     
                     let isMatch = true;
@@ -444,7 +447,7 @@
                 gridContainer.className = 'grid-container zoom-' + currentZoom;
             }
 
-            updateGrid();
+            // 初期化用のupdateGridは、データ取得完了時に実行するためここから削除します
 
             const imageModal = document.getElementById('image-modal');
             
