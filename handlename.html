@@ -33,23 +33,23 @@
     </header>
 
     <div class="search-area-wrapper">
-        <div class="sort-container">
-            <select id="sort-select" class="sort-select">
-                <option value="date-desc">latest</option>
-                <option value="date-asc">earliest</option>
-                <option value="view-desc">most viewed</option>
-                <option value="view-asc">least viewed</option>
-            </select>
-        </div>
         <div class="search-container">
             <div class="search-box">
                 <div id="tags-container" class="tags-container"></div>
                 <input type="text" id="search-input" class="search-input" placeholder="What are you interested in?">
             </div>
             <button id="search-btn" class="search-btn">search</button>
+            <div class="sort-container">
+                <select id="sort-select" class="sort-select">
+                    <option value="date-desc">latest</option>
+                    <option value="date-asc">earliest</option>
+                    <option value="view-desc">most viewed</option>
+                    <option value="view-asc">least viewed</option>
+                </select>
+            </div>
         </div>
         <div class="hot-search-wrapper">
-            <div class="trending-label">🔥</div>
+            <div class="trending-label">hot</div>
             <div class="hot-search" id="hot-search"></div>
         </div>
     </div>
@@ -301,14 +301,17 @@
                 updateSearchState(); 
             }
 
+            // 【修正・要求②】タグが追加・削除された瞬間にリアルタイムで絞り込む
             function addTag(tag) {
                 selectedTags.push(tag);
                 renderTags();
+                updateGrid(); 
             }
 
             function removeTag(tag) {
                 selectedTags = selectedTags.filter(t => t !== tag);
                 renderTags();
+                updateGrid(); 
             }
 
             function updateSearchState() {
@@ -386,7 +389,7 @@
             }
 
             document.getElementById('sort-select').addEventListener('change', updateGrid);
-            searchBtn.addEventListener('click', updateGrid);
+            // 【修正・要求②】検索ボタンのクリック処理（機能）を削除
 
             let currentZoom = 1; 
             let initialDistance = null;

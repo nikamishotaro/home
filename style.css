@@ -65,6 +65,7 @@ body {
     right: var(--header-gap-x);
     display: flex;
     justify-content: flex-end;
+    align-items: stretch; /* 追加: 高さを揃えるため */
     z-index: 900;
 }
 
@@ -78,6 +79,7 @@ body {
     outline: none;
     cursor: pointer;
     box-shadow: none; 
+    height: 100%; /* 追加: 親要素の高さに合わせる */
 }
 
 /* アイコン用のスタイル */
@@ -207,21 +209,22 @@ body {
     border: 1px solid #ff6600; 
 }
 
-/* 【修正・要求②】Hot Searchラッパーとテキストの設定 (左寄せに変更) */
+/* Hot Searchラッパーとテキストの設定 */
 .hot-search-wrapper {
     display: flex;
-    flex-direction: row; /* 横並びに */
-    justify-content: flex-start; /* 左寄せに変更 */
-    align-items: center; /* 縦方向の中央揃え */
+    flex-direction: row; 
+    justify-content: flex-start; 
+    align-items: center; 
     width: 100%;
-    margin-top: 10px; /* 余白調整 */
+    margin-top: 10px; 
 }
 
+/* 【修正・要求③】hotテキストのスタイル・余白調整 */
 .trending-label {
     font-size: 0.85rem;
     font-weight: bold;
     color: #999;
-    padding: 0 5px;
+    padding: 0 10px 0 0; /* 左の余白を削り、右側にのみ余白を設ける */
     white-space: nowrap;
 }
 
@@ -229,8 +232,8 @@ body {
     display: flex;
     gap: 12px;
     flex-wrap: wrap;
-    padding: 0 5px;
-    /* flex: 1 を削除し、自然な幅にする */
+    padding: 0; /* 余白を削除して左詰めを綺麗にする */
+    margin-top: 0; /* 中央揃えのためmargin-topをリセット */
 }
 
 .hot-search-item {
@@ -388,9 +391,16 @@ body {
         display: flex;
     }
 
+    /* 【修正・要求①】SP版におけるソート・検索ボタンの配置変更 */
     .sort-container {
-        top: 65px;
-        right: var(--header-gap-x-sp);
+        position: static; /* 絶対配置を解除し、検索ボタンの隣に配置 */
+        display: flex;
+        align-items: stretch;
+    }
+
+    .sort-select {
+        border-top: none; /* 上辺を繋げる */
+        border-left: none; /* 検索ボタンと繋げる */
     }
 
     .search-area-wrapper {
@@ -400,9 +410,21 @@ body {
 
     .search-box {
         border-right: 1px solid #000;
+        flex: 0 0 100%; /* 横幅いっぱいにする */
     }
+
     .search-container {
-        flex-direction: column; 
+        flex-direction: row;
+        flex-wrap: wrap; /* ボックスとボタン群を折り返す */
+    }
+
+    .search-btn {
+        flex: 1; /* 余った横幅をすべて埋める（ソートの分を引いた幅になる） */
+        border-top: none; /* 上の検索ボックスと繋げる */
+        display: flex;
+        justify-content: center; /* センター寄せ */
+        align-items: center;
+        text-align: center;
     }
 
     .year-divider {
@@ -459,7 +481,6 @@ body {
     }
     .grid-container.zoom-2 .grid-item-title { font-size: 0.7rem; }
 
-    /* 【修正・要求①】zoom-1（横3列）時のタイトルと閲覧数の縦並び・改行設定 */
     .grid-container.zoom-1 .grid-item-hashtag { 
         opacity: 0 !important; 
         max-height: 0 !important; 
@@ -468,19 +489,19 @@ body {
     }
     .grid-container.zoom-1 .grid-item-title-container {
         flex-direction: column;
-        align-items: flex-start; /* 左寄せ */
+        align-items: flex-start; 
     }
     .grid-container.zoom-1 .grid-item-title { 
         font-size: 0.8rem; 
-        width: 100%; /* 横幅一杯 */
-        white-space: normal; /* 長い場合は改行 */
+        width: 100%; 
+        white-space: normal; 
         word-wrap: break-word;
     }
     .grid-container.zoom-1 .view-count { 
         font-size: 0.7rem; 
-        width: 100%; /* 横幅一杯 */
-        justify-content: flex-start; /* 左寄せ */
-        margin-top: 4px; /* タイトルとの隙間 */
+        width: 100%; 
+        justify-content: flex-start; 
+        margin-top: 4px; 
     }
 }
 
