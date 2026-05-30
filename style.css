@@ -617,9 +617,9 @@ body {
     font-size: 1.5rem;
     font-weight: bold;
     /* タイトルとモーダル枠の上辺との隙間 */
-    margin-top: 0;
+    margin-top: 15px;
     /* タイトルと下の要素（画像等）との隙間 */
-    margin-bottom: 15px;
+    margin-bottom: 20px;
     /* 左寄せ(left)か中央寄せ(center)か */
     text-align: left;
     width: 100%;
@@ -631,9 +631,9 @@ body {
     /* 本文の文字サイズ */
     font-size: 1rem;
     /* 本文と上の要素（画像等）との隙間 */
-    margin-top: 0; 
+    margin-top: 20px; 
     /* 本文とモーダル枠の下辺との隙間 */
-    margin-bottom: 0;
+    margin-bottom: 20px;
     width: 100%; 
     /* 左寄せ(left)か中央寄せ(center)か */
     text-align: left; 
