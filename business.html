@@ -21,35 +21,72 @@
             
             /* ④ 背景画像の設定 */
             /* imagesフォルダ内の画像名を適宜書き換えてください */
-            background-image: url('images/business-bg.jpg'); 
+            background-image: url('images/business_background.jpg'); 
             background-size: cover;
             background-position: center;
             background-attachment: fixed;
             background-color: #000; /* 画像がない場合の予備色（黒） */
         }
 
+        /* ▼▼▼ 【要求②】背景動画のスタイル ▼▼▼ */
+        .bg-video {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: -1; /* コンテンツの後ろに配置 */
+        }
+
         /* ② Back to Home ボタン（右上固定） */
         .back-home {
             position: absolute;
+            /* ▼▼▼ 【要求①】アイコンの位置調整（上からの距離） ▼▼▼ */
             top: 30px;
+            /* ▼▼▼ 【要求①】アイコンの位置調整（右からの距離） ▼▼▼ */
             right: 40px;
-            padding: 10px 20px;
-            border: 1px solid #ff0000;
+            /* ▼▼▼ アイコン画像化に伴い、テキスト用の装飾（padding, border等）はコメントアウトしました ▼▼▼ */
+            /* padding: 10px 20px; */
+            /* border: 1px solid #ff0000; */
+            /* font-weight: bold; */
             text-decoration: none;
             color: inherit;
-            font-weight: bold;
             transition: opacity 0.3s;
+            z-index: 1000; /* 動画より手前に表示するため追加 */
         }
         .back-home:hover {
             opacity: 0.5;
         }
 
+        /* ▼▼▼ 【要求①】Back to Home アイコン画像のサイズ調整 ▼▼▼ */
+        .home-icon-img {
+            /* ここでアイコンの大きさを調整できます */
+            width: 40px; 
+            height: auto;
+            display: block;
+        }
+
         /* ① メインコンテンツ */
+        .content-wrapper {
+            position: relative;
+            z-index: 1; /* 動画より手前に表示するため追加 */
+        }
+
         .message {
             font-size: 3.5rem;
             font-weight: bold;
             margin-bottom: 20px;
             letter-spacing: 0.05em;
+        }
+
+        /* ▼▼▼ 【要求③】仕事内容の箇条書きスタイル ▼▼▼ */
+        .job-list {
+            text-align: left; /* テキスト自体は左揃えの方が見やすいため */
+            display: inline-block; /* 親要素のtext-align: centerで中央に配置しつつ左揃えを維持 */
+            font-size: 1.2rem;
+            line-height: 1.8;
+            margin-bottom: 30px;
         }
 
         .contact-info {
@@ -65,10 +102,22 @@
 </head>
 <body>
 
-    <a href="index.html" class="back-home">Back to Home</a>
+    <video class="bg-video" src="images/business_background.mp4" autoplay loop muted playsinline></video>
+
+    <a href="index.html" class="back-home">
+        <img src="images/home-icon-line.png" alt="Back to Home" class="home-icon-img">
+    </a>
 
     <div class="content-wrapper">
         <p class="message">Let's team up!!!!!!!!!</p>
+        
+        <ul class="job-list">
+            <li>・研究・批評（建築, 集落, 構築行為） </li>
+            <li>・デザイン（グラフィック, ホームページ）</li>
+            <li>・音楽制作（店内用, 展覧会用, SNS投稿用）</li>
+            <li>・LIVEパフォーマンス（ambient, electronic, noise）</li>
+        </ul>
+
         <div class="contact-info">
             <p>Email: <a href="mailto:kimdiehl0907@gmail.com">kimdiehl0907@gmail.com</a></p>
             <p>Instagram: <a href="https://instagram.com/leikh_ooy" target="_blank">DM</a></p>
