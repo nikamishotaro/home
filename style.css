@@ -696,16 +696,16 @@ body {
 
     /* ▼▼▼ モーダル内の「画像(1枚)」位置調整 (SP版) ▼▼▼ */
     .single-img {
-        margin-top: 0px;
+        margin-top: 10px;
         margin-bottom: 15px;
         margin-left: 10px;
         margin-right: 10px;
-        max-width: calc(100% - 40px);
+        max-width: calc(100% - 20px);
     }
 
     /* ▼▼▼ モーダル内の「複数画像（スライダー）」位置調整 (SP版) ▼▼▼ */
     .carousel-container {
-        margin-top: 15px;
+        margin-top: 25px;
         margin-bottom: 15px;
         margin-left: 0px;
         margin-right: 0px;
@@ -714,6 +714,6 @@ body {
     
     .carousel-img {
         /* 【要求③】SP版の画像も横幅を狭くして左右の候補を見せるため 60% に設定 */
-        max-width: 60%;
+        max-width: 80%;
     }
 }
