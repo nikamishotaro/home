@@ -434,7 +434,7 @@ body {
     }
 
     .year-divider {
-        font-size: 0.75rem;
+        font-size: 0.5rem;
     }
 
     .image-wrapper {
@@ -442,11 +442,11 @@ body {
     }
 
     .grid-item-title {
-        font-size: 1rem;
+        font-size: 0.8rem;
     }
 
     .grid-item-hashtag {
-        font-size: 0.8rem;
+        font-size: 0.5rem;
     }
 
     .grid-container {
@@ -485,7 +485,7 @@ body {
         margin: 0 !important; 
         padding: 0 !important; 
     }
-    .grid-container.zoom-2 .grid-item-title { font-size: 0.7rem; }
+    .grid-container.zoom-2 .grid-item-title { font-size: 0.5rem; }
 
     .grid-container.zoom-1 .grid-item-hashtag { 
         opacity: 0 !important; 
@@ -530,7 +530,7 @@ body {
 .modal-box {
     background: #000;
     border: 0px solid #ffffff;
-    width: 90%;
+    width: 100%;
     max-width: 800px;
     margin: 100px auto; 
     padding: 40px;
