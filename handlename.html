@@ -191,20 +191,43 @@
                 modal.scrollTop = 0; 
             }
 
-            const DB_KEY_PREFIX = 'kim_diehl_views_';
+            // 【修正・要求①】全端末からのアクセスを合算して表示・記録するための外部API（CounterAPI）設定
+            const NAMESPACE = 'nikamishotaro_kimdiehl_views';
+            let fetchCount = 0;
+
             itemsArray.forEach(item => {
                 const id = item.dataset.id;
-                let views = parseInt(localStorage.getItem(DB_KEY_PREFIX + id) || '0');
-                item.dataset.views = views;
-                item.querySelector('.view-number').textContent = views;
+                
+                item.dataset.views = 0;
+                
+                // ページ読み込み時に全端末合算の閲覧数を取得
+                fetch(`https://api.counterapi.dev/v1/${NAMESPACE}/${id}`)
+                    .then(res => res.json())
+                    .then(data => {
+                        const views = data.count || 0;
+                        item.dataset.views = views;
+                        item.querySelector('.view-number').textContent = views;
+                    })
+                    .catch(err => console.error('閲覧数の取得に失敗:', err))
+                    .finally(() => {
+                        fetchCount++;
+                        // すべての閲覧数の取得が完了したタイミングでソートを再適用する
+                        if (fetchCount === itemsArray.length) {
+                            updateGrid();
+                        }
+                    });
 
                 item.addEventListener('click', (e) => {
                     e.preventDefault(); 
 
-                    views++;
-                    localStorage.setItem(DB_KEY_PREFIX + id, views);
-                    item.dataset.views = views;
-                    item.querySelector('.view-number').textContent = views;
+                    // クリック時に見た目上の数値を+1する
+                    let currentViews = parseInt(item.dataset.views || 0) + 1;
+                    item.dataset.views = currentViews;
+                    item.querySelector('.view-number').textContent = currentViews;
+
+                    // 裏で外部APIを呼び出して全体のカウントを+1する
+                    fetch(`https://api.counterapi.dev/v1/${NAMESPACE}/${id}/up`)
+                        .catch(err => console.error('閲覧数の更新に失敗:', err));
 
                     const modal = document.getElementById('image-modal');
                     const innerContainer = document.getElementById('modal-inner-container');
