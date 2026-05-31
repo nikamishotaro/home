@@ -461,8 +461,54 @@ body {
     .grid-container.zoom-1 { gap: 10px; }
     .grid-container.zoom-1 .grid-item { width: calc(33.333% - 6.666px); } 
 
+    .grid-container.zoom-1 .image-wrapper {
+        margin-bottom: 5px; 
+    }
+    .grid-container.zoom-1 .grid-item-hashtag { 
+        opacity: 0 !important; 
+        max-height: 0 !important; 
+        margin: 0 !important; 
+        padding: 0 !important; 
+    }
+    .grid-container.zoom-1 .grid-item-title-container {
+        flex-direction: column;
+        align-items: flex-start; 
+        max-height: 80px !important;
+    }
+    .grid-container.zoom-1 .grid-item-title { 
+        font-size: 0.8rem; 
+        width: 100%; 
+        white-space: normal; 
+        word-wrap: break-word;
+        line-height: 1.2;
+    }
+    .grid-container.zoom-1 .view-count { 
+        font-size: 0.7rem; 
+        width: 100%; 
+        justify-content: flex-start; 
+        margin-top: 4px; 
+    }
+
     .grid-container.zoom-2 { gap: 5px; }
     .grid-container.zoom-2 .grid-item { width: calc(20% - 4px); } 
+
+    .grid-container.zoom-2 .grid-item-hashtag,
+    .grid-container.zoom-2 .view-count { 
+        opacity: 0 !important; 
+        max-height: 0 !important; 
+        margin: 0 !important; 
+        padding: 0 !important; 
+    }
+    .grid-container.zoom-2 .grid-item-title-container {
+        flex-direction: column;
+        align-items: flex-start; 
+    }
+    .grid-container.zoom-2 .grid-item-title { 
+        font-size: 0.7rem; 
+        width: 100%; 
+        white-space: normal; 
+        word-wrap: break-word;
+    }
 
     .grid-container.zoom-3 { gap: 2px; }
     .grid-container.zoom-3 .grid-item { width: calc(9.09% - 1.818px); } 
@@ -473,38 +519,6 @@ body {
         max-height: 0 !important; 
         margin: 0 !important; 
         padding: 0 !important; 
-    }
-
-    .grid-container.zoom-2 .grid-item-hashtag,
-    .grid-container.zoom-2 .view-count { 
-        opacity: 0 !important; 
-        max-height: 0 !important; 
-        margin: 0 !important; 
-        padding: 0 !important; 
-    }
-    .grid-container.zoom-2 .grid-item-title { font-size: 0.7rem; }
-
-    .grid-container.zoom-1 .grid-item-hashtag { 
-        opacity: 0 !important; 
-        max-height: 0 !important; 
-        margin: 0 !important; 
-        padding: 0 !important; 
-    }
-    .grid-container.zoom-1 .grid-item-title-container {
-        flex-direction: column;
-        align-items: flex-start; 
-    }
-    .grid-container.zoom-1 .grid-item-title { 
-        font-size: 0.8rem; 
-        width: 100%; 
-        white-space: normal; 
-        word-wrap: break-word;
-    }
-    .grid-container.zoom-1 .view-count { 
-        font-size: 0.7rem; 
-        width: 100%; 
-        justify-content: flex-start; 
-        margin-top: 4px; 
     }
 }
 
@@ -546,33 +560,28 @@ body {
     }
 }
 
-/* ▼▼▼ 【要求②】モーダル内の「画像(1枚)」位置・サイズ調整 (PC版) ▼▼▼ */
+/* ▼▼▼ モーダル内の「画像(1枚)」位置・サイズ調整 (PC版) ▼▼▼ */
 .single-img {
     width: auto;
     height: auto;
-    /* 画像が枠をはみ出さないよう制限 */
     max-width: calc(100% - 80px);
     max-height: 60vh;
     object-fit: contain;
-    /* ▼▼▼ 【要求②】画像の上下位置の調整（margin-top:上、margin-bottom:下） ▼▼▼ */
     margin-top: 0px; 
     margin-bottom: 20px;
-    /* ▼▼▼ 【要求②】画像の左右位置の調整（margin-left:左、margin-right:右） ▼▼▼ */
-    margin-left: auto;
-    margin-right: auto;
+    margin-left: 0px;
+    margin-right: 0px;
     box-shadow: 0 4px 12px rgba(0,0,0,0.5);
 }
 
-/* ▼▼▼ 【要求②】モーダル内の「複数画像（スライダー）」位置・サイズ調整 (PC版) ▼▼▼ */
+/* ▼▼▼ モーダル内の「複数画像（スライダー）」位置・サイズ調整 (PC版) ▼▼▼ */
 .carousel-container {
     position: relative;
     width: 100%;
     height: auto; 
     max-height: 60vh;
-    /* ▼▼▼ 【要求②】スライダー全体の上下位置の調整（margin-top:上、margin-bottom:下） ▼▼▼ */
     margin-top: 20px;
     margin-bottom: 20px;
-    /* ▼▼▼ 【要求②】スライダー全体の左右位置の調整（margin-left:左、margin-right:右） ▼▼▼ */
     margin-left: 0px;
     margin-right: 0px;
     overflow: hidden;
@@ -589,7 +598,6 @@ body {
     width: auto;
     height: auto;
     max-height: 100%;
-    /* 画像の横幅の最大値。はみ出しを防ぐため親枠の幅から左右のpadding分を引いて制限する */
     max-width: calc(100% - 80px);
     object-fit: contain;
     transition: all 0.4s ease;
@@ -623,32 +631,36 @@ body {
 /* ▼▼▼ 【要求①】モーダル内の「タイトル」フォントサイズ・位置調整 (PC版) ▼▼▼ */
 .modal-title {
     color: #fff;
-    /* ▼▼▼ 【要求①】タイトルの文字サイズ調整 ▼▼▼ */
+    /* ▼▼▼ タイトルの文字サイズ調整 ▼▼▼ */
     font-size: 1.5rem;
     font-weight: bold;
-    /* ▼▼▼ 【要求①】タイトルの上下位置（margin-top:上辺との距離、margin-bottom:下との隙間） ▼▼▼ */
+    /* ▼▼▼ タイトルの上下位置（margin-top:上辺との距離、margin-bottom:下との隙間） ▼▼▼ */
     margin-top: 10px;
     margin-bottom: 15px;
-    /* ▼▼▼ 【要求①】タイトルの左右位置（左に余白を空けて右にずらす場合はmargin-leftを大きくする） ▼▼▼ */
-    margin-left: 0px;
-    margin-right: 0px;
-    /* 【要求①】センターから左寄せに変更 */
+    /* ▼▼▼ タイトルの左右位置（左に余白を空ける場合はmargin-leftを大きくする） ▼▼▼ */
+    margin-left: 20px;
+    margin-right: 20px;
+    /* 【修正・要求①】左寄せの設定 */
     text-align: left;
+    /* 【修正・要求①】親要素が中央揃えでも幅いっぱいに広げて左寄せを効かせる設定 */
+    align-self: stretch;
 }
 
 /* ▼▼▼ 【要求①】モーダル内の「本文」フォントサイズ・位置調整 (PC版) ▼▼▼ */
 .modal-text {
     color: #fff;
-    /* ▼▼▼ 【要求①】本文の文字サイズ調整 ▼▼▼ */
+    /* ▼▼▼ 本文の文字サイズ調整 ▼▼▼ */
     font-size: 1rem;
-    /* ▼▼▼ 【要求①】本文の上下位置（margin-top:上との隙間、margin-bottom:下辺との距離） ▼▼▼ */
+    /* ▼▼▼ 本文の上下位置（margin-top:上との隙間、margin-bottom:下辺との距離） ▼▼▼ */
     margin-top: 15px; 
     margin-bottom: 20px;
-    /* ▼▼▼ 【要求①】本文の左右位置（左に余白を空けて右にずらす場合はmargin-leftを大きくする） ▼▼▼ */
-    margin-left: 0px;
-    margin-right: 0px;
-    /* 【要求①】センターから左寄せに変更 */
+    /* ▼▼▼ 本文の左右位置（左に余白を空ける場合はmargin-leftを大きくする） ▼▼▼ */
+    margin-left: 20px;
+    margin-right: 20px;
+    /* 【修正・要求①】左寄せの設定 */
     text-align: left; 
+    /* 【修正・要求①】親要素が中央揃えでも幅いっぱいに広げて左寄せを効かせる設定 */
+    align-self: stretch;
     white-space: pre-wrap;
     line-height: 1.6;
     padding: 0;
@@ -656,7 +668,7 @@ body {
 }
 
 /* -----------------------------------
-    SP版（スマホ）用の微調整
+   SP版（スマホ）用の微調整
 ----------------------------------- */
 @media (max-width: 768px) {
     /* ▼▼▼ 【要求①】モーダル内の「タイトル」フォントサイズ・位置調整 (SP版) ▼▼▼ */
@@ -666,9 +678,9 @@ body {
         /* SP版タイトルの上下位置 */
         margin-top: 30px;
         margin-bottom: 10px;
-        /* SP版タイトルの左右位置 */
-        margin-left: 20px;
-        margin-right: 20px;
+        /* SP版タイトルの左右位置（変更可能） */
+        margin-left: 20px; 
+        margin-right: 20px; 
     }
 
     /* ▼▼▼ 【要求①】モーダル内の「本文」フォントサイズ・位置調整 (SP版) ▼▼▼ */
@@ -677,37 +689,31 @@ body {
         font-size: 0.9rem;
         /* SP版本文の上下位置 */
         margin-top: 30px;
-        margin-bottom: 30px;
-        /* SP版本文の左右位置 */
-        margin-left: 20px;
-        margin-right: 20px;
+        margin-bottom: 10px;
+        /* SP版本文の左右位置（変更可能） */
+        margin-left: 20px; 
+        margin-right: 20px; 
     }
 
-    /* ▼▼▼ 【要求②】モーダル内の「画像(1枚)」位置調整 (SP版) ▼▼▼ */
+    /* ▼▼▼ モーダル内の「画像(1枚)」位置調整 (SP版) ▼▼▼ */
     .single-img {
-        /* SP版画像の上下位置 */
         margin-top: 0px;
-        margin-bottom: 30px;
-        /* SP版画像の左右位置 */
-        margin-left: 60px;
-        margin-right: 60px;
-        /* 画像が枠をはみ出さないよう制限 */
-        max-width: calc(100% - 120px);
+        margin-bottom: 15px;
+        margin-left: 10px;
+        margin-right: 10px;
+        max-width: calc(100% - 20px);
     }
 
-    /* ▼▼▼ 【要求②】モーダル内の「複数画像（スライダー）」位置調整 (SP版) ▼▼▼ */
+    /* ▼▼▼ モーダル内の「複数画像（スライダー）」位置調整 (SP版) ▼▼▼ */
     .carousel-container {
-        /* SP版スライダー全体の上下位置 */
         margin-top: 15px;
         margin-bottom: 15px;
-        /* SP版スライダー全体の左右位置 */
         margin-left: 0px;
         margin-right: 0px;
-        /* スライダー全体が枠をはみ出さないよう制限 */
         max-width: calc(100% - 40px);
     }
     
     .carousel-img {
-        max-width: 80%;
+        max-width: 60%;
     }
 }
