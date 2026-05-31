@@ -667,8 +667,8 @@ body {
         margin-top: 30px;
         margin-bottom: 10px;
         /* SP版タイトルの左右位置 */
-        margin-left: 30px;
-        margin-right: 30px;
+        margin-left: 20px;
+        margin-right: 20px;
     }
 
     /* ▼▼▼ 【要求①】モーダル内の「本文」フォントサイズ・位置調整 (SP版) ▼▼▼ */
@@ -679,8 +679,8 @@ body {
         margin-top: 30px;
         margin-bottom: 30px;
         /* SP版本文の左右位置 */
-        margin-left: 30px;
-        margin-right: 30px;
+        margin-left: 20px;
+        margin-right: 20px;
     }
 
     /* ▼▼▼ 【要求②】モーダル内の「画像(1枚)」位置調整 (SP版) ▼▼▼ */
