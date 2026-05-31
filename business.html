@@ -28,7 +28,7 @@
             background-color: #000; /* 画像がない場合の予備色（黒） */
         }
 
-        /* ▼▼▼ 【要求②】背景動画のスタイル ▼▼▼ */
+        /* ▼▼▼ 背景動画のスタイル ▼▼▼ */
         .bg-video {
             position: absolute;
             top: 0;
@@ -42,14 +42,10 @@
         /* ② Back to Home ボタン（右上固定） */
         .back-home {
             position: absolute;
-            /* ▼▼▼ 【要求①】アイコンの位置調整（上からの距離） ▼▼▼ */
+            /* ▼▼▼ アイコンの位置調整（上からの距離） ▼▼▼ */
             top: 20px;
-            /* ▼▼▼ 【要求①】アイコンの位置調整（右からの距離） ▼▼▼ */
+            /* ▼▼▼ アイコンの位置調整（右からの距離） ▼▼▼ */
             right: 20px;
-            /* ▼▼▼ アイコン画像化に伴い、テキスト用の装飾（padding, border等）はコメントアウトしました ▼▼▼ */
-            /* padding: 10px 20px; */
-            /* border: 1px solid #ff0000; */
-            /* font-weight: bold; */
             text-decoration: none;
             color: inherit;
             transition: opacity 0.3s;
@@ -59,7 +55,7 @@
             opacity: 0.5;
         }
 
-        /* ▼▼▼ 【要求①】Back to Home アイコン画像のサイズ調整 ▼▼▼ */
+        /* ▼▼▼ Back to Home アイコン画像のサイズ調整 ▼▼▼ */
         .home-icon-img {
             /* ここでアイコンの大きさを調整できます */
             width: 30px; 
@@ -68,35 +64,106 @@
         }
 
         /* ① メインコンテンツ */
+        
+        /* ▼▼▼ content-wrapperの位置・配置調整 (PC版) ▼▼▼ */
         .content-wrapper {
             position: relative;
-            z-index: 1; /* 動画より手前に表示するため追加 */
+            z-index: 1; 
+            /* 全体の配置（center: 中央揃え、left: 左詰め、right: 右詰め） */
+            text-align: center;
+            /* 上下の位置調整（上が詰まる場合は margin-top を増やす等） */
+            margin-top: 0px;
         }
 
+        /* ▼▼▼ message（タイトル）のフォントサイズ・位置調整 (PC版) ▼▼▼ */
         .message {
+            /* フォントサイズ */
             font-size: 3.5rem;
             font-weight: bold;
+            /* 下の要素との隙間 */
             margin-bottom: 20px;
             letter-spacing: 0.05em;
+            /* テキストの配置（center: 中央揃え、left: 左詰め、right: 右詰め） */
+            text-align: center;
         }
 
-        /* ▼▼▼ 【要求③】仕事内容の箇条書きスタイル ▼▼▼ */
+        /* ▼▼▼ job-list（箇条書き）のフォントサイズ・位置調整 (PC版) ▼▼▼ */
         .job-list {
-            text-align: left; /* テキスト自体は左揃えの方が見やすいため */
-            display: inline-block; /* 親要素のtext-align: centerで中央に配置しつつ左揃えを維持 */
+            /* テキスト自体の配置（left: 左詰め、center: 中央揃え） */
+            text-align: left; 
+            /* 親要素内での配置（中央にブロックとして配置しつつ左詰めを維持する設定） */
+            display: inline-block; 
+            /* フォントサイズ */
             font-size: 1.2rem;
+            /* 行間（行と行の隙間） */
             line-height: 1.8;
+            /* 下の要素との隙間 */
             margin-bottom: 30px;
         }
 
+        /* ▼▼▼ contact-info（連絡先）のフォントサイズ・位置調整 (PC版) ▼▼▼ */
         .contact-info {
+            /* フォントサイズ */
             font-size: 1.2rem;
+            /* 行間 */
             line-height: 2;
+            /* テキストの配置（center: 中央揃え、left: 左詰め、right: 右詰め） */
+            text-align: center;
         }
 
         .contact-info a {
             color: inherit;
             text-decoration: underline;
+        }
+
+        /* -----------------------------------
+           SP版（スマホ）用の微調整
+        ----------------------------------- */
+        @media (max-width: 768px) {
+            /* ▼▼▼ 【要求①】content-wrapperの位置・配置調整 (SP版) ▼▼▼ */
+            .content-wrapper {
+                /* ホームボタンとの被りを防ぐための上部余白 */
+                margin-top: 50px; 
+                /* 全体の配置（center: 中央揃え、left: 左詰め、right: 右詰め） */
+                text-align: center;
+                /* 画面幅に対する要素の幅（必要に応じて調整） */
+                width: 90%;
+            }
+
+            /* ▼▼▼ 【要求①】message（タイトル）のフォントサイズと位置調整 (SP版) ▼▼▼ */
+            .message {
+                /* SP版のフォントサイズ（画面に収まるように縮小） */
+                font-size: 2.2rem; 
+                /* 下の要素との隙間 */
+                margin-bottom: 15px; 
+                /* テキストの配置（center: 中央揃え、left: 左詰め、right: 右詰め） */
+                text-align: center;
+            }
+
+            /* ▼▼▼ 【要求①】job-list（箇条書き）のフォントサイズと位置調整 (SP版) ▼▼▼ */
+            .job-list {
+                /* SP版のフォントサイズ */
+                font-size: 0.95rem; 
+                /* 行間（狭めて1画面に収める） */
+                line-height: 1.6; 
+                /* 下の要素との隙間 */
+                margin-bottom: 20px; 
+                /* テキストの配置（left: 左詰め、center: 中央揃え） */
+                text-align: left; 
+                display: inline-block;
+                /* 左側の余白（内側） */
+                padding-left: 20px;
+            }
+
+            /* ▼▼▼ 【要求①】contact-info（連絡先）のフォントサイズと位置調整 (SP版) ▼▼▼ */
+            .contact-info {
+                /* SP版のフォントサイズ */
+                font-size: 0.9rem; 
+                /* 行間 */
+                line-height: 1.6; 
+                /* テキストの配置（center: 中央揃え、left: 左詰め、right: 右詰め） */
+                text-align: center; 
+            }
         }
     </style>
 </head>
@@ -112,7 +179,7 @@
         <p class="message">Let's team up!!!!!!!!!</p>
         
         <ul class="job-list">
-            <li>研究・批評（建築家なしの建築, 集落構造, 人間の構築行為） </li>
+            <li>研究・批評（建築, 集落構造, 人間の構築行為） </li>
             <li>デザイン（グラフィック, ホームページ）</li>
             <li>音楽制作（店内用, 展覧会用, SNS投稿用）</li>
             <li>LIVEパフォーマンス（ambient, electronic, noise）</li>
