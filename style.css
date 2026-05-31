@@ -458,66 +458,12 @@ body {
     .grid-container.zoom-0 { gap: 20px; }
     .grid-container.zoom-0 .grid-item { width: 100%; } 
 
-    /* ▼▼▼ zoom-1 の表示設定 ▼▼▼ */
     .grid-container.zoom-1 { gap: 10px; }
     .grid-container.zoom-1 .grid-item { width: calc(33.333% - 6.666px); } 
 
-    .grid-container.zoom-1 .image-wrapper {
-        /* ▼▼▼ 【要求②】タイトルとアイコン画像の距離（狭める場合は数値を小さくする） ▼▼▼ */
-        margin-bottom: 5px; 
-    }
-    .grid-container.zoom-1 .grid-item-hashtag { 
-        opacity: 0 !important; 
-        max-height: 0 !important; 
-        margin: 0 !important; 
-        padding: 0 !important; 
-    }
-    .grid-container.zoom-1 .grid-item-title-container {
-        flex-direction: column;
-        align-items: flex-start; 
-        /* ▼▼▼ 【要求②】「タイトル＋閲覧数」が見切れないようにアイコン領域（高さ上限）を広げる ▼▼▼ */
-        max-height: 80px !important;
-    }
-    .grid-container.zoom-1 .grid-item-title { 
-        font-size: 0.8rem; 
-        width: 100%; 
-        white-space: normal; 
-        word-wrap: break-word;
-        /* ▼▼▼ 【要求②】タイトルが改行された時の行間の距離（狭める場合は数値を小さくする） ▼▼▼ */
-        line-height: 1.2;
-    }
-    .grid-container.zoom-1 .view-count { 
-        font-size: 0.7rem; 
-        width: 100%; 
-        justify-content: flex-start; 
-        margin-top: 4px; 
-    }
-
-    /* ▼▼▼ zoom-2 の表示設定 ▼▼▼ */
     .grid-container.zoom-2 { gap: 5px; }
     .grid-container.zoom-2 .grid-item { width: calc(20% - 4px); } 
 
-    .grid-container.zoom-2 .grid-item-hashtag,
-    .grid-container.zoom-2 .view-count { 
-        opacity: 0 !important; 
-        max-height: 0 !important; 
-        margin: 0 !important; 
-        padding: 0 !important; 
-    }
-    .grid-container.zoom-2 .grid-item-title-container {
-        /* 【要求①】タイトルの横幅をアイコン横幅いっぱいまで表示させる */
-        flex-direction: column;
-        align-items: flex-start; 
-    }
-    .grid-container.zoom-2 .grid-item-title { 
-        font-size: 0.7rem; 
-        /* 【要求①】タイトルの横幅をアイコン横幅いっぱいまで表示させる */
-        width: 100%; 
-        white-space: normal; 
-        word-wrap: break-word;
-    }
-
-    /* ▼▼▼ zoom-3 の表示設定 ▼▼▼ */
     .grid-container.zoom-3 { gap: 2px; }
     .grid-container.zoom-3 .grid-item { width: calc(9.09% - 1.818px); } 
 
@@ -527,6 +473,38 @@ body {
         max-height: 0 !important; 
         margin: 0 !important; 
         padding: 0 !important; 
+    }
+
+    .grid-container.zoom-2 .grid-item-hashtag,
+    .grid-container.zoom-2 .view-count { 
+        opacity: 0 !important; 
+        max-height: 0 !important; 
+        margin: 0 !important; 
+        padding: 0 !important; 
+    }
+    .grid-container.zoom-2 .grid-item-title { font-size: 0.7rem; }
+
+    .grid-container.zoom-1 .grid-item-hashtag { 
+        opacity: 0 !important; 
+        max-height: 0 !important; 
+        margin: 0 !important; 
+        padding: 0 !important; 
+    }
+    .grid-container.zoom-1 .grid-item-title-container {
+        flex-direction: column;
+        align-items: flex-start; 
+    }
+    .grid-container.zoom-1 .grid-item-title { 
+        font-size: 0.8rem; 
+        width: 100%; 
+        white-space: normal; 
+        word-wrap: break-word;
+    }
+    .grid-container.zoom-1 .view-count { 
+        font-size: 0.7rem; 
+        width: 100%; 
+        justify-content: flex-start; 
+        margin-top: 4px; 
     }
 }
 
@@ -549,7 +527,7 @@ body {
 .modal-box {
     background: #000;
     border: 0px solid #ffffff;
-    width: 100%;
+    width: 90%;
     max-width: 800px;
     margin: 100px auto; 
     padding: 40px;
@@ -568,39 +546,34 @@ body {
     }
 }
 
-/* ▼▼▼ 【要求①】モーダル内の「画像(1枚)」位置・サイズ調整 (PC版) ▼▼▼ */
+/* ▼▼▼ 【要求②】モーダル内の「画像(1枚)」位置・サイズ調整 (PC版) ▼▼▼ */
 .single-img {
     width: auto;
     height: auto;
-    /* 【修正・要求①】マージン崩れとはみ出しを防ぐため、width: 100%を削除し、親枠に対するmax-widthで制御 */
+    /* 画像が枠をはみ出さないよう制限 */
     max-width: calc(100% - 80px);
     max-height: 60vh;
     object-fit: contain;
-    /* 画像と上の要素との隙間 */
+    /* ▼▼▼ 【要求②】画像の上下位置の調整（margin-top:上、margin-bottom:下） ▼▼▼ */
     margin-top: 0px; 
-    /* 画像と下の要素との隙間 */
     margin-bottom: 20px;
-    /* 画像の左の余白 */
-    margin-left: 0px;
-    /* 画像の右の余白 */
-    margin-right: 0px;
+    /* ▼▼▼ 【要求②】画像の左右位置の調整（margin-left:左、margin-right:右） ▼▼▼ */
+    margin-left: auto;
+    margin-right: auto;
     box-shadow: 0 4px 12px rgba(0,0,0,0.5);
 }
 
-/* ▼▼▼ 【要求①】モーダル内の「複数画像（スライダー）」位置・サイズ調整 (PC版) ▼▼▼ */
+/* ▼▼▼ 【要求②】モーダル内の「複数画像（スライダー）」位置・サイズ調整 (PC版) ▼▼▼ */
 .carousel-container {
     position: relative;
-    /* スライダー領域の横幅。はみ出し防止のため100%に固定 */
     width: 100%;
     height: auto; 
     max-height: 60vh;
-    /* スライダー全体と上の要素との隙間 */
+    /* ▼▼▼ 【要求②】スライダー全体の上下位置の調整（margin-top:上、margin-bottom:下） ▼▼▼ */
     margin-top: 20px;
-    /* スライダー全体と下の要素との隙間 */
     margin-bottom: 20px;
-    /* スライダー全体の左の余白 */
+    /* ▼▼▼ 【要求②】スライダー全体の左右位置の調整（margin-left:左、margin-right:右） ▼▼▼ */
     margin-left: 0px;
-    /* スライダー全体の右の余白 */
     margin-right: 0px;
     overflow: hidden;
     cursor: pointer;
@@ -650,31 +623,31 @@ body {
 /* ▼▼▼ 【要求①】モーダル内の「タイトル」フォントサイズ・位置調整 (PC版) ▼▼▼ */
 .modal-title {
     color: #fff;
-    /* タイトルの文字サイズ */
+    /* ▼▼▼ 【要求①】タイトルの文字サイズ調整 ▼▼▼ */
     font-size: 1.5rem;
     font-weight: bold;
-    /* モーダル枠の上辺からの距離（大きくすると下がります） */
+    /* ▼▼▼ 【要求①】タイトルの上下位置（margin-top:上辺との距離、margin-bottom:下との隙間） ▼▼▼ */
     margin-top: 10px;
-    /* タイトルと下の要素（画像等）との隙間 */
     margin-bottom: 15px;
-    /* 【要求①】マージンを正常に反映させるため、width: 100%を削除 */
-    margin-left: 0px;  /* 左に余白を空けて右にずらす場合は数値を大きくする */
-    margin-right: 0px; /* 右に余白を空けて左にずらす場合は数値を大きくする */
+    /* ▼▼▼ 【要求①】タイトルの左右位置（左に余白を空けて右にずらす場合はmargin-leftを大きくする） ▼▼▼ */
+    margin-left: 0px;
+    margin-right: 0px;
+    /* 【要求①】センターから左寄せに変更 */
     text-align: left;
 }
 
 /* ▼▼▼ 【要求①】モーダル内の「本文」フォントサイズ・位置調整 (PC版) ▼▼▼ */
 .modal-text {
     color: #fff;
-    /* 本文の文字サイズ */
+    /* ▼▼▼ 【要求①】本文の文字サイズ調整 ▼▼▼ */
     font-size: 1rem;
-    /* 本文と上の要素（画像等）との隙間 */
+    /* ▼▼▼ 【要求①】本文の上下位置（margin-top:上との隙間、margin-bottom:下辺との距離） ▼▼▼ */
     margin-top: 15px; 
-    /* 本文とモーダル枠の下辺との隙間 */
     margin-bottom: 20px;
-    /* 【要求①】マージンを正常に反映させるため、width: 100%を削除 */
-    margin-left: 0px;  /* 左に余白を空けて右にずらす場合は数値を大きくする */
-    margin-right: 0px; /* 右に余白を空けて左にずらす場合は数値を大きくする */
+    /* ▼▼▼ 【要求①】本文の左右位置（左に余白を空けて右にずらす場合はmargin-leftを大きくする） ▼▼▼ */
+    margin-left: 0px;
+    margin-right: 0px;
+    /* 【要求①】センターから左寄せに変更 */
     text-align: left; 
     white-space: pre-wrap;
     line-height: 1.6;
@@ -683,49 +656,58 @@ body {
 }
 
 /* -----------------------------------
-   SP版（スマホ）用の微調整
+    SP版（スマホ）用の微調整
 ----------------------------------- */
 @media (max-width: 768px) {
     /* ▼▼▼ 【要求①】モーダル内の「タイトル」フォントサイズ・位置調整 (SP版) ▼▼▼ */
     .modal-title {
+        /* SP版タイトルの文字サイズ */
         font-size: 1.2rem;
+        /* SP版タイトルの上下位置 */
         margin-top: 30px;
         margin-bottom: 10px;
-        /* ▼▼▼ 【要求①】左右のマージンが正常に効く仕様に修正しました。数値を任意に変更可能です ▼▼▼ */
-        margin-left: 30px;  /* 左に余白を空けて右にずらす場合は数値を大きくする */
-        margin-right: 30px; /* 右に余白を空けて左にずらす場合は数値を大きくする */
+        /* SP版タイトルの左右位置 */
+        margin-left: 30px;
+        margin-right: 30px;
     }
 
     /* ▼▼▼ 【要求①】モーダル内の「本文」フォントサイズ・位置調整 (SP版) ▼▼▼ */
     .modal-text {
+        /* SP版本文の文字サイズ */
         font-size: 0.9rem;
+        /* SP版本文の上下位置 */
         margin-top: 30px;
-        margin-bottom: 10px;
-        /* ▼▼▼ 【要求①】左右のマージンが正常に効く仕様に修正しました。数値を任意に変更可能です ▼▼▼ */
-        margin-left: 30px;  /* 左に余白を空けて右にずらす場合は数値を大きくする */
-        margin-right: 30px; /* 右に余白を空けて左にずらす場合は数値を大きくする */
-    }
-
-    /* ▼▼▼ モーダル内の「画像(1枚)」位置調整 (SP版) ▼▼▼ */
-    .single-img {
-        margin-top: 0px;
-        margin-bottom: 15px;
-        margin-left: 10px;
-        margin-right: 10px;
-        /* 親枠から余白を考慮した幅に自動設定 */
-        max-width: calc(100% - 20px);
-    }
-
-    /* ▼▼▼ モーダル内の「複数画像（スライダー）」位置調整 (SP版) ▼▼▼ */
-    .carousel-container {
-        margin-top: 15px;
-        margin-bottom: 15px;
+        margin-bottom: 30px;
+        /* SP版本文の左右位置 */
         margin-left: 30px;
         margin-right: 30px;
+    }
+
+    /* ▼▼▼ 【要求②】モーダル内の「画像(1枚)」位置調整 (SP版) ▼▼▼ */
+    .single-img {
+        /* SP版画像の上下位置 */
+        margin-top: 0px;
+        margin-bottom: 30px;
+        /* SP版画像の左右位置 */
+        margin-left: 60px;
+        margin-right: 60px;
+        /* 画像が枠をはみ出さないよう制限 */
+        max-width: calc(100% - 120px);
+    }
+
+    /* ▼▼▼ 【要求②】モーダル内の「複数画像（スライダー）」位置調整 (SP版) ▼▼▼ */
+    .carousel-container {
+        /* SP版スライダー全体の上下位置 */
+        margin-top: 15px;
+        margin-bottom: 15px;
+        /* SP版スライダー全体の左右位置 */
+        margin-left: 0px;
+        margin-right: 0px;
+        /* スライダー全体が枠をはみ出さないよう制限 */
         max-width: calc(100% - 40px);
     }
     
     .carousel-img {
-        max-width: 60%;
+        max-width: 100%;
     }
 }
