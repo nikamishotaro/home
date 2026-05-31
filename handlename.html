@@ -70,7 +70,6 @@
             const repo = "home";
             const path = "posts";
             
-            // 【要求②】モーダル展開時のスクロールイベント誤作動をブロックするための管理フラグ
             let isOpeningModal = false;
             
             try {
@@ -93,7 +92,6 @@
                             
                             const title = titleMatch ? titleMatch[1] : "無題";
                             
-                            // 【修正・要求②】「#」なしでもタグとして認識し、カンマ区切りにも対応する処理
                             let tags = "";
                             if (tagsMatch && tagsMatch[1]) {
                                 const rawTagsText = tagsMatch[1];
@@ -203,36 +201,44 @@
                 modal.scrollTop = 0; 
             }
 
-            // 【修正・要求①】全端末からのアクセスを合算して表示・記録するための外部API（CounterAPI）設定
-            const NAMESPACE = 'nikamishotaro_kimdiehl_views';
+            // 【修正】より安定性の高い共有データベースAPI（KVdb.io）を使用
+            const KVDB_BUCKET = 'bW3RjQo4GvL8N3M8q7yYxN'; // 共用テストバケット(有効期限なし)
             let fetchCount = 0;
 
             itemsArray.forEach(item => {
                 const id = item.dataset.id;
-                // APIエラー対策として記号を排除した安全なIDを生成
                 const safeId = id.replace(/[^a-zA-Z0-9_]/g, '');
-                
-                // ローカルストレージをフォールバックとして取得
                 const localKey = 'kim_diehl_views_' + safeId;
-                let views = parseInt(localStorage.getItem(localKey) || '0');
-                item.dataset.views = views;
-                item.querySelector('.view-number').textContent = views;
+                
+                let localViews = parseInt(localStorage.getItem(localKey) || '0');
+                item.dataset.views = localViews;
+                item.querySelector('.view-number').textContent = localViews;
 
-                // ページ読み込み時に全端末合算の閲覧数を取得
-                fetch(`https://api.counterapi.dev/v1/${NAMESPACE}/${safeId}`)
-                    .then(res => res.json())
+                // ページ読み込み時に全端末合算の閲覧数を取得（KVdb）
+                fetch(`https://kvdb.io/${KVDB_BUCKET}/${safeId}`)
+                    .then(res => {
+                        if(res.status === 404) return 0; // まだ誰も見ていない場合
+                        if(!res.ok) throw new Error('API Error');
+                        return res.text();
+                    })
                     .then(data => {
-                        if (data && data.count !== undefined) {
-                            views = data.count;
+                        const views = parseInt(data) || 0;
+                        // ローカルよりAPIの数字が大きければ上書き
+                        if (views >= localViews) {
                             item.dataset.views = views;
                             item.querySelector('.view-number').textContent = views;
                             localStorage.setItem(localKey, views);
+                        } else if (localViews > views) {
+                            // もしAPI側が初期化されていたらローカルの数字をAPIに送信して復元
+                            fetch(`https://kvdb.io/${KVDB_BUCKET}/${safeId}`, {
+                                method: 'POST',
+                                body: localViews.toString()
+                            });
                         }
                     })
                     .catch(err => console.log('閲覧数の取得に失敗（ローカル値を使用）:', err))
                     .finally(() => {
                         fetchCount++;
-                        // すべての閲覧数の取得が完了したタイミングでソートを再適用する
                         if (fetchCount === itemsArray.length) {
                             updateGrid();
                         }
@@ -247,9 +253,10 @@
                     item.querySelector('.view-number').textContent = currentViews;
                     localStorage.setItem(localKey, currentViews);
 
-                    // 裏で外部APIを呼び出して全体のカウントを+1する
-                    fetch(`https://api.counterapi.dev/v1/${NAMESPACE}/${safeId}/up`)
-                        .catch(err => console.log('閲覧数の更新に失敗:', err));
+                    // KVdbの「インクリメント（+1）」APIを呼び出し
+                    fetch(`https://kvdb.io/${KVDB_BUCKET}/${safeId}/+1`, {
+                        method: 'POST'
+                    }).catch(err => console.log('閲覧数の更新に失敗:', err));
 
                     const modal = document.getElementById('image-modal');
                     const innerContainer = document.getElementById('modal-inner-container');
@@ -316,13 +323,11 @@
                         textEl.style.display = 'none'; 
                     }
                     
-                    // 【要求②】新規モーダル開封フェーズ開始フラグを設定し、裏でのscroll誤算定を防ぐ
                     isOpeningModal = true;
                     modal.style.display = 'block'; 
                     modal.scrollTop = 0; 
                     modal.style.opacity = 1; 
                     
-                    // スクロール初期化がブラウザで確定した頃にフラグを解除
                     setTimeout(() => {
                         isOpeningModal = false;
                     }, 80);
@@ -534,7 +539,6 @@
             });
 
             imageModal.addEventListener('scroll', () => {
-                // 【要求②】非表示時、または新規モーダル開封処理の最中はスクロールによる透明度計算をスキップ
                 if (imageModal.style.display === 'none' || isOpeningModal) return; 
 
                 if (window.innerWidth <= 768) {
