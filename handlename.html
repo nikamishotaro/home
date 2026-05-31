@@ -70,6 +70,7 @@
             const repo = "home";
             const path = "posts";
             
+            // モーダル展開時のスクロールイベント誤作動をブロックするための管理フラグ
             let isOpeningModal = false;
             
             try {
@@ -92,6 +93,7 @@
                             
                             const title = titleMatch ? titleMatch[1] : "無題";
                             
+                            // 「#」なしでもタグとして認識し、カンマ区切りにも対応する処理
                             let tags = "";
                             if (tagsMatch && tagsMatch[1]) {
                                 const rawTagsText = tagsMatch[1];
@@ -201,8 +203,9 @@
                 modal.scrollTop = 0; 
             }
 
-            // 【修正】より安定性の高い共有データベースAPI（KVdb.io）を使用
-            const KVDB_BUCKET = 'H17boSPLhPxxm8EbzfmpMy';
+            // ▼▼▼ 【重要】ここで取得したご自身のIDに書き換えてください ▼▼▼
+            const KVDB_BUCKET = 'H17boSPLhPxxm8EbzfmpMy'; 
+            
             let fetchCount = 0;
 
             itemsArray.forEach(item => {
@@ -214,7 +217,7 @@
                 item.dataset.views = localViews;
                 item.querySelector('.view-number').textContent = localViews;
 
-                // ページ読み込み時に全端末合算の閲覧数を取得（KVdb）
+                // ページ読み込み時に全端末合算の閲覧数を取得
                 fetch(`https://kvdb.io/${KVDB_BUCKET}/${safeId}`)
                     .then(res => {
                         if(res.status === 404) return 0; // まだ誰も見ていない場合
@@ -253,9 +256,10 @@
                     item.querySelector('.view-number').textContent = currentViews;
                     localStorage.setItem(localKey, currentViews);
 
-                    // KVdbの「インクリメント（+1）」APIを呼び出し
-                    fetch(`https://kvdb.io/${KVDB_BUCKET}/${safeId}/+1`, {
-                        method: 'POST'
+                    // 【修正】KVdbに最新の閲覧数を直接「保存（上書き）」する（404エラー解消）
+                    fetch(`https://kvdb.io/${KVDB_BUCKET}/${safeId}`, {
+                        method: 'POST',
+                        body: currentViews.toString()
                     }).catch(err => console.log('閲覧数の更新に失敗:', err));
 
                     const modal = document.getElementById('image-modal');
