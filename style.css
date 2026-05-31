@@ -568,7 +568,7 @@ body {
     max-width: 80%; /* 100%に近づくほど大きく、小さくすると小さくなります */
     max-height: 60vh;
     object-fit: contain;
-    margin-top: 0px; 
+    margin-top: 20px;
     margin-bottom: 20px;
     margin-left: 0px;
     margin-right: 0px;
@@ -685,7 +685,7 @@ body {
 
     /* ▼▼▼ 【要求①】モーダル内の「画像(1枚)」位置・サイズ調整 (SP版) ▼▼▼ */
     .single-img {
-        margin-top: 0px;
+        margin-top: 20px;
         margin-bottom: 15px;
         margin-left: 10px;
         margin-right: 10px;
