@@ -681,9 +681,9 @@ body {
         /* SP版の本文文字サイズ */
         font-size: 0.9rem;
         /* SP版の本文と上の要素との隙間 */
-        margin-top: 10px;
+        margin-top: 30px;
         /* SP版の本文とモーダル枠の下辺との隙間 */
-        margin-bottom: 10px;
+        margin-bottom: 30px;
         /* SP版の本文の左の余白 */
         margin-left: 30px;
         /* SP版の本文の右の余白 */
@@ -695,13 +695,13 @@ body {
         /* SP版の画像と上の要素との隙間 */
         margin-top: 0px;
         /* SP版の画像と下の要素との隙間 */
-        margin-bottom: 15px;
+        margin-bottom: 30px;
         /* SP版の画像の左の余白 */
-        margin-left: 30px;
+        margin-left: 60px;
         /* SP版の画像の右の余白 */
-        margin-right: 30px;
+        margin-right: 60px;
         /* SP版で画像が枠をはみ出さないよう、親枠の幅から左右のpaddingを引いた値(20px+20px=40px)で制限 */
-        max-width: calc(100% - 60px);
+        max-width: calc(100% - 120px);
     }
 
     /* ▼▼▼ 【要求②】モーダル内の「複数画像（スライダー）」位置調整 (SP版) ▼▼▼ */
