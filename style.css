@@ -692,8 +692,8 @@ body {
         margin-top: 30px;
         margin-bottom: 10px;
         /* ▼▼▼ 【要求①】左右のマージンが正常に効く仕様に修正しました。数値を任意に変更可能です ▼▼▼ */
-        margin-left: 90px;  /* 左に余白を空けて右にずらす場合は数値を大きくする */
-        margin-right: 90px; /* 右に余白を空けて左にずらす場合は数値を大きくする */
+        margin-left: 30px;  /* 左に余白を空けて右にずらす場合は数値を大きくする */
+        margin-right: 30px; /* 右に余白を空けて左にずらす場合は数値を大きくする */
     }
 
     /* ▼▼▼ 【要求①】モーダル内の「本文」フォントサイズ・位置調整 (SP版) ▼▼▼ */
@@ -702,8 +702,8 @@ body {
         margin-top: 30px;
         margin-bottom: 10px;
         /* ▼▼▼ 【要求①】左右のマージンが正常に効く仕様に修正しました。数値を任意に変更可能です ▼▼▼ */
-        margin-left: 90px;  /* 左に余白を空けて右にずらす場合は数値を大きくする */
-        margin-right: 90px; /* 右に余白を空けて左にずらす場合は数値を大きくする */
+        margin-left: 30px;  /* 左に余白を空けて右にずらす場合は数値を大きくする */
+        margin-right: 30px; /* 右に余白を空けて左にずらす場合は数値を大きくする */
     }
 
     /* ▼▼▼ モーダル内の「画像(1枚)」位置調整 (SP版) ▼▼▼ */
@@ -720,8 +720,8 @@ body {
     .carousel-container {
         margin-top: 15px;
         margin-bottom: 15px;
-        margin-left: 0px;
-        margin-right: 0px;
+        margin-left: 30px;
+        margin-right: 30px;
         max-width: calc(100% - 40px);
     }
     
