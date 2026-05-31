@@ -568,29 +568,39 @@ body {
     }
 }
 
-/* ▼▼▼ モーダル内の「画像(1枚)」位置・サイズ調整 (PC版) ▼▼▼ */
+/* ▼▼▼ 【要求①】モーダル内の「画像(1枚)」位置・サイズ調整 (PC版) ▼▼▼ */
 .single-img {
     width: auto;
     height: auto;
+    /* 【修正・要求①】マージン崩れとはみ出しを防ぐため、width: 100%を削除し、親枠に対するmax-widthで制御 */
     max-width: calc(100% - 80px);
     max-height: 60vh;
     object-fit: contain;
+    /* 画像と上の要素との隙間 */
     margin-top: 0px; 
+    /* 画像と下の要素との隙間 */
     margin-bottom: 20px;
+    /* 画像の左の余白 */
     margin-left: 0px;
+    /* 画像の右の余白 */
     margin-right: 0px;
     box-shadow: 0 4px 12px rgba(0,0,0,0.5);
 }
 
-/* ▼▼▼ 【要求③】モーダル内の「複数画像（スライダー）」位置・サイズ調整 (PC版) ▼▼▼ */
+/* ▼▼▼ 【要求①】モーダル内の「複数画像（スライダー）」位置・サイズ調整 (PC版) ▼▼▼ */
 .carousel-container {
     position: relative;
+    /* スライダー領域の横幅。はみ出し防止のため100%に固定 */
     width: 100%;
     height: auto; 
     max-height: 60vh;
+    /* スライダー全体と上の要素との隙間 */
     margin-top: 20px;
+    /* スライダー全体と下の要素との隙間 */
     margin-bottom: 20px;
+    /* スライダー全体の左の余白 */
     margin-left: 0px;
+    /* スライダー全体の右の余白 */
     margin-right: 0px;
     overflow: hidden;
     cursor: pointer;
@@ -606,8 +616,8 @@ body {
     width: auto;
     height: auto;
     max-height: 100%;
-    /* ▼▼▼ 【要求③】中央の画像の横幅を狭くし、次の候補が見えるようにする ▼▼▼ */
-    max-width: 60%;
+    /* 画像の横幅の最大値。はみ出しを防ぐため親枠の幅から左右のpadding分を引いて制限する */
+    max-width: calc(100% - 80px);
     object-fit: contain;
     transition: all 0.4s ease;
     opacity: 0;
@@ -628,41 +638,43 @@ body {
 .carousel-img.prev {
     opacity: 0.3; 
     z-index: 1;
-    /* ▼▼▼ 【要求③】左端にずらして縮小（次の候補が見えるようにする） ▼▼▼ */
-    transform: translate(-120%, -50%) scale(0.8); 
+    transform: translate(-150%, -50%) scale(0.8); 
 }
 
 .carousel-img.next {
     opacity: 0.3;
     z-index: 1;
-    /* ▼▼▼ 【要求③】右端にずらして縮小（次の候補が見えるようにする） ▼▼▼ */
-    transform: translate(20%, -50%) scale(0.8); 
+    transform: translate(50%, -50%) scale(0.8); 
 }
 
-/* ▼▼▼ モーダル内の「タイトル」フォントサイズ・位置調整 (PC版) ▼▼▼ */
+/* ▼▼▼ 【要求①】モーダル内の「タイトル」フォントサイズ・位置調整 (PC版) ▼▼▼ */
 .modal-title {
     color: #fff;
+    /* タイトルの文字サイズ */
     font-size: 1.5rem;
     font-weight: bold;
-    margin-top: 30px;
+    /* モーダル枠の上辺からの距離（大きくすると下がります） */
+    margin-top: 10px;
+    /* タイトルと下の要素（画像等）との隙間 */
     margin-bottom: 15px;
-    /* ▼▼▼ 【要求④】X軸方向（左右）の位置を調整する場合は、以下の数値を変更してください ▼▼▼ */
-    margin-left: 30px;  /* 左に余白を空けて右にずらす場合は数値を大きくする */
-    margin-right: 30px; /* 右に余白を空けて左にずらす場合は数値を大きくする */
+    /* 【要求①】マージンを正常に反映させるため、width: 100%を削除 */
+    margin-left: 0px;  /* 左に余白を空けて右にずらす場合は数値を大きくする */
+    margin-right: 0px; /* 右に余白を空けて左にずらす場合は数値を大きくする */
     text-align: left;
-    width: 100%;
 }
 
-/* ▼▼▼ モーダル内の「本文」フォントサイズ・位置調整 (PC版) ▼▼▼ */
+/* ▼▼▼ 【要求①】モーダル内の「本文」フォントサイズ・位置調整 (PC版) ▼▼▼ */
 .modal-text {
     color: #fff;
+    /* 本文の文字サイズ */
     font-size: 1rem;
+    /* 本文と上の要素（画像等）との隙間 */
     margin-top: 15px; 
+    /* 本文とモーダル枠の下辺との隙間 */
     margin-bottom: 20px;
-    /* ▼▼▼ 【要求④】X軸方向（左右）の位置を調整する場合は、以下の数値を変更してください ▼▼▼ */
-    margin-left: 30px;  /* 左に余白を空けて右にずらす場合は数値を大きくする */
-    margin-right: 30px; /* 右に余白を空けて左にずらす場合は数値を大きくする */
-    width: 100%; 
+    /* 【要求①】マージンを正常に反映させるため、width: 100%を削除 */
+    margin-left: 0px;  /* 左に余白を空けて右にずらす場合は数値を大きくする */
+    margin-right: 0px; /* 右に余白を空けて左にずらす場合は数値を大きくする */
     text-align: left; 
     white-space: pre-wrap;
     line-height: 1.6;
@@ -674,38 +686,39 @@ body {
    SP版（スマホ）用の微調整
 ----------------------------------- */
 @media (max-width: 768px) {
-    /* ▼▼▼ モーダル内の「タイトル」フォントサイズ・位置調整 (SP版) ▼▼▼ */
+    /* ▼▼▼ 【要求①】モーダル内の「タイトル」フォントサイズ・位置調整 (SP版) ▼▼▼ */
     .modal-title {
         font-size: 1.2rem;
         margin-top: 30px;
         margin-bottom: 10px;
-        /* ▼▼▼ 【要求④】X軸方向（左右）の位置を調整する場合は、以下の数値を変更してください ▼▼▼ */
+        /* ▼▼▼ 【要求①】左右のマージンが正常に効く仕様に修正しました。数値を任意に変更可能です ▼▼▼ */
         margin-left: 90px;  /* 左に余白を空けて右にずらす場合は数値を大きくする */
         margin-right: 90px; /* 右に余白を空けて左にずらす場合は数値を大きくする */
     }
 
-    /* ▼▼▼ モーダル内の「本文」フォントサイズ・位置調整 (SP版) ▼▼▼ */
+    /* ▼▼▼ 【要求①】モーダル内の「本文」フォントサイズ・位置調整 (SP版) ▼▼▼ */
     .modal-text {
         font-size: 0.9rem;
         margin-top: 30px;
         margin-bottom: 10px;
-        /* ▼▼▼ 【要求④】X軸方向（左右）の位置を調整する場合は、以下の数値を変更してください ▼▼▼ */
+        /* ▼▼▼ 【要求①】左右のマージンが正常に効く仕様に修正しました。数値を任意に変更可能です ▼▼▼ */
         margin-left: 90px;  /* 左に余白を空けて右にずらす場合は数値を大きくする */
         margin-right: 90px; /* 右に余白を空けて左にずらす場合は数値を大きくする */
     }
 
     /* ▼▼▼ モーダル内の「画像(1枚)」位置調整 (SP版) ▼▼▼ */
     .single-img {
-        margin-top: 10px;
+        margin-top: 0px;
         margin-bottom: 15px;
         margin-left: 10px;
         margin-right: 10px;
+        /* 親枠から余白を考慮した幅に自動設定 */
         max-width: calc(100% - 20px);
     }
 
     /* ▼▼▼ モーダル内の「複数画像（スライダー）」位置調整 (SP版) ▼▼▼ */
     .carousel-container {
-        margin-top: 25px;
+        margin-top: 15px;
         margin-bottom: 15px;
         margin-left: 0px;
         margin-right: 0px;
@@ -713,7 +726,6 @@ body {
     }
     
     .carousel-img {
-        /* 【要求③】SP版の画像も横幅を狭くして左右の候補を見せるため 60% に設定 */
-        max-width: 80%;
+        max-width: 60%;
     }
 }

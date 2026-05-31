@@ -49,7 +49,7 @@
             </div>
         </div>
         <div class="hot-search-wrapper">
-            <div class="trending-label">🔥</div>
+            <div class="trending-label">hot</div>
             <div class="hot-search" id="hot-search"></div>
         </div>
     </div>
@@ -69,6 +69,9 @@
             const owner = "nikamishotaro";
             const repo = "home";
             const path = "posts";
+            
+            // 【要求②】モーダル展開時のスクロールイベント誤作動をブロックするための管理フラグ
+            let isOpeningModal = false;
             
             try {
                 const response = await fetch(`https://api.github.com/repos/${owner}/${repo}/contents/${path}`);
@@ -146,7 +149,6 @@
 
             const navItems = document.querySelectorAll('.nav-item.has-dropdown');
 
-            // 【修正・要求①】SP版ドロップダウンの開閉処理（伝播を止めて画面外クリックと干渉させない）
             navItems.forEach(item => {
                 item.addEventListener('click', (e) => {
                     if (window.innerWidth <= 768) {
@@ -156,7 +158,6 @@
                 });
             });
 
-            // 【追加・要求①】ドロップダウンメニュー外の画面をタップしたら閉じる処理を追加
             document.addEventListener('click', (e) => {
                 if (window.innerWidth <= 768) {
                     navItems.forEach(item => {
@@ -167,7 +168,6 @@
                 }
             });
 
-            // 【追加・要求①】遷移して戻ってきた際、ブラウザキャッシュによるメニュー開閉バグを完全にリセットする処理
             window.addEventListener('pageshow', () => {
                 if (window.innerWidth <= 768) {
                     navItems.forEach(item => {
@@ -271,9 +271,16 @@
                         textEl.style.display = 'none'; 
                     }
                     
+                    // 【要求②】新規モーダル開封フェーズ開始フラグを設定し、裏でのscroll誤算定を防ぐ
+                    isOpeningModal = true;
                     modal.style.display = 'block'; 
                     modal.scrollTop = 0; 
                     modal.style.opacity = 1; 
+                    
+                    // スクロール初期化がブラウザで確定した頃にフラグを解除
+                    setTimeout(() => {
+                        isOpeningModal = false;
+                    }, 80);
 
                 });
             });
@@ -445,11 +452,11 @@
                     );
 
                     if (initialDistance) {
-                        const diff = currentDistance - initialDistance;
-                        if (diff > zoomThreshold) {
+                        const MathDiff = currentDistance - initialDistance;
+                        if (MathDiff > zoomThreshold) {
                             changeZoom(-1);
                             initialDistance = currentDistance;
-                        } else if (diff < -zoomThreshold) {
+                        } else if (MathDiff < -zoomThreshold) {
                             changeZoom(1);
                             initialDistance = currentDistance;
                         }
@@ -482,7 +489,8 @@
             });
 
             imageModal.addEventListener('scroll', () => {
-                if (imageModal.style.display === 'none') return; 
+                // 【要求②】非表示時、または新規モーダル開封処理の最中はスクロールによる透明度計算をスキップ
+                if (imageModal.style.display === 'none' || isOpeningModal) return; 
 
                 if (window.innerWidth <= 768) {
                     const scrollTop = imageModal.scrollTop;
