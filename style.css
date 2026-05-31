@@ -641,8 +641,8 @@ body {
     margin-top: 15px; 
     margin-bottom: 20px;
     /* ▼▼▼ 本文の左右位置（左に余白を空ける場合はmargin-leftを大きくする） ▼▼▼ */
-    margin-left: 20px;
-    margin-right: 20px;
+    margin-left: 30px;
+    margin-right: 30px;
     /* 【修正・要求①】左寄せの設定 */
     text-align: left; 
     /* 【修正・要求①】親要素が中央揃えでも幅いっぱいに広げて左寄せを効かせる設定 */
@@ -677,8 +677,8 @@ body {
         margin-top: 30px;
         margin-bottom: 10px;
         /* SP版本文の左右位置（変更可能） */
-        margin-left: 20px; 
-        margin-right: 20px; 
+        margin-left: 30px; 
+        margin-right: 30px; 
     }
 
     /* ▼▼▼ モーダル内の「画像(1枚)」位置調整 (SP版) ▼▼▼ */
