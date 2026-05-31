@@ -527,7 +527,7 @@ body {
 .modal-box {
     background: #000;
     border: 0px solid #ffffff;
-    width: 90%;
+    width: 100%;
     max-width: 800px;
     margin: 100px auto; 
     padding: 40px;
@@ -708,6 +708,6 @@ body {
     }
     
     .carousel-img {
-        max-width: 100%;
+        max-width: 80%;
     }
 }
