@@ -92,7 +92,19 @@
                             const detailtextMatch = text.match(/detailtext:\s*"([\s\S]*?)"/);
                             
                             const title = titleMatch ? titleMatch[1] : "無題";
-                            const tags = tagsMatch ? tagsMatch[1] : "";
+                            
+                            // 【修正・要求②】「#」なしでもタグとして認識し、カンマ区切りにも対応する処理
+                            let tags = "";
+                            if (tagsMatch && tagsMatch[1]) {
+                                const rawTagsText = tagsMatch[1];
+                                const separator = rawTagsText.includes(',') ? ',' : ' ';
+                                tags = rawTagsText.split(separator)
+                                    .map(t => t.trim().replace(/^#/, ''))
+                                    .filter(t => t !== '')
+                                    .map(t => '#' + t)
+                                    .join(' ');
+                            }
+
                             const rawImageUrl = iconUrlMatch ? iconUrlMatch[1] : (imageMatch ? imageMatch[1] : "");
                             
                             const cleanIconUrl = rawImageUrl.replace(/[\r\n"]/g, '').trim();
@@ -197,18 +209,27 @@
 
             itemsArray.forEach(item => {
                 const id = item.dataset.id;
+                // APIエラー対策として記号を排除した安全なIDを生成
+                const safeId = id.replace(/[^a-zA-Z0-9_]/g, '');
                 
-                item.dataset.views = 0;
-                
+                // ローカルストレージをフォールバックとして取得
+                const localKey = 'kim_diehl_views_' + safeId;
+                let views = parseInt(localStorage.getItem(localKey) || '0');
+                item.dataset.views = views;
+                item.querySelector('.view-number').textContent = views;
+
                 // ページ読み込み時に全端末合算の閲覧数を取得
-                fetch(`https://api.counterapi.dev/v1/${NAMESPACE}/${id}`)
+                fetch(`https://api.counterapi.dev/v1/${NAMESPACE}/${safeId}`)
                     .then(res => res.json())
                     .then(data => {
-                        const views = data.count || 0;
-                        item.dataset.views = views;
-                        item.querySelector('.view-number').textContent = views;
+                        if (data && data.count !== undefined) {
+                            views = data.count;
+                            item.dataset.views = views;
+                            item.querySelector('.view-number').textContent = views;
+                            localStorage.setItem(localKey, views);
+                        }
                     })
-                    .catch(err => console.error('閲覧数の取得に失敗:', err))
+                    .catch(err => console.log('閲覧数の取得に失敗（ローカル値を使用）:', err))
                     .finally(() => {
                         fetchCount++;
                         // すべての閲覧数の取得が完了したタイミングでソートを再適用する
@@ -220,14 +241,15 @@
                 item.addEventListener('click', (e) => {
                     e.preventDefault(); 
 
-                    // クリック時に見た目上の数値を+1する
+                    // クリック時に見た目とローカル上の数値を+1する
                     let currentViews = parseInt(item.dataset.views || 0) + 1;
                     item.dataset.views = currentViews;
                     item.querySelector('.view-number').textContent = currentViews;
+                    localStorage.setItem(localKey, currentViews);
 
                     // 裏で外部APIを呼び出して全体のカウントを+1する
-                    fetch(`https://api.counterapi.dev/v1/${NAMESPACE}/${id}/up`)
-                        .catch(err => console.error('閲覧数の更新に失敗:', err));
+                    fetch(`https://api.counterapi.dev/v1/${NAMESPACE}/${safeId}/up`)
+                        .catch(err => console.log('閲覧数の更新に失敗:', err));
 
                     const modal = document.getElementById('image-modal');
                     const innerContainer = document.getElementById('modal-inner-container');
@@ -422,7 +444,7 @@
                     const itemTags = hashtagElem ? hashtagElem.textContent : '';
                     const dateParts = item.dataset.date ? item.dataset.date.split('T')[0].split('-') : [];
                     const itemYear = dateParts.length > 0 ? dateParts[0] : '';
-                    const itemYearMonth = dateParts.length > 1 ? `${dateParts[0]}年${parseInt(dateParts[1], 10)}月` : '';
+                    const itemYearMonth = dateParts.length > 1 ? `${dateParts[0]}.${parseInt(dateParts[1], 10)}` : '';
                     
                     let isMatch = true;
                     if (selectedTags.length > 0) {
