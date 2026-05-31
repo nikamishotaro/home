@@ -644,11 +644,11 @@ body {
     color: #fff;
     font-size: 1.5rem;
     font-weight: bold;
-    margin-top: 10px;
+    margin-top: 30px;
     margin-bottom: 15px;
     /* ▼▼▼ 【要求④】X軸方向（左右）の位置を調整する場合は、以下の数値を変更してください ▼▼▼ */
-    margin-left: 0px;  /* 左に余白を空けて右にずらす場合は数値を大きくする */
-    margin-right: 0px; /* 右に余白を空けて左にずらす場合は数値を大きくする */
+    margin-left: 30px;  /* 左に余白を空けて右にずらす場合は数値を大きくする */
+    margin-right: 30px; /* 右に余白を空けて左にずらす場合は数値を大きくする */
     text-align: left;
     width: 100%;
 }
@@ -660,8 +660,8 @@ body {
     margin-top: 15px; 
     margin-bottom: 20px;
     /* ▼▼▼ 【要求④】X軸方向（左右）の位置を調整する場合は、以下の数値を変更してください ▼▼▼ */
-    margin-left: 0px;  /* 左に余白を空けて右にずらす場合は数値を大きくする */
-    margin-right: 0px; /* 右に余白を空けて左にずらす場合は数値を大きくする */
+    margin-left: 30px;  /* 左に余白を空けて右にずらす場合は数値を大きくする */
+    margin-right: 30px; /* 右に余白を空けて左にずらす場合は数値を大きくする */
     width: 100%; 
     text-align: left; 
     white-space: pre-wrap;
@@ -677,11 +677,11 @@ body {
     /* ▼▼▼ モーダル内の「タイトル」フォントサイズ・位置調整 (SP版) ▼▼▼ */
     .modal-title {
         font-size: 1.2rem;
-        margin-top: 0px;
+        margin-top: 30px;
         margin-bottom: 10px;
         /* ▼▼▼ 【要求④】X軸方向（左右）の位置を調整する場合は、以下の数値を変更してください ▼▼▼ */
-        margin-left: 10px;  /* 左に余白を空けて右にずらす場合は数値を大きくする */
-        margin-right: 10px; /* 右に余白を空けて左にずらす場合は数値を大きくする */
+        margin-left: 30px;  /* 左に余白を空けて右にずらす場合は数値を大きくする */
+        margin-right: 30px; /* 右に余白を空けて左にずらす場合は数値を大きくする */
     }
 
     /* ▼▼▼ モーダル内の「本文」フォントサイズ・位置調整 (SP版) ▼▼▼ */
@@ -690,8 +690,8 @@ body {
         margin-top: 10px;
         margin-bottom: 10px;
         /* ▼▼▼ 【要求④】X軸方向（左右）の位置を調整する場合は、以下の数値を変更してください ▼▼▼ */
-        margin-left: 10px;  /* 左に余白を空けて右にずらす場合は数値を大きくする */
-        margin-right: 10px; /* 右に余白を空けて左にずらす場合は数値を大きくする */
+        margin-left: 30px;  /* 左に余白を空けて右にずらす場合は数値を大きくする */
+        margin-right: 30px; /* 右に余白を空けて左にずらす場合は数値を大きくする */
     }
 
     /* ▼▼▼ モーダル内の「画像(1枚)」位置調整 (SP版) ▼▼▼ */
