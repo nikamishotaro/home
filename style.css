@@ -308,20 +308,28 @@ body {
     overflow: hidden;
 }
 
+/* 【修正・要求②】PC版での画面縮小に伴う見切れ対策（gapを入れて衝突を防ぐ、上揃え配置にする） */
 .grid-item-title-container {
     display: flex;
     justify-content: space-between;
-    align-items: center;
+    align-items: flex-start; /* 改行された際に閲覧数が綺麗な位置に固定されるよう上揃えに調整 */
     margin-bottom: 5px;
+    gap: 8px; /* タイトルと閲覧数の衝突を防ぐ最小限の隙間を設定 */
 }
 
+/* 【修正・要求②】タイトルが長い場合はアイコン領域の横幅一杯で自動改行する設定 */
 .grid-item-title {
     font-weight: bold;
     font-size: 1.1rem; 
     color: #111;
     transition: font-size 0.3s ease;
+    flex: 1; /* 横幅を可能な限り広げる */
+    min-width: 0; /* Flexbox内のテキスト改行に必須の指定 */
+    white-space: normal; /* 折り返しを許可 */
+    word-break: break-word; /* 領域の端で綺麗に改行 */
 }
 
+/* 【修正・要求②】閲覧数表示が絶対に潰れたり右側に見切れたりしないよう固定する設定 */
 .view-count {
     display: flex;
     align-items: center;
@@ -331,6 +339,7 @@ body {
     opacity: 1;
     max-height: 20px;
     overflow: hidden;
+    flex-shrink: 0; /* 画面縮小時に閲覧数側の幅が潰されるのを完全に防止 */
 }
 
 .view-count img.eye-icon {
@@ -521,7 +530,7 @@ body {
 .modal-box {
     background: #000;
     border: 0px solid #ffffff;
-    width: 100%;
+    width: 90%;
     max-width: 800px;
     margin: 100px auto; 
     padding: 40px;
@@ -588,8 +597,8 @@ body {
     width: auto;
     height: auto;
     max-height: 100%;
-    /* 【要求①】画像の横幅の最大値。はみ出しを防ぐため親枠（100%）に収める */
-    max-width: 100%;
+    /* 画像の横幅の最大値。はみ出しを防ぐため親枠の幅から左右のpadding分を引いて制限する */
+    max-width: calc(100% - 80px);
     object-fit: contain;
     transition: all 0.4s ease;
     opacity: 0;
@@ -714,5 +723,12 @@ body {
         margin-left: 0px;
         /* SP版のスライダー全体の右の余白 */
         margin-right: 0px;
+        /* SP版でスライダー全体が枠をはみ出さないよう、親枠の幅から左右のpaddingを引いた値(20px+20px=40px)で制限 */
+        max-width: calc(100% - 40px);
+    }
+    
+    .carousel-img {
+        /* SP版の画像も親枠に収める */
+        max-width: 100%;
     }
 }

@@ -49,7 +49,7 @@
             </div>
         </div>
         <div class="hot-search-wrapper">
-            <div class="trending-label">🔥</div>
+            <div class="trending-label">hot</div>
             <div class="hot-search" id="hot-search"></div>
         </div>
     </div>
@@ -98,9 +98,8 @@
                             const detailUrl = detailUrlMatch ? detailUrlMatch[1] : "";
                             const detailtext = detailtextMatch ? detailtextMatch[1] : "";
                             
-                            // 【修正・要求③】ファイル名から時間情報（HHmmss）まで抽出して精緻な日時にパースする
                             const dateMatch = file.name.match(/^(\d{4})(\d{2})(\d{2})(?:-(\d{2})(\d{2})(\d{2}))?/);
-                            let dateStr = "2026-05-28T00:00:00"; // 万が一取得できなかった場合のフォールバック
+                            let dateStr = "2026-05-28T00:00:00"; 
                             if (dateMatch) {
                                 const HH = dateMatch[4] || "00";
                                 const mm = dateMatch[5] || "00";
@@ -147,12 +146,34 @@
 
             const navItems = document.querySelectorAll('.nav-item.has-dropdown');
 
+            // 【修正・要求①】SP版ドロップダウンの開閉処理（伝播を止めて画面外クリックと干渉させない）
             navItems.forEach(item => {
                 item.addEventListener('click', (e) => {
                     if (window.innerWidth <= 768) {
+                        e.stopPropagation();
                         item.classList.toggle('active');
                     }
                 });
+            });
+
+            // 【追加・要求①】ドロップダウンメニュー外の画面をタップしたら閉じる処理を追加
+            document.addEventListener('click', (e) => {
+                if (window.innerWidth <= 768) {
+                    navItems.forEach(item => {
+                        if (!item.contains(e.target)) {
+                            item.classList.remove('active');
+                        }
+                    });
+                }
+            });
+
+            // 【追加・要求①】遷移して戻ってきた際、ブラウザキャッシュによるメニュー開閉バグを完全にリセットする処理
+            window.addEventListener('pageshow', () => {
+                if (window.innerWidth <= 768) {
+                    navItems.forEach(item => {
+                        item.classList.remove('active');
+                    });
+                }
             });
 
             const searchInput = document.getElementById('search-input');
@@ -263,7 +284,6 @@
 
             itemsArray.forEach(item => {
                 const hashtagElem = item.querySelector('.grid-item-hashtag');
-                // 【修正・要求③】データの日付パース部分（YYYY-MM-DDTHH:mm:ss対応）
                 const year = item.dataset.date ? item.dataset.date.split('T')[0].split('-')[0] : '';
                 if (year && !availableTags.includes(year)) {
                     availableTags.push(year);
@@ -330,7 +350,6 @@
                     itemsArray.forEach(item => {
                         const hashtagElem = item.querySelector('.grid-item-hashtag');
                         const itemTags = hashtagElem ? hashtagElem.textContent : '';
-                        // 【修正・要求③】データの日付パース部分（YYYY-MM-DDTHH:mm:ss対応）
                         const itemYear = item.dataset.date ? item.dataset.date.split('T')[0].split('-')[0] : '';
                         const isMatch = selectedTags.every(st => itemTags.includes('#' + st) || itemYear === st);
                         if (isMatch) hits++;
@@ -371,10 +390,9 @@
                 itemsArray.forEach(item => {
                     const hashtagElem = item.querySelector('.grid-item-hashtag');
                     const itemTags = hashtagElem ? hashtagElem.textContent : '';
-                    // 【修正・要求③】データの日付パース部分（YYYY-MM-DDTHH:mm:ss対応）
                     const dateParts = item.dataset.date ? item.dataset.date.split('T')[0].split('-') : [];
                     const itemYear = dateParts.length > 0 ? dateParts[0] : '';
-                    const itemYearMonth = dateParts.length > 1 ? `${dateParts[0]}.${parseInt(dateParts[1], 10)}` : '';
+                    const itemYearMonth = dateParts.length > 1 ? `${dateParts[0]}年${parseInt(dateParts[1], 10)}月` : '';
                     
                     let isMatch = true;
                     if (selectedTags.length > 0) {
