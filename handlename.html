@@ -217,8 +217,8 @@
                 item.dataset.views = localViews;
                 item.querySelector('.view-number').textContent = localViews;
 
-                // ページ読み込み時に全端末合算の閲覧数を取得
-                fetch(`https://kvdb.io/${KVDB_BUCKET}/${safeId}`)
+                // ページ読み込み時に全端末合算の閲覧数を取得（キャッシュを強制無効化）
+                fetch(`https://kvdb.io/${KVDB_BUCKET}/${safeId}?t=${new Date().getTime()}`, { cache: 'no-store' })
                     .then(res => {
                         if(res.status === 404) return 0; // まだ誰も見ていない場合
                         if(!res.ok) throw new Error('API Error');
